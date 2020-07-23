@@ -22,7 +22,7 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
     private Context mContext;
 
     public ProfilesListAdapter(Context context) {
-        inflater =LayoutInflater.from(context);
+        inflater = LayoutInflater.from(context);
         this.mContext = mContext;
     }
 
@@ -36,11 +36,18 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
 
     @Override
     public void onBindViewHolder(@NonNull ProfilesViewHolder holder, int position) {
+        if (mProfiles != null) {
+            Profile current = mProfiles.get(position);
+            holder.mProfileName.setText(current.getProfileName());
+        }
 
     }
 
     @Override
     public int getItemCount() {
+        if (mProfiles != null) {
+            return mProfiles.size();
+        }
         return 0;
     }
 
@@ -58,5 +65,7 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
         }
     }
 
-    public Profile getProfileAtPosition(int position) {return mProfiles.get(position);}
+    public Profile getProfileAtPosition(int position) {
+        return mProfiles.get(position);
+    }
 }

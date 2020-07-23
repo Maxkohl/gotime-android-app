@@ -15,8 +15,8 @@ import androidx.sqlite.db.SupportSQLiteOpenHelper;
 import com.example.gotimer.dao.ProfileDao;
 import com.example.gotimer.entity.Profile;
 
-@Database(entities = {Profile.class}, version = 0, exportSchema = false)
-public abstract class ProfileRoomDatabase extends androidx.room.RoomDatabase {
+@Database(entities = {Profile.class}, version = 1, exportSchema = false)
+public abstract class ProfileRoomDatabase extends RoomDatabase {
 
     public abstract ProfileDao profilesDao();
 
@@ -44,14 +44,14 @@ public abstract class ProfileRoomDatabase extends androidx.room.RoomDatabase {
             synchronized (ProfileRoomDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            ProfileRoomDatabase.class, "profiles_database").fallbackToDestructiveMigration().addCallback(pRoomDatabaseCallback).build();
+                            ProfileRoomDatabase.class, "profile_database").fallbackToDestructiveMigration().addCallback(sRoomDatabaseCallback).build();
                 }
             }
         }
         return INSTANCE;
     }
 
-    private static RoomDatabase.Callback pRoomDatabaseCallback = new RoomDatabase.Callback() {
+    private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
