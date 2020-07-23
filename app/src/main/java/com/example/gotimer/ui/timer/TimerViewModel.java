@@ -1,19 +1,30 @@
 package com.example.gotimer.ui.timer;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class TimerViewModel extends ViewModel {
+import com.example.gotimer.Repository;
+import com.example.gotimer.entity.Profile;
 
-    private MutableLiveData<String> mText;
+import java.util.List;
 
-    public TimerViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is timer fragment");
+public class TimerViewModel extends AndroidViewModel {
+
+    private Repository mRepository;
+
+
+    public TimerViewModel(@NonNull Application application) {
+        super(application);
+        mRepository = new Repository(application);
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<List<Profile>> getAllProfiles() {
+        return mRepository.getAllProfiles();
     }
+
 }
