@@ -51,7 +51,7 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
         return 0;
     }
 
-    private void getProfiles(List<Profile> profiles) {
+    public void setProfiles(List<Profile> profiles) {
         mProfiles = profiles;
         notifyDataSetChanged();
     }
