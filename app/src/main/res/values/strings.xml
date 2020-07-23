@@ -3,4 +3,6 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_timer">Timer</string>
     <string name="title_stats">Stats</string>
+    <string name="add_timer">Add Timer</string>
+    <string name="title_add">Add Timer</string>
 </resources>

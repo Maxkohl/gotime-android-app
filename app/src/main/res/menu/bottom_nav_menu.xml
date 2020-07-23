@@ -7,13 +7,13 @@
         android:title="@string/title_timer" />
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_add"
         android:icon="@drawable/ic_add"
-        android:title="@string/title_dashboard" />
+        android:title="@string/add_timer"
+        />
 
     <item
         android:id="@+id/navigation_stats"
         android:icon="@drawable/ic_stats"
         android:title="@string/title_stats" />
-
 </menu>

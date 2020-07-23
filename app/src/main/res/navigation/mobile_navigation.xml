@@ -12,12 +12,6 @@
         tools:layout="@layout/fragment_timer" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.gotimer.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
-
-    <fragment
         android:id="@+id/navigation_stats"
         android:name="com.example.gotimer.ui.stats.StatsFragment"
         android:label="@string/title_stats"
