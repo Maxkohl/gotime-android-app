@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 
 import java.util.List;
 
-@Entity(tableName = "profile")
+@Entity(tableName = "profiles_table")
 public class Profile {
 
     @NonNull
