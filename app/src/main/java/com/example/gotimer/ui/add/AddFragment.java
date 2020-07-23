@@ -12,12 +12,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.gotimer.R;
 
 import org.w3c.dom.Text;
 
 public class AddFragment extends DialogFragment {
+
+    private AddViewModel addViewModel;
 
     private Context mContext;
     private Button mStartButton;
@@ -34,6 +37,12 @@ public class AddFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        addViewModel =
+                ViewModelProviders.of(this).get(AddViewModel.class);
+
+        if (addViewModel.getTimeString() != null) {
+            mStartTime.setText(addViewModel.getTimeString());
+        }
     }
 
     @Override
@@ -69,13 +78,6 @@ public class AddFragment extends DialogFragment {
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
-    }
-
-    //TODO Should this be moved into ViewModel?
-    public void processTimePickerResult(int hourOfDay, int minute) {
-        String hourString = Integer.toString(hourOfDay);
-        String minuteString = Integer.toString(minute);
-        mStartTime.setText(hourString + ":" + minuteString);
     }
 
 

@@ -6,9 +6,11 @@ import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -17,10 +19,19 @@ import android.view.ViewGroup;
 import android.widget.TimePicker;
 
 import com.example.gotimer.R;
+import com.example.gotimer.ui.timer.TimerViewModel;
 
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
+    private AddViewModel addViewModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addViewModel =
+                ViewModelProviders.of(this).get(AddViewModel.class);
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -36,10 +47,6 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        AddFragment parentFrag = ((AddFragment)TimePickerFragment.this.getParentFragment());
-        //TODO Change this because parentFrag is returning null and crashing app
-        if (parentFrag != null) {
-            parentFrag.processTimePickerResult(hourOfDay, minute);
-        }
+       addViewModel.processTimePickerResult(hourOfDay, minute);
     }
 }
