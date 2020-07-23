@@ -53,9 +53,4 @@ public class TimerFragment extends Fragment {
         return root;
     }
 
-    //TODO Should this be moved into ViewModel?
-    public void processTimePickerResult(int hourOfDay, int minute) {
-        String hourString = Integer.toString(hourOfDay);
-        String minuteString = Integer.toString(minute);
-    }
 }
