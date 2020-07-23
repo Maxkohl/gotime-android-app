@@ -36,7 +36,10 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        AddFragment fragment = (AddFragment)getParentFragment();
-        fragment.processTimePickerResult(hourOfDay, minute);
+        AddFragment parentFrag = ((AddFragment)TimePickerFragment.this.getParentFragment());
+        //TODO Change this because parentFrag is returning null and crashing app
+        if (parentFrag != null) {
+            parentFrag.processTimePickerResult(hourOfDay, minute);
+        }
     }
 }

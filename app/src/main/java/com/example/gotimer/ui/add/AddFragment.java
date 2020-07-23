@@ -8,16 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.gotimer.R;
 
+import org.w3c.dom.Text;
+
 public class AddFragment extends DialogFragment {
 
     private Context mContext;
     private Button mStartButton;
+
+    private TextView mStartTime;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -37,6 +42,7 @@ public class AddFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_add, container, false);
         mStartButton = root.findViewById(R.id.starttime_button);
+        mStartTime = root.findViewById(R.id.starttime_display);
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,6 +75,7 @@ public class AddFragment extends DialogFragment {
     public void processTimePickerResult(int hourOfDay, int minute) {
         String hourString = Integer.toString(hourOfDay);
         String minuteString = Integer.toString(minute);
+        mStartTime.setText(hourString + ":" + minuteString);
     }
 
 
