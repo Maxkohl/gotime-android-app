@@ -23,9 +23,10 @@ public class Profile {
     @NonNull
     String endTime;
 
-    List<String> daysActive;
-
-    List<String> blockedApps;
+    //TODO Uncomment. How to store in SQLite?
+//    List<String> daysActive;
+//
+//    List<String> blockedApps;
 
     @NonNull
     boolean isOn;
@@ -34,17 +35,21 @@ public class Profile {
 
 
     public Profile(@NonNull String profileName, @NonNull String startTime,
-                   @NonNull String endTime, List<String> daysActive, List<String> blockedApps) {
+                   @NonNull String endTime) {
         this.profileName = profileName;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.daysActive = daysActive;
-        this.blockedApps = blockedApps;
+//        this.daysActive = daysActive;
+//        this.blockedApps = blockedApps;
         this.isOn = false;
     }
 
     public int getProfileId() {
         return profileId;
+    }
+
+    public void setProfileId(int profileId) {
+        this.profileId = profileId;
     }
 
     @NonNull
@@ -62,13 +67,13 @@ public class Profile {
         return endTime;
     }
 
-    public List<String> getDaysActive() {
-        return daysActive;
-    }
-
-    public List<String> getBlockedApps() {
-        return blockedApps;
-    }
+//    public List<String> getDaysActive() {
+//        return daysActive;
+//    }
+//
+//    public List<String> getBlockedApps() {
+//        return blockedApps;
+//    }
 
     public boolean isOn() {
         return isOn;
@@ -86,13 +91,13 @@ public class Profile {
         this.endTime = endTime;
     }
 
-    public void setDaysActive(List<String> daysActive) {
-        this.daysActive = daysActive;
-    }
-
-    public void setBlockedApps(List<String> blockedApps) {
-        this.blockedApps = blockedApps;
-    }
+//    public void setDaysActive(List<String> daysActive) {
+//        this.daysActive = daysActive;
+//    }
+//
+//    public void setBlockedApps(List<String> blockedApps) {
+//        this.blockedApps = blockedApps;
+//    }
 
     public void setOn(boolean on) {
         isOn = on;
