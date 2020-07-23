@@ -41,7 +41,7 @@ public class Profile {
         this.endTime = endTime;
 //        this.daysActive = daysActive;
 //        this.blockedApps = blockedApps;
-        this.isOn = false;
+        this.isOn = true;
     }
 
     public int getProfileId() {
@@ -103,3 +103,4 @@ public class Profile {
         isOn = on;
     }
 }
+

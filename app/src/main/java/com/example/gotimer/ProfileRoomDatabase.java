@@ -82,6 +82,4 @@ public abstract class ProfileRoomDatabase extends RoomDatabase {
             return null;
         }
     }
-
-
 }
