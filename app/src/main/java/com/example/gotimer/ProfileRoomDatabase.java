@@ -75,7 +75,7 @@ public abstract class ProfileRoomDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            mDao.deleteAll();
+            mDao.deleteAllProfiles();
             for (Profile profile : dummyProfiles) {
                 mDao.insertProfile(profile);
             }
