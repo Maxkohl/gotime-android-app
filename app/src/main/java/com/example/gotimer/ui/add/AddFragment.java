@@ -37,6 +37,12 @@ public class AddFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_add, container, false);
         mStartButton = root.findViewById(R.id.starttime_button);
+        mStartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTimePickerDialog(view);
+            }
+        });
 
 
         return root;

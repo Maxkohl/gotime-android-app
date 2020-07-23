@@ -38,8 +38,7 @@
         android:id="@+id/starttime_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pick Start Time"
-        android:onClick="showTimePickerDialog" />
+        android:text="Pick Start Time" />
 
 
 </LinearLayout>
