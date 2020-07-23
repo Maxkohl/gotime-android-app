@@ -22,6 +22,9 @@ public interface ProfileDao {
     @Query("DELETE FROM profiles_table WHERE name = :name")
     void deleteProfile(String name);
 
+    @Query("DELETE FROM profiles_table")
+    void deleteAllProfiles();
+
     //TODO Update profile
     //TODO getTotalHoursPerDay
 
