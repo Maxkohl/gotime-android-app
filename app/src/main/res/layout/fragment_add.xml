@@ -24,16 +24,22 @@
     <TextView
         android:id="@+id/location_label"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="Location"
         android:textColor="@color/colorPrimary" />
 
-    <EditText
-        android:id="@+id/location_input"
+    <TextView
+        android:id="@+id/starttime_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Location Placeholder"
-        android:inputType="textShortMessage" />
+        android:text="From"
+        android:textColor="@color/colorPrimary" />
+    <Button
+        android:id="@+id/starttime_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick Start Time"
+        android:onClick="showTimePickerDialog" />
 
 
 </LinearLayout>

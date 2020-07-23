@@ -1,17 +1,29 @@
 package com.example.gotimer.ui.add;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.gotimer.R;
 
 public class AddFragment extends DialogFragment {
+
+    private Context mContext;
+    private Button mStartButton;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,7 +35,11 @@ public class AddFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add, container, false);
+        View root = inflater.inflate(R.layout.fragment_add, container, false);
+        mStartButton = root.findViewById(R.id.starttime_button);
+
+
+        return root;
     }
 
 
@@ -37,5 +53,11 @@ public class AddFragment extends DialogFragment {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         return dialog;
     }
+
+    public void showTimePickerDialog(View v) {
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
+    }
+
 
 }
