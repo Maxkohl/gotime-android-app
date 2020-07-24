@@ -43,6 +43,7 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
             holder.mProfileName.setText(current.getProfileName());
             holder.mStartTime.setText(current.getStartTimeString());
             holder.mEndTime.setText(current.getEndTimeString());
+            holder.mDaysActive.setText(current.getDaysActive());
         }
 
     }
@@ -64,12 +65,14 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
         private final TextView mProfileName;
         private final TextView mStartTime;
         private final TextView mEndTime;
+        private final TextView mDaysActive;
 
         public ProfilesViewHolder(@NonNull View itemView) {
             super(itemView);
             mProfileName = itemView.findViewById(R.id.profileName);
             mStartTime = itemView.findViewById(R.id.profileStartTime);
             mEndTime = itemView.findViewById(R.id.profileEndTime);
+            mDaysActive = itemView.findViewById(R.id.profileDaysActive);
         }
     }
 
