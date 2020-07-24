@@ -18,7 +18,7 @@ import androidx.sqlite.db.SupportSQLiteOpenHelper;
 import com.example.gotimer.dao.ProfileDao;
 import com.example.gotimer.entity.Profile;
 
-@Database(entities = {Profile.class}, version = 1, exportSchema = false)
+@Database(entities = {Profile.class}, version = 2, exportSchema = false)
 public abstract class ProfileRoomDatabase extends RoomDatabase {
 
     public abstract ProfileDao profilesDao();
@@ -67,7 +67,7 @@ public abstract class ProfileRoomDatabase extends RoomDatabase {
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
         private  final ProfileDao mDao;
 
-        Profile[] dummyProfiles = {new Profile("Profile 1", "start", "stop")};
+        Profile[] dummyProfiles = {new Profile("Profile 1", 0, 0)};
 
         public PopulateDbAsync(ProfileRoomDatabase db) {
             this.mDao = db.profilesDao();
