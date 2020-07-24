@@ -21,11 +21,15 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.dpro.widgets.OnWeekdaysChangeListener;
+import com.dpro.widgets.WeekdaysPicker;
 import com.example.gotimer.R;
 import com.example.gotimer.entity.Profile;
 import com.example.gotimer.ui.timer.TimerFragment;
 
 import org.w3c.dom.Text;
+
+import java.util.List;
 
 public class AddFragment extends Fragment {
 
@@ -39,6 +43,8 @@ public class AddFragment extends Fragment {
     private Button mEndButton;
     private long mEndTime;
     private Button mSaveButton;
+    private WeekdaysPicker mDayPicker;
+    private List<String> mSelectedDays;
 
 
     @Override
@@ -80,6 +86,13 @@ public class AddFragment extends Fragment {
                 createTimerProfile();
             }
         });
+        mDayPicker = root.findViewById(R.id.weekdays);
+        mDayPicker.setOnWeekdaysChangeListener(new OnWeekdaysChangeListener() {
+            @Override
+            public void onChange(View view, int clickedDayOfWeek, List<Integer> selectedDays) {
+                 mSelectedDays = mDayPicker.getSelectedDaysText();
+            }
+        });
 
         return root;
     }
@@ -92,7 +105,7 @@ public class AddFragment extends Fragment {
     public void createTimerProfile() {
         mProfileName = mNameEditText.getText().toString();
         mStartTime = addViewModel.getTime();
-        Profile newProfile = new Profile(mProfileName, mStartTime, mStartTime);
+        Profile newProfile = new Profile(mProfileName, mStartTime, mStartTime, mSelectedDays);
         addViewModel.insertNewTimerProfile(newProfile);
     }
 

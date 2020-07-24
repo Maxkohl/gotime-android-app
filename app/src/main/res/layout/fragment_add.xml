@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.add.AddFragment">
 
@@ -60,6 +61,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/endtime_button_text" />
+
+    <com.dpro.widgets.WeekdaysPicker
+        android:id="@+id/weekdays"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:highlight_color="@color/colorPrimary"
+        />
 
     <Button
         android:id="@+id/save_profile_button"
