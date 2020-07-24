@@ -1,11 +1,16 @@
 package com.example.gotimer.entity;
 
+import android.os.Build;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -27,7 +32,7 @@ public class Profile {
     private long endTime;
 
     //TODO Uncomment. How to store in SQLite?
-//    List<String> daysActive;
+    private String daysActive;
 //
 //    List<String> blockedApps;
 
@@ -42,7 +47,6 @@ public class Profile {
         this.profileName = profileName;
         this.startTime = startTime;
         this.endTime = endTime;
-//        this.daysActive = daysActive;
 //        this.blockedApps = blockedApps;
         this.isOn = true;
     }
@@ -92,9 +96,9 @@ public class Profile {
         return formattedTime;
     }
 
-//    public List<String> getDaysActive() {
-//        return daysActive;
-//    }
+    public List<String> getDaysActiveList() {
+        return new ArrayList<String>(Arrays.asList(daysActive.split("-")));
+    }
 //
 //    public List<String> getBlockedApps() {
 //        return blockedApps;
@@ -116,9 +120,14 @@ public class Profile {
         this.endTime = endTime;
     }
 
-//    public void setDaysActive(List<String> daysActive) {
-//        this.daysActive = daysActive;
-//    }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setDaysActiveString(List<String> daysActive) {
+        String resultString = "";
+        for (String day : daysActive) {
+            resultString = resultString + "-" + day;
+        }
+        this.daysActive = resultString;
+    }
 //
 //    public void setBlockedApps(List<String> blockedApps) {
 //        this.blockedApps = blockedApps;
@@ -126,6 +135,14 @@ public class Profile {
 
     public void setOn(boolean on) {
         isOn = on;
+    }
+
+    public String getDaysActive() {
+        return daysActive;
+    }
+
+    public void setDaysActive(String daysActive) {
+        this.daysActive = daysActive;
     }
 }
 

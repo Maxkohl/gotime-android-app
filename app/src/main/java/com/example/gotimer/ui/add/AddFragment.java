@@ -2,6 +2,7 @@ package com.example.gotimer.ui.add;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -81,6 +83,7 @@ public class AddFragment extends Fragment {
         });
         mSaveButton = root.findViewById(R.id.save_profile_button);
         mSaveButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                 createTimerProfile();
@@ -90,7 +93,7 @@ public class AddFragment extends Fragment {
         mDayPicker.setOnWeekdaysChangeListener(new OnWeekdaysChangeListener() {
             @Override
             public void onChange(View view, int clickedDayOfWeek, List<Integer> selectedDays) {
-                 mSelectedDays = mDayPicker.getSelectedDaysText();
+
             }
         });
 
@@ -102,10 +105,15 @@ public class AddFragment extends Fragment {
         newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void createTimerProfile() {
         mProfileName = mNameEditText.getText().toString();
         mStartTime = addViewModel.getTime();
-        Profile newProfile = new Profile(mProfileName, mStartTime, mStartTime, mSelectedDays);
+        Profile newProfile = new Profile(mProfileName, mStartTime, mStartTime);
+        mSelectedDays = mDayPicker.getSelectedDaysText();
+        if (mSelectedDays != null) {
+            newProfile.setDaysActiveString(mSelectedDays);
+        }
         addViewModel.insertNewTimerProfile(newProfile);
     }
 
