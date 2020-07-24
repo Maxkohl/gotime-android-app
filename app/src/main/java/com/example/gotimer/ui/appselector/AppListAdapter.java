@@ -48,6 +48,11 @@ public class AppListAdapter extends RecyclerView.Adapter<com.example.gotimer.ui.
 
     }
 
+    public void setApps(List<ApplicationInfo> apps) {
+        mAppsInfo = apps;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         if (mAppsInfo != null) {
