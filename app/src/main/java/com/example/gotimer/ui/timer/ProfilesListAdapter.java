@@ -41,8 +41,8 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
         if (mProfiles != null) {
             Profile current = mProfiles.get(position);
             holder.mProfileName.setText(current.getProfileName());
-            holder.mStartTime.setText(Long.toString(current.getStartTime()));
-            holder.mEndTime.setText(Long.toString(current.getStartTime()));
+            holder.mStartTime.setText(current.getStartTimeString());
+            holder.mEndTime.setText(current.getEndTimeString());
         }
 
     }

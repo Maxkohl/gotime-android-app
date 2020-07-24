@@ -5,7 +5,10 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 @Entity(tableName = "profiles_table")
 public class Profile {
@@ -65,6 +68,28 @@ public class Profile {
     @NonNull
     public long getEndTime() {
         return endTime;
+    }
+
+    public String getStartTimeString() {
+        long unixSeconds = startTime;
+        Date date = new java.util.Date(unixSeconds*1000L);
+        SimpleDateFormat sdf = new java.text.SimpleDateFormat("HH:mm");
+        //TODO Stackoverflow says to use UTC but that sets time 5 hours ahead
+//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        sdf.setTimeZone(TimeZone.getDefault());
+        String formattedDate = "Start Time: " + sdf.format(date);
+        return formattedDate;
+    }
+
+    public String getEndTimeString() {
+        long unixSeconds = endTime;
+        Date date = new java.util.Date(unixSeconds*1000L);
+        SimpleDateFormat sdf = new java.text.SimpleDateFormat("HH:mm");
+
+//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        sdf.setTimeZone(TimeZone.getDefault());
+        String formattedTime = "End Time: " + sdf.format(date);
+        return formattedTime;
     }
 
 //    public List<String> getDaysActive() {

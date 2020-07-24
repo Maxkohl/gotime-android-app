@@ -32,9 +32,9 @@ public class AddViewModel extends AndroidViewModel {
         String hourString = Integer.toString(hourOfDay);
         String minuteString = Integer.toString(minute);
 
-        SimpleDateFormat format = new SimpleDateFormat("HH:MM");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            Date stringFormatted = format.parse(hourString + ":" + minuteString);
+            Date stringFormatted = format.parse("1999-12-12 " + hourString + ":" + minuteString + ":00");
             mTime = stringFormatted.getTime() / 1000;
         } catch (ParseException e) {
             Log.d(TAG, "Exception when parsing time into formatted time");
