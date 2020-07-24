@@ -2,6 +2,7 @@ package com.example.gotimer.ui.appselector;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ import java.util.List;
 public class AppListAdapter extends RecyclerView.Adapter<com.example.gotimer.ui.appselector.AppListAdapter.AppsViewHolder> {
 
     private LayoutInflater inflater;
-    private List<ApplicationInfo> mAppsInfo;
+    private List<PackageInfo> mAppsInfo;
     private Context mContext;
 
     public AppListAdapter(Context mContext) {
@@ -41,14 +42,14 @@ public class AppListAdapter extends RecyclerView.Adapter<com.example.gotimer.ui.
     @Override
     public void onBindViewHolder(@NonNull AppsViewHolder holder, int position) {
         if (mAppsInfo != null) {
-            ApplicationInfo current = mAppsInfo.get(position);
-            holder.mAppIcon.setImageResource(current.icon);
-            holder.mAppName.setText(current.loadLabel(mContext.getPackageManager()));
+            PackageInfo current = mAppsInfo.get(position);
+            holder.mAppIcon.setImageResource(current.applicationInfo.icon);
+            holder.mAppName.setText(current.applicationInfo.loadLabel(mContext.getPackageManager()));
         }
 
     }
 
-    public void setApps(List<ApplicationInfo> apps) {
+    public void setApps(List<PackageInfo> apps) {
         mAppsInfo = apps;
         notifyDataSetChanged();
     }

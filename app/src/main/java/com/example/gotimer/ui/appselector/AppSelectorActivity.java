@@ -18,8 +18,7 @@ import java.util.List;
 
 public class AppSelectorActivity extends AppCompatActivity {
 
-    private List<ApplicationInfo> allAppsList;
-    private List<ApplicationInfo> userApps;
+    private List<PackageInfo> allUserApps;
     private RecyclerView appRecycler;
 
     @Override
@@ -27,25 +26,23 @@ public class AppSelectorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_selector);
 
-        allAppsList = getAllApps();
-        userApps = getUserApps(allAppsList);
+        allUserApps = getUserApps();
 
         appRecycler = findViewById(R.id.applicationRecycler);
         final AppListAdapter adapter = new AppListAdapter(getApplicationContext());
-        adapter.setApps(userApps);
+        adapter.setApps(allUserApps);
         appRecycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         appRecycler.setAdapter(adapter);
     }
 
-    public List<ApplicationInfo> getAllApps() {
+    public List<PackageInfo> getUserApps() {
         final PackageManager pm = getPackageManager();
+        List<PackageInfo> resultList =  new ArrayList<>();
         //get a list of installed apps.
-        return pm.getInstalledApplications(PackageManager.GET_META_DATA);
-    }
-
-    public List<ApplicationInfo> getUserApps(List<ApplicationInfo> allApps) {
-        List<ApplicationInfo> resultList =  new ArrayList<>();
-        for (ApplicationInfo app : allApps) {
+        //TODO Change this back to ApplicationInfo to remove a step and cleaner code?
+        List<PackageInfo> allApps = pm.getInstalledPackages(PackageManager.GET_META_DATA);
+        //        return pm.getInstalledApplications(PackageManager.GET_META_DATA);
+        for (PackageInfo app : allApps) {
             if (!isSystemPackage(app)) {
                 resultList.add(app);
             }
@@ -53,7 +50,8 @@ public class AppSelectorActivity extends AppCompatActivity {
         return resultList;
     }
 
-    private boolean isSystemPackage(ApplicationInfo appInfo) {
-        return ((appInfo.flags & appInfo.FLAG_SYSTEM) != 0);
+    private boolean isSystemPackage(PackageInfo packageInfo) {
+        //TODO This is only showing one app for some reason
+        return ((packageInfo.applicationInfo.flags & packageInfo.applicationInfo.FLAG_SYSTEM) != 0);
     }
 }
