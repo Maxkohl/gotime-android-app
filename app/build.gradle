@@ -46,5 +46,6 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
 
     implementation "androidx.cardview:cardview:1.0.0"
+    implementation 'com.github.DavidProdinger:weekdays-selector:1.1.1'
 
 }
