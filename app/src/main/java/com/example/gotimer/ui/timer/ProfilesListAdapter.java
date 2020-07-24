@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gotimer.R;
 import com.example.gotimer.entity.Profile;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotimer.ui.timer.ProfilesListAdapter.ProfilesViewHolder> {
@@ -39,6 +41,8 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
         if (mProfiles != null) {
             Profile current = mProfiles.get(position);
             holder.mProfileName.setText(current.getProfileName());
+            holder.mStartTime.setText(Long.toString(current.getStartTime()));
+            holder.mEndTime.setText(Long.toString(current.getStartTime()));
         }
 
     }
@@ -58,10 +62,14 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
 
     public class ProfilesViewHolder extends RecyclerView.ViewHolder {
         private final TextView mProfileName;
+        private final TextView mStartTime;
+        private final TextView mEndTime;
 
         public ProfilesViewHolder(@NonNull View itemView) {
             super(itemView);
             mProfileName = itemView.findViewById(R.id.profileName);
+            mStartTime = itemView.findViewById(R.id.profileStartTime);
+            mEndTime = itemView.findViewById(R.id.profileEndTime);
         }
     }
 

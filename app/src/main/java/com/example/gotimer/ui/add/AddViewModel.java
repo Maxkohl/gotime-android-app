@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.gotimer.R;
 import com.example.gotimer.Repository;
@@ -17,8 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AddViewModel extends AndroidViewModel {
-
-    long mTime;
+    private long mTime;
     private static final String TAG = AddViewModel.class.getSimpleName();
     private Repository mReposity;
 
@@ -47,6 +47,8 @@ public class AddViewModel extends AndroidViewModel {
     }
 
     public void insertNewTimerProfile(Profile newProfile) {
+        newProfile.setStartTime(mTime);
+        newProfile.setEndTime(mTime);
         mReposity.insertNewTimerProfile(newProfile);
     }
 

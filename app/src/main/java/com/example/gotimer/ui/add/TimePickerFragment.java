@@ -6,10 +6,12 @@ import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.text.format.DateFormat;
@@ -24,13 +26,15 @@ import com.example.gotimer.ui.timer.TimerViewModel;
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
-    private AddViewModel addViewModel;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addViewModel =
-                ViewModelProviders.of(this).get(AddViewModel.class);
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -47,6 +51,8 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-       addViewModel.processTimePickerResult(hourOfDay, minute);
+        //TODO Is this the best place to put this shared view model? It works though...
+        AddViewModel model = new ViewModelProvider(requireActivity()).get(AddViewModel.class);
+       model.processTimePickerResult(hourOfDay, minute);
     }
 }

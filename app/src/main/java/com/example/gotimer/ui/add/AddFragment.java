@@ -17,6 +17,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.gotimer.R;
@@ -25,7 +27,7 @@ import com.example.gotimer.ui.timer.TimerFragment;
 
 import org.w3c.dom.Text;
 
-public class AddFragment extends DialogFragment {
+public class AddFragment extends Fragment {
 
     private AddViewModel addViewModel;
 
@@ -48,8 +50,7 @@ public class AddFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addViewModel =
-                ViewModelProviders.of(this).get(AddViewModel.class);
+        addViewModel = new ViewModelProvider(requireActivity()).get(AddViewModel.class);
     }
 
     @Override
@@ -83,18 +84,6 @@ public class AddFragment extends DialogFragment {
         return root;
     }
 
-
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // The only reason you might override this method when using onCreateView() is
-        // to modify any dialog characteristics. For example, the dialog includes a
-        // title by default, but your custom layout might not need it. So here you can
-        // remove the dialog title, but you must call the superclass to get the Dialog.
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        return dialog;
-    }
-
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
@@ -102,8 +91,7 @@ public class AddFragment extends DialogFragment {
 
     public void createTimerProfile() {
         mProfileName = mNameEditText.getText().toString();
-        mStartTime = addViewModel.getTime();
-        Profile newProfile = new Profile(mProfileName, mStartTime, mStartTime);
+        Profile newProfile = new Profile(mProfileName, 1, 1);
         addViewModel.insertNewTimerProfile(newProfile);
 
     }
