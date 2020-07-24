@@ -2,6 +2,7 @@ package com.example.gotimer.ui.add;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.dpro.widgets.OnWeekdaysChangeListener;
 import com.dpro.widgets.WeekdaysPicker;
 import com.example.gotimer.R;
 import com.example.gotimer.entity.Profile;
+import com.example.gotimer.ui.appselector.AppSelectorActivity;
 import com.example.gotimer.ui.timer.TimerFragment;
 
 import org.w3c.dom.Text;
@@ -47,6 +49,7 @@ public class AddFragment extends Fragment {
     private Button mSaveButton;
     private WeekdaysPicker mDayPicker;
     private List<String> mSelectedDays;
+    private Button mSelectAppsButton;
 
 
     @Override
@@ -96,8 +99,20 @@ public class AddFragment extends Fragment {
 
             }
         });
+        mSelectAppsButton = root.findViewById(R.id.selectapps_button);
+        mSelectAppsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchAppSelectorActivity();
+            }
+        });
 
         return root;
+    }
+
+    private void launchAppSelectorActivity() {
+        Intent intent = new Intent(getContext(), AppSelectorActivity.class);
+        startActivityForResult(intent, 0);
     }
 
     public void showTimePickerDialog(View v) {

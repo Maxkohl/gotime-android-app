@@ -50,6 +50,9 @@ public class AppListAdapter extends RecyclerView.Adapter<com.example.gotimer.ui.
 
     @Override
     public int getItemCount() {
+        if (mAppsInfo != null) {
+            return mAppsInfo.size();
+        }
         return 0;
     }
 
