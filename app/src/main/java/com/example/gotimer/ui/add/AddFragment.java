@@ -103,7 +103,7 @@ public class AddFragment extends DialogFragment {
     public void createTimerProfile() {
         mProfileName = mNameEditText.getText().toString();
         mStartTime = addViewModel.getTime();
-        Profile newProfile = new Profile(mProfileName, mStartTime, mStartTime);
+        Profile newProfile = new Profile("Test Name", 99999, 999999);
         addViewModel.insertNewTimerProfile(newProfile);
 
     }

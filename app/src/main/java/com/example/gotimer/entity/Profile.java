@@ -11,7 +11,7 @@ import java.util.List;
 public class Profile {
 
     @NonNull
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int profileId;
 
     @ColumnInfo(name = "name")
