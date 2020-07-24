@@ -8,13 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.gotimer.R;
+import com.example.gotimer.entity.Profile;
 
 import org.w3c.dom.Text;
 
@@ -23,9 +26,14 @@ public class AddFragment extends DialogFragment {
     private AddViewModel addViewModel;
 
     private Context mContext;
+    private EditText mNameEditText;
+    private String mProfileName;
     private Button mStartButton;
+    private long mStartTime;
+    private Button mEndButton;
+    private long mEndTime;
+    private Button mSaveButton;
 
-    private TextView mStartTime;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -36,10 +44,8 @@ public class AddFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         addViewModel =
                 ViewModelProviders.of(this).get(AddViewModel.class);
-
     }
 
     @Override
@@ -47,16 +53,28 @@ public class AddFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_add, container, false);
+        mNameEditText = root.findViewById(R.id.profilename_input);
         mStartButton = root.findViewById(R.id.starttime_button);
-        mStartTime = root.findViewById(R.id.starttime_display);
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showTimePickerDialog(view);
             }
         });
-
-
+        mEndButton = root.findViewById(R.id.endtime_button);
+        mEndButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTimePickerDialog(view);
+            }
+        });
+        mSaveButton = root.findViewById(R.id.save_profile_button);
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createTimerProfile();
+            }
+        });
 
         return root;
     }
@@ -76,6 +94,14 @@ public class AddFragment extends DialogFragment {
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
+    }
+
+    public void createTimerProfile() {
+        mProfileName = mNameEditText.getText().toString();
+        mStartTime = addViewModel.getTime();
+        Profile newProfile = new Profile(mProfileName, Long.toString(mStartTime), Long.toString(mEndTime));
+        addViewModel.insertNewTimerProfile(newProfile);
+
     }
 
 
