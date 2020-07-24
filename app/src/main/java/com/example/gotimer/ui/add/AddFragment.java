@@ -40,9 +40,6 @@ public class AddFragment extends DialogFragment {
         addViewModel =
                 ViewModelProviders.of(this).get(AddViewModel.class);
 
-        if (addViewModel.getTimeString() != null) {
-            mStartTime.setText(addViewModel.getTimeString());
-        }
     }
 
     @Override
@@ -58,6 +55,7 @@ public class AddFragment extends DialogFragment {
                 showTimePickerDialog(view);
             }
         });
+
 
 
         return root;

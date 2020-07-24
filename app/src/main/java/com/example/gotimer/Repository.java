@@ -22,4 +22,8 @@ public class Repository {
     public LiveData<List<Profile>> getAllProfiles() {
         return getAllProfiles;
     }
+
+    public void insertNewTimerProfile(Profile profile) {
+        mProfileDao.insertProfile(profile);
+    }
 }
