@@ -43,7 +43,7 @@ public class AppListAdapter extends RecyclerView.Adapter<com.example.gotimer.ui.
         if (mAppsInfo != null) {
             ApplicationInfo current = mAppsInfo.get(position);
             holder.mAppIcon.setImageResource(current.icon);
-            holder.mAppName.setText(current.packageName);
+            holder.mAppName.setText(current.loadLabel(mContext.getPackageManager()));
         }
 
     }
