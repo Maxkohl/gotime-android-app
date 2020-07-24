@@ -16,12 +16,12 @@ public class Profile {
 
     @ColumnInfo(name = "name")
     @NonNull
-    String profileName;
+    private String profileName;
 
     @NonNull
-    String startTime;
+    private long startTime;
     @NonNull
-    String endTime;
+    private long endTime;
 
     //TODO Uncomment. How to store in SQLite?
 //    List<String> daysActive;
@@ -34,8 +34,8 @@ public class Profile {
     //TODO Add location variable to be saved into SQLite database. What's the best way to store?
 
 
-    public Profile(@NonNull String profileName, @NonNull String startTime,
-                   @NonNull String endTime) {
+    public Profile(@NonNull String profileName, @NonNull long startTime,
+                   @NonNull long endTime) {
         this.profileName = profileName;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -58,12 +58,12 @@ public class Profile {
     }
 
     @NonNull
-    public String getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
     @NonNull
-    public String getEndTime() {
+    public long getEndTime() {
         return endTime;
     }
 
@@ -83,11 +83,11 @@ public class Profile {
         this.profileName = profileName;
     }
 
-    public void setStartTime(@NonNull String startTime) {
+    public void setStartTime(@NonNull long startTime) {
         this.startTime = startTime;
     }
 
-    public void setEndTime(@NonNull String endTime) {
+    public void setEndTime(@NonNull long endTime) {
         this.endTime = endTime;
     }
 

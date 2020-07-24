@@ -25,7 +25,7 @@ public class Repository {
     }
 
     public void insertNewTimerProfile(Profile profile) {
-        mProfileDao.insertProfile(profile);
+        new insertAsyncTask(mProfileDao).execute(profile);
     }
 
 
@@ -33,7 +33,7 @@ public class Repository {
     private class insertAsyncTask extends AsyncTask<Profile, Void, Void> {
         private ProfileDao mAsyncTaskDao;
         insertAsyncTask(ProfileDao dao) {
-            mAsyncTaskDao = mProfileDao;
+            mAsyncTaskDao = dao;
         }
 
         @Override

@@ -14,10 +14,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.gotimer.R;
 import com.example.gotimer.entity.Profile;
+import com.example.gotimer.ui.timer.TimerFragment;
 
 import org.w3c.dom.Text;
 
@@ -99,7 +103,7 @@ public class AddFragment extends DialogFragment {
     public void createTimerProfile() {
         mProfileName = mNameEditText.getText().toString();
         mStartTime = addViewModel.getTime();
-        Profile newProfile = new Profile(mProfileName, Long.toString(mStartTime), Long.toString(mEndTime));
+        Profile newProfile = new Profile(mProfileName, Long.toString(mStartTime), Long.toString(mStartTime));
         addViewModel.insertNewTimerProfile(newProfile);
 
     }
