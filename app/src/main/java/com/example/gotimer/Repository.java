@@ -1,6 +1,7 @@
 package com.example.gotimer;
 
 import android.app.Application;
+import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
@@ -25,5 +26,20 @@ public class Repository {
 
     public void insertNewTimerProfile(Profile profile) {
         mProfileDao.insertProfile(profile);
+    }
+
+
+    //TODO Replace AsyncTasks with NOT DEPRECATED tech
+    private class insertAsyncTask extends AsyncTask<Profile, Void, Void> {
+        private ProfileDao mAsyncTaskDao;
+        insertAsyncTask(ProfileDao dao) {
+            mAsyncTaskDao = mProfileDao;
+        }
+
+        @Override
+        protected Void doInBackground(Profile... profiles) {
+            mAsyncTaskDao.insertProfile(profiles[0]);
+            return null;
+        }
     }
 }
