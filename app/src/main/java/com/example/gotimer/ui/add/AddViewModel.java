@@ -47,8 +47,6 @@ public class AddViewModel extends AndroidViewModel {
     }
 
     public void insertNewTimerProfile(Profile newProfile) {
-        newProfile.setStartTime(mTime);
-        newProfile.setEndTime(mTime);
         mReposity.insertNewTimerProfile(newProfile);
     }
 

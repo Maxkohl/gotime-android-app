@@ -91,9 +91,9 @@ public class AddFragment extends Fragment {
 
     public void createTimerProfile() {
         mProfileName = mNameEditText.getText().toString();
-        Profile newProfile = new Profile(mProfileName, 1, 1);
+        mStartTime = addViewModel.getTime();
+        Profile newProfile = new Profile(mProfileName, mStartTime, mStartTime);
         addViewModel.insertNewTimerProfile(newProfile);
-
     }
 
 
