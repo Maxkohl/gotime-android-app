@@ -2,7 +2,9 @@ package com.example.gotimer.entity;
 
 import android.graphics.drawable.Drawable;
 
-public class Application {
+import java.io.Serializable;
+
+public class Application implements Serializable {
 
     String appName;
     Drawable appIconRes;

@@ -1,5 +1,7 @@
 package com.example.gotimer.ui.appselector;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,9 +16,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.gotimer.R;
 import com.example.gotimer.entity.Application;
+import com.example.gotimer.ui.add.AddFragment;
 import com.example.gotimer.ui.timer.ProfilesListAdapter;
 
 import java.util.ArrayList;
@@ -24,7 +28,7 @@ import java.util.List;
 
 public class AppSelectorActivity extends AppCompatActivity {
 
-    private List<Application> allUserApps;
+    private List<Application> allUserApps = new ArrayList<>();
     private RecyclerView appRecycler;
 
     @Override
@@ -70,5 +74,29 @@ public class AppSelectorActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.saveapp_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_save) {
+            ArrayList<String> appList = new ArrayList<>(getAllSelectedApps());
+            //get list of all isSelected application names
+            Intent intent = new Intent(this, AddFragment.class);
+            intent.putStringArrayListExtra("appList", appList);
+            startActivity(intent);
+            //Return to AddFragment
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public List<String> getAllSelectedApps() {
+        List<String> resultList = new ArrayList<>();
+        for (Application app : allUserApps) {
+            if (app.isSelected()) {
+                resultList.add(app.getAppName());
+            }
+        }
+        return resultList;
     }
 }
