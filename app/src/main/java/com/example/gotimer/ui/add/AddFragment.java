@@ -118,7 +118,7 @@ public class AddFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (appList != null) {
+        if (getArguments() != null) {
             appList = getArguments().getStringArrayList("appList");
         }
     }

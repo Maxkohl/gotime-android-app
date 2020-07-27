@@ -44,6 +44,7 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
             holder.mStartTime.setText(current.getStartTimeString());
             holder.mEndTime.setText(current.getEndTimeString());
             holder.mDaysActive.setText(current.getDaysActive());
+            holder.mBlockedApps.setText(current.getBlockedApps());
         }
 
     }
@@ -66,6 +67,7 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
         private final TextView mStartTime;
         private final TextView mEndTime;
         private final TextView mDaysActive;
+        private final TextView mBlockedApps;
 
         public ProfilesViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,6 +75,7 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
             mStartTime = itemView.findViewById(R.id.profileStartTime);
             mEndTime = itemView.findViewById(R.id.profileEndTime);
             mDaysActive = itemView.findViewById(R.id.profileDaysActive);
+            mBlockedApps = itemView.findViewById(R.id.blockedApps);
         }
     }
 
