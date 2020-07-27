@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gotimer.R;
+import com.example.gotimer.entity.Application;
 import com.example.gotimer.entity.Profile;
 
 import org.w3c.dom.Text;
@@ -25,7 +26,7 @@ import java.util.List;
 public class AppListAdapter extends RecyclerView.Adapter<com.example.gotimer.ui.appselector.AppListAdapter.AppsViewHolder> {
 
     private LayoutInflater inflater;
-    private List<PackageInfo> mAppsInfo;
+    private List<Application> mAppsInfo;
     private Context mContext;
 
     public AppListAdapter(Context mContext) {
@@ -43,14 +44,14 @@ public class AppListAdapter extends RecyclerView.Adapter<com.example.gotimer.ui.
     @Override
     public void onBindViewHolder(@NonNull AppsViewHolder holder, int position) {
         if (mAppsInfo != null) {
-            PackageInfo current = mAppsInfo.get(position);
-            holder.mAppIcon.setImageResource(current.applicationInfo.icon);
-            holder.mAppName.setText(current.applicationInfo.loadLabel(mContext.getPackageManager()));
+            Application current = mAppsInfo.get(position);
+            holder.mAppName.setText(current.getAppName());
+            holder.mAppIcon.setImageResource(current.getAppIconRes());
         }
 
     }
 
-    public void setApps(List<PackageInfo> apps) {
+    public void setApps(List<Application> apps) {
         mAppsInfo = apps;
         notifyDataSetChanged();
     }

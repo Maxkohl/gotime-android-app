@@ -21,7 +21,7 @@ import java.util.List;
 
 public class AppSelectorActivity extends AppCompatActivity {
 
-    private List<PackageInfo> allUserApps;
+    private List<Application> allUserApps;
     private RecyclerView appRecycler;
 
     @Override
