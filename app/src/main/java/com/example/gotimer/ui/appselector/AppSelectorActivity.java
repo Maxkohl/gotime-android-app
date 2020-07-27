@@ -53,7 +53,7 @@ public class AppSelectorActivity extends AppCompatActivity {
     }
 
     private boolean isSystemPackage(PackageInfo packageInfo) {
-        //TODO This is only showing one app for some reason
+        //TODO This is only showing one app on emulator for some reason. Works on real phone
         return ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
     }
 
