@@ -33,8 +33,8 @@ public class Profile {
 
     //TODO Uncomment. How to store in SQLite?
     private String daysActive;
-//
-//    List<String> blockedApps;
+
+    String blockedApps;
 
     @NonNull
     boolean isOn;
@@ -47,7 +47,6 @@ public class Profile {
         this.profileName = profileName;
         this.startTime = startTime;
         this.endTime = endTime;
-//        this.blockedApps = blockedApps;
         this.isOn = true;
     }
 
@@ -99,10 +98,10 @@ public class Profile {
     public List<String> getDaysActiveList() {
         return new ArrayList<String>(Arrays.asList(daysActive.split("-")));
     }
-//
-//    public List<String> getBlockedApps() {
-//        return blockedApps;
-//    }
+
+    public String getBlockedApps() {
+        return blockedApps;
+    }
 
     public boolean isOn() {
         return isOn;
@@ -122,16 +121,12 @@ public class Profile {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setDaysActiveString(List<String> daysActive) {
-        String resultString = "";
-        for (String day : daysActive) {
-            resultString = resultString + "-" + day;
-        }
-        this.daysActive = resultString;
+        this.daysActive = stringifyList(daysActive);
     }
-//
-//    public void setBlockedApps(List<String> blockedApps) {
-//        this.blockedApps = blockedApps;
-//    }
+
+    public void setBlockedApps(String blockedApps) {
+        this.blockedApps = blockedApps;
+    }
 
     public void setOn(boolean on) {
         isOn = on;
@@ -143,6 +138,22 @@ public class Profile {
 
     public void setDaysActive(String daysActive) {
         this.daysActive = daysActive;
+    }
+
+    public void setBlockedAppsString(List<String> blockedApps) {
+        this.blockedApps = stringifyList(blockedApps);
+    }
+
+    public List<String> getBlockedAppsList() {
+        return new ArrayList<String>(Arrays.asList(blockedApps.split("-")));
+    }
+
+    private String stringifyList(List<String> list) {
+        String resultString = "";
+        for (String day : list) {
+            resultString = resultString + "-" + day;
+        }
+        return resultString;
     }
 }
 

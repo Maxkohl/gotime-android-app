@@ -142,6 +142,9 @@ public class AddFragment extends Fragment {
         if (mSelectedDays != null) {
             newProfile.setDaysActiveString(mSelectedDays);
         }
+        if (appList != null) {
+            newProfile.setBlockedAppsString(appList);
+        }
         addViewModel.insertNewTimerProfile(newProfile);
     }
 
