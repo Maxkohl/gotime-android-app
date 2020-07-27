@@ -1,12 +1,14 @@
 package com.example.gotimer.entity;
 
+import android.graphics.drawable.Drawable;
+
 public class Application {
 
     String appName;
-    int appIconRes;
+    Drawable appIconRes;
     boolean isSelected;
 
-    public Application(String appName, int appIconRes) {
+    public Application(String appName, Drawable appIconRes) {
         this.appName = appName;
         this.appIconRes = appIconRes;
         this.isSelected = false;
@@ -20,11 +22,11 @@ public class Application {
         this.appName = appName;
     }
 
-    public int getAppIconRes() {
+    public Drawable getAppIconRes() {
         return appIconRes;
     }
 
-    public void setAppIconRes(int appIconRes) {
+    public void setAppIconRes(Drawable appIconRes) {
         this.appIconRes = appIconRes;
     }
 

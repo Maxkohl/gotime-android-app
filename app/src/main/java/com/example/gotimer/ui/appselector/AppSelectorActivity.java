@@ -9,6 +9,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -48,7 +49,7 @@ public class AppSelectorActivity extends AppCompatActivity {
         for (PackageInfo app : allApps) {
             if (!isSystemPackage(app)) {
                 String appName = app.applicationInfo.loadLabel(getPackageManager()).toString();
-                int appIconRes = app.applicationInfo.icon;
+                Drawable appIconRes = app.applicationInfo.loadIcon(getPackageManager());
                 resultList.add(new Application(appName, appIconRes));
             }
         }
