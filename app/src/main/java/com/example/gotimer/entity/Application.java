@@ -3,13 +3,13 @@ package com.example.gotimer.entity;
 public class Application {
 
     String appName;
-    String appIconRes;
+    int appIconRes;
     boolean isSelected;
 
-    public Application(String appName, String appIconRes, boolean isSelected) {
+    public Application(String appName, int appIconRes) {
         this.appName = appName;
         this.appIconRes = appIconRes;
-        this.isSelected = isSelected;
+        this.isSelected = false;
     }
 
     public String getAppName() {
@@ -20,11 +20,11 @@ public class Application {
         this.appName = appName;
     }
 
-    public String getAppIconRes() {
+    public int getAppIconRes() {
         return appIconRes;
     }
 
-    public void setAppIconRes(String appIconRes) {
+    public void setAppIconRes(int appIconRes) {
         this.appIconRes = appIconRes;
     }
 

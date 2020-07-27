@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.gotimer.R;
+import com.example.gotimer.entity.Application;
 import com.example.gotimer.ui.timer.ProfilesListAdapter;
 
 import java.util.ArrayList;
@@ -37,16 +38,18 @@ public class AppSelectorActivity extends AppCompatActivity {
         appRecycler.setAdapter(adapter);
     }
 
-    public List<PackageInfo> getUserApps() {
+    public List<Application> getUserApps() {
         final PackageManager pm = getPackageManager();
-        List<PackageInfo> resultList =  new ArrayList<>();
+        List<Application> resultList =  new ArrayList<>();
         //get a list of installed apps.
         //TODO Change this back to ApplicationInfo to remove a step and cleaner code?
         List<PackageInfo> allApps = pm.getInstalledPackages(PackageManager.GET_META_DATA);
         //        return pm.getInstalledApplications(PackageManager.GET_META_DATA);
         for (PackageInfo app : allApps) {
             if (!isSystemPackage(app)) {
-                resultList.add(app);
+                String appName = app.applicationInfo.loadLabel(getPackageManager()).toString();
+                int appIconRes = app.applicationInfo.icon;
+                resultList.add(new Application(appName, appIconRes));
             }
         }
         return resultList;
