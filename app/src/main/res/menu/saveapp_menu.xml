@@ -4,6 +4,7 @@
     <item
         android:id="@+id/action_save"
         android:orderInCategory="100"
-        android:title="SAVE"
-        app:showAsAction="always" />
+        android:title="@string/action_save"
+        app:showAsAction="always"
+        />
 </menu>

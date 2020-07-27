@@ -13,4 +13,5 @@
     <string name="endtime_button_text">Pick End Time</string>
     <string name="from">From</string>
     <string name="to">To</string>
+    <string name="action_save">SAVE</string>
 </resources>
