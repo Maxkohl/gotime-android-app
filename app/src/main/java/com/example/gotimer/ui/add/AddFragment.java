@@ -1,5 +1,6 @@
 package com.example.gotimer.ui.add;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -50,6 +52,9 @@ public class AddFragment extends Fragment {
     private WeekdaysPicker mDayPicker;
     private List<String> mSelectedDays;
     private Button mSelectAppsButton;
+
+    private List<String> appList;
+    private static final int APP_REQUEST = 0;
 
 
     @Override
@@ -110,9 +115,17 @@ public class AddFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (appList != null) {
+            appList = getArguments().getStringArrayList("appList");
+        }
+    }
+
     private void launchAppSelectorActivity() {
         Intent intent = new Intent(getContext(), AppSelectorActivity.class);
-        startActivityForResult(intent, 0);
+        startActivityForResult(intent, APP_REQUEST);
     }
 
     public void showTimePickerDialog(View v) {
@@ -132,5 +145,13 @@ public class AddFragment extends Fragment {
         addViewModel.insertNewTimerProfile(newProfile);
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == APP_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                appList = data.getStringArrayListExtra("appList");
+            }
+        }
+    }
 }

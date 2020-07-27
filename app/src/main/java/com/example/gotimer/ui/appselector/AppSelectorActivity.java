@@ -79,19 +79,18 @@ public class AppSelectorActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_save) {
-            ArrayList<String> appList = new ArrayList<>(getAllSelectedApps());
-            //get list of all isSelected application names
-            Intent intent = new Intent(this, AddFragment.class);
+            ArrayList<String> appList = getAllSelectedApps();
+            Intent intent = new Intent();
             intent.putStringArrayListExtra("appList", appList);
-            startActivity(intent);
-            //Return to AddFragment
+            setResult(RESULT_OK, intent);
+            finish();
 
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public List<String> getAllSelectedApps() {
-        List<String> resultList = new ArrayList<>();
+    public ArrayList<String> getAllSelectedApps() {
+        ArrayList<String> resultList = new ArrayList<>();
         for (Application app : allUserApps) {
             if (app.isSelected()) {
                 resultList.add(app.getAppName());
