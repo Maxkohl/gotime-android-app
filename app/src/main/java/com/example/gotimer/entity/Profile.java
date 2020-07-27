@@ -75,7 +75,7 @@ public class Profile {
 
     public String getStartTimeString() {
         long unixSeconds = startTime;
-        Date date = new java.util.Date(unixSeconds*1000L);
+        Date date = new java.util.Date(unixSeconds * 1000L);
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("HH:mm");
         //TODO Stackoverflow says to use UTC but that sets time 5 hours ahead
 //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -86,7 +86,7 @@ public class Profile {
 
     public String getEndTimeString() {
         long unixSeconds = endTime;
-        Date date = new java.util.Date(unixSeconds*1000L);
+        Date date = new java.util.Date(unixSeconds * 1000L);
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("HH:mm");
 
 //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -150,8 +150,8 @@ public class Profile {
 
     private String stringifyList(List<String> list) {
         String resultString = "";
-        for (String day : list) {
-            resultString = resultString + "-" + day;
+        for (String element : list) {
+            resultString = resultString + element + "-";
         }
         return resultString;
     }
