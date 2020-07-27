@@ -49,10 +49,14 @@ public class AppListAdapter extends RecyclerView.Adapter<com.example.gotimer.ui.
             Application current = mAppsInfo.get(position);
             holder.mAppName.setText(current.getAppName());
             holder.mAppIcon.setImageDrawable(current.getAppIconRes());
+            holder.mAppCard.setCardBackgroundColor(current.isSelected() ? Color.CYAN :
+                    Color.WHITE);
+
             holder.mAppCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     current.setSelected(!current.isSelected());
+                    holder.mAppCard.setActivated(current.isSelected());
                     holder.mAppCard.setCardBackgroundColor(current.isSelected() ? Color.CYAN :
                             Color.WHITE);
                 }
