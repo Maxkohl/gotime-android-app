@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gotimer.R;
@@ -47,6 +49,14 @@ public class AppListAdapter extends RecyclerView.Adapter<com.example.gotimer.ui.
             Application current = mAppsInfo.get(position);
             holder.mAppName.setText(current.getAppName());
             holder.mAppIcon.setImageDrawable(current.getAppIconRes());
+            holder.mAppCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    current.setSelected(!current.isSelected());
+                    holder.mAppCard.setCardBackgroundColor(current.isSelected() ? Color.CYAN :
+                            Color.WHITE);
+                }
+            });
         }
 
     }
@@ -68,12 +78,15 @@ public class AppListAdapter extends RecyclerView.Adapter<com.example.gotimer.ui.
         private ImageView mAppIcon;
         private TextView mAppName;
         private Switch mBlockAppSwitch;
+        private CardView mAppCard;
 
         public AppsViewHolder(@NonNull View itemView) {
             super(itemView);
             mAppIcon = itemView.findViewById(R.id.appIcon);
             mAppName = itemView.findViewById(R.id.appName);
             mBlockAppSwitch = itemView.findViewById(R.id.appBlockSwitch);
+            mAppCard = itemView.findViewById(R.id.appCard);
         }
+
     }
 }
