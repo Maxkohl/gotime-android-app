@@ -28,6 +28,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.dpro.widgets.OnWeekdaysChangeListener;
 import com.dpro.widgets.WeekdaysPicker;
+import com.example.gotimer.MainActivity;
 import com.example.gotimer.R;
 import com.example.gotimer.entity.Profile;
 import com.example.gotimer.ui.appselector.AppSelectorActivity;
@@ -95,6 +96,8 @@ public class AddFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 createTimerProfile();
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                startActivity(intent);
             }
         });
         mDayPicker = root.findViewById(R.id.weekdays);
