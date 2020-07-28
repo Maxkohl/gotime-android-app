@@ -34,16 +34,7 @@ public class AppMonitorService extends Service {
         super.onCreate();
         Toast.makeText(this, "Service started", Toast.LENGTH_SHORT).show();
         //Deprecated, but safer than a Timer. Use executor?
-        mContext = getApplicationContext();
-        handler = new Handler(Looper.getMainLooper());
-        runnableCode = new Runnable() {
-            @Override
-            public void run() {
-                blockApp();
-                handler.postDelayed(runnableCode, 1000);
-            }
-        };
-        handler.post(runnableCode);
+
     }
 
 
@@ -62,6 +53,16 @@ public class AppMonitorService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        mContext = getApplicationContext();
+        handler = new Handler(Looper.getMainLooper());
+        runnableCode = new Runnable() {
+            @Override
+            public void run() {
+                blockApp();
+                handler.postDelayed(runnableCode, 1000);
+            }
+        };
+        handler.post(runnableCode);
 
         return Service.START_STICKY;
     }
@@ -98,6 +99,7 @@ public class AppMonitorService extends Service {
 
     public boolean blockApp() {
         String currentAppProcess = getCurrentApp();
+        boolean isTrue = ("com.instagram.android".equals(currentAppProcess));
         if ("com.instagram.android".equals(currentAppProcess)) {
             Intent startMain = new Intent(Intent.ACTION_MAIN);
             startMain.addCategory(Intent.CATEGORY_HOME);
