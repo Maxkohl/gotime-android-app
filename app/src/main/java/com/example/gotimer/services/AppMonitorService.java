@@ -45,6 +45,7 @@ public class AppMonitorService extends AccessibilityService {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        handler.removeCallbacks(runnableCode);
         Toast.makeText(this, "Service ended", Toast.LENGTH_SHORT).show();
     }
 
@@ -120,6 +121,7 @@ public class AppMonitorService extends AccessibilityService {
             startMain.addCategory(Intent.CATEGORY_HOME);
             startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(startMain);
+            //TODO add a slight delay here?
             return true;
         }
         return false;
