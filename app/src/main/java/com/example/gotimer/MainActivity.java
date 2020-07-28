@@ -21,6 +21,8 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
 
+    private boolean serviceOn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         //TODO Delete. For testing purposes
+        serviceOn = true;
         Intent intent = new Intent(this, AppMonitorService.class);
+        intent.putExtra("serviceOn", serviceOn);
         startService(intent);
 
     }

@@ -30,6 +30,7 @@ public class AppMonitorService extends AccessibilityService {
     Handler handler;
     Runnable runnableCode;
     Context mContext;
+    boolean serviceOn;
 
 
     @Override
@@ -44,7 +45,6 @@ public class AppMonitorService extends AccessibilityService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        handler.removeCallbacks(runnableCode);
         Toast.makeText(this, "Service ended", Toast.LENGTH_SHORT).show();
     }
 
@@ -66,7 +66,9 @@ public class AppMonitorService extends AccessibilityService {
         runnableCode = new Runnable() {
             @Override
             public void run() {
-                blockApp();
+                if (serviceOn) {
+                    blockApp();
+                }
                 handler.postDelayed(runnableCode, 1000);
             }
         };
@@ -75,6 +77,7 @@ public class AppMonitorService extends AccessibilityService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        serviceOn = intent.getBooleanExtra("serviceOn", false);
 
         return Service.START_STICKY;
     }
