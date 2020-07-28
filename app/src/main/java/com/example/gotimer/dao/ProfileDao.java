@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.gotimer.entity.Profile;
 
@@ -26,6 +27,9 @@ public interface ProfileDao {
     void deleteAllProfiles();
 
     //TODO Update profile
+    @Update
+    void updateProfile(Profile profile);
+
     //TODO getTotalHoursPerDay
 
 }

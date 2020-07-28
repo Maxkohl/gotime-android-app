@@ -28,6 +28,10 @@ public class Repository {
         new insertAsyncTask(mProfileDao).execute(profile);
     }
 
+    public void updateTimerProfile(Profile profile) {
+        new updateAsyncTask(mProfileDao).execute(profile);
+    }
+
 
     //TODO Replace AsyncTasks with NOT DEPRECATED tech
     private class insertAsyncTask extends AsyncTask<Profile, Void, Void> {
@@ -39,6 +43,19 @@ public class Repository {
         @Override
         protected Void doInBackground(Profile... profiles) {
             mAsyncTaskDao.insertProfile(profiles[0]);
+            return null;
+        }
+    }
+
+    private class updateTaskAsync extends AsyncTask<Profile, Void, Void> {
+        private ProfileDao mAsyncTaskDao;
+        updateTaskAsync(ProfileDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Profile... profiles) {
+            mAsyncTaskDao.updateProfile(profiles[0]);
             return null;
         }
     }
