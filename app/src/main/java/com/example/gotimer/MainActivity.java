@@ -2,6 +2,7 @@ package com.example.gotimer;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        AppMonitorService.start(getBaseContext());
+        //TODO Delete. For testing purposes
+        Intent intent = new Intent(this, AppMonitorService.class);
+        startService(intent);
     }
 
 
