@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -26,17 +27,19 @@ public class AppMonitorService extends Service {
 
     Handler handler;
     Runnable runnableCode;
+    Context mContext;
 
     @Override
     public void onCreate() {
         super.onCreate();
         Toast.makeText(this, "Service started", Toast.LENGTH_SHORT).show();
         //Deprecated, but safer than a Timer. Use executor?
-        handler = new Handler();
+        mContext = getApplicationContext();
+        handler = new Handler(Looper.getMainLooper());
         runnableCode = new Runnable() {
             @Override
             public void run() {
-                getCurrentApp();
+                blockApp();
                 handler.postDelayed(runnableCode, 1000);
             }
         };
@@ -92,4 +95,24 @@ public class AppMonitorService extends Service {
             return mm;
         }
     }
+
+    public boolean blockApp() {
+        String currentAppProcess = getCurrentApp();
+        if ("com.instagram.android".equals(currentAppProcess)) {
+            Intent startMain = new Intent(Intent.ACTION_MAIN);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(startMain);
+            return true;
+        }
+        return false;
+    }
+
+//    public boolean openHomeScreen() {
+//        Intent startHomescreen = new Intent(Intent.ACTION_MAIN);
+//        startHomescreen.addCategory(Intent.CATEGORY_HOME);
+//        startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(startHomescreen);
+//        return true;
+//    }
 }

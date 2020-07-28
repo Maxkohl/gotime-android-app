@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         //TODO Delete. For testing purposes
-//        Intent intent = new Intent(this, AppMonitorService.class);
-//        startService(intent);
+        Intent intent = new Intent(this, AppMonitorService.class);
+        startService(intent);
 
     }
 
