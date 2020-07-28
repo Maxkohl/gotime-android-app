@@ -21,6 +21,8 @@ import java.util.TreeMap;
 
 public class AppMonitorService extends Service {
 
+    Timer timer;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -43,10 +45,12 @@ public class AppMonitorService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         getCurrentApp();
-        Timer timer = new Timer("AppCheckServices");
-        timer.schedule(updateTask, 1000L, 1000L);
+        if (timer == null) {
+            timer = new Timer("AppCheckServices");
+            timer.schedule(updateTask, 1000L, 1000L);
+        }
 
-        return Service.START_NOT_STICKY;
+        return Service.START_STICKY;
     }
 
     private TimerTask updateTask = new TimerTask() {
