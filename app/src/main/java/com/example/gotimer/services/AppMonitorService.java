@@ -115,7 +115,6 @@ public class AppMonitorService extends AccessibilityService {
 
     public boolean blockApp() {
         String currentAppProcess = getCurrentApp();
-        boolean isTrue = ("com.instagram.android".equals(currentAppProcess));
         if ("com.instagram.android".equals(currentAppProcess)) {
             openHomeScreen();
             //TODO add a slight delay here?
