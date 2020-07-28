@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -45,6 +47,14 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
             holder.mEndTime.setText(current.getEndTimeString());
             holder.mDaysActive.setText(current.getDaysActive());
             holder.mBlockedApps.setText(current.getBlockedApps());
+            holder.mIsActive.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    current.setOn(!current.isOn());
+                    holder.mIsActive.setChecked(current.isOn());
+                }
+            });
+            holder.isOn.setText("Active: " + current.isOn());
         }
 
     }
@@ -68,6 +78,8 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
         private final TextView mEndTime;
         private final TextView mDaysActive;
         private final TextView mBlockedApps;
+        private final Switch mIsActive;
+        private final TextView isOn;
 
         public ProfilesViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -76,6 +88,8 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
             mEndTime = itemView.findViewById(R.id.profileEndTime);
             mDaysActive = itemView.findViewById(R.id.profileDaysActive);
             mBlockedApps = itemView.findViewById(R.id.blockedApps);
+            mIsActive = itemView.findViewById(R.id.isActive);
+            isOn = itemView.findViewById(R.id.isOnText);
         }
     }
 
