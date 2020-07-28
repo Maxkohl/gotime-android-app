@@ -1,5 +1,6 @@
 package com.example.gotimer.services;
 
+import android.accessibilityservice.AccessibilityService;
 import android.app.ActivityManager;
 import android.app.Service;
 import android.app.usage.UsageStats;
@@ -11,6 +12,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -21,7 +23,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeMap;
 
-public class AppMonitorService extends Service {
+public class AppMonitorService extends AccessibilityService {
 
     //TODO Put service on different thread than Main. Use Executor?
 
@@ -29,7 +31,7 @@ public class AppMonitorService extends Service {
     Runnable runnableCode;
     Context mContext;
 
-    
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -46,14 +48,19 @@ public class AppMonitorService extends Service {
         Toast.makeText(this, "Service ended", Toast.LENGTH_SHORT).show();
     }
 
-    @Nullable
     @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+    public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
+
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public void onInterrupt() {
+
+    }
+
+    @Override
+    protected void onServiceConnected() {
+        super.onServiceConnected();
         mContext = getApplicationContext();
         handler = new Handler(Looper.getMainLooper());
         runnableCode = new Runnable() {
@@ -64,6 +71,10 @@ public class AppMonitorService extends Service {
             }
         };
         handler.post(runnableCode);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
 
         return Service.START_STICKY;
     }
