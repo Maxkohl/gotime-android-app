@@ -47,6 +47,7 @@ public class AppMonitorService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        handler.removeCallbacks(runnableCode);
         Toast.makeText(this, "Service ended", Toast.LENGTH_SHORT).show();
     }
 
@@ -61,7 +62,7 @@ public class AppMonitorService extends Service {
 
         return Service.START_STICKY;
     }
-    
+
     private String getCurrentApp() {
         if (Build.VERSION.SDK_INT >= 21) {
             String currentApp = null;
