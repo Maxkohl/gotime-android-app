@@ -24,6 +24,8 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
     private LayoutInflater inflater;
     private List<Profile> mProfiles;
     private Context mContext;
+    private int activePosition;
+    private boolean profileChanged = false;
 
     public ProfilesListAdapter(Context context) {
         inflater = LayoutInflater.from(context);
@@ -52,6 +54,10 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     current.setOn(!current.isOn());
+                    if (current.isOn()) {
+                        activePosition = position;
+                        profileChanged = true;
+                    }
                     notifyDataSetChanged();
                 }
             });
@@ -92,6 +98,18 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
             mIsActive = itemView.findViewById(R.id.isActive);
             isOn = itemView.findViewById(R.id.isOnText);
         }
+    }
+
+    public boolean getProfileChanged() {
+        return profileChanged;
+    }
+
+    public void setProfileChanged(boolean isChanged) {
+        profileChanged = isChanged;
+    }
+
+    public int getPositionOfUpdatedProfile() {
+        return activePosition;
     }
 
     public Profile getProfileAtPosition(int position) {

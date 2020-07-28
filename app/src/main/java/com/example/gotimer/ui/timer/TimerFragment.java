@@ -24,6 +24,7 @@ public class TimerFragment extends Fragment {
 
     private TimerViewModel timerViewModel;
     private Context mContext;
+    private List<Profile> mProfileList;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -42,11 +43,9 @@ public class TimerFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
         recyclerView.setAdapter(adapter);
 
-        timerViewModel.getAllProfiles().observe(getViewLifecycleOwner(), new Observer<List<Profile>>() {
-            @Override
-            public void onChanged(List<Profile> profiles) {
-                adapter.setProfiles(profiles);
-            }
+        timerViewModel.getAllProfiles().observe(getViewLifecycleOwner(), profiles -> {
+            mProfileList = profiles;
+            adapter.setProfiles(profiles);
         });
 
 
