@@ -100,6 +100,7 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
         }
     }
 
+
     public boolean getProfileChanged() {
         return profileChanged;
     }
