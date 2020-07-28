@@ -7,6 +7,7 @@ import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,12 +22,25 @@ import java.util.TreeMap;
 
 public class AppMonitorService extends Service {
 
-    Timer timer;
+    //TODO Put service on different thread than Main. Use Executor?
+
+    Handler handler;
+    Runnable runnableCode;
 
     @Override
     public void onCreate() {
         super.onCreate();
         Toast.makeText(this, "Service started", Toast.LENGTH_SHORT).show();
+        //Deprecated, but safer than a Timer. Use executor?
+        handler = new Handler();
+        runnableCode = new Runnable() {
+            @Override
+            public void run() {
+                getCurrentApp();
+                handler.postDelayed(runnableCode, 1000);
+            }
+        };
+        handler.post(runnableCode);
     }
 
 
@@ -44,23 +58,10 @@ public class AppMonitorService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        getCurrentApp();
-        if (timer == null) {
-            timer = new Timer("AppCheckServices");
-            timer.schedule(updateTask, 1000L, 1000L);
-        }
 
         return Service.START_STICKY;
     }
-
-    private TimerTask updateTask = new TimerTask() {
-
-        @Override
-        public void run() {
-            getCurrentApp();
-        }
-    };
-
+    
     private String getCurrentApp() {
         if (Build.VERSION.SDK_INT >= 21) {
             String currentApp = null;

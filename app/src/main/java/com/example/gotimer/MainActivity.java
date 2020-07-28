@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         //TODO Delete. For testing purposes
         Intent intent = new Intent(this, AppMonitorService.class);
         startService(intent);
+
     }
 
 
