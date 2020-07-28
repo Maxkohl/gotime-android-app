@@ -29,6 +29,7 @@ public class AppMonitorService extends Service {
     Runnable runnableCode;
     Context mContext;
 
+    
     @Override
     public void onCreate() {
         super.onCreate();
