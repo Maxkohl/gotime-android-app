@@ -97,4 +97,5 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
     public Profile getProfileAtPosition(int position) {
         return mProfiles.get(position);
     }
+
 }

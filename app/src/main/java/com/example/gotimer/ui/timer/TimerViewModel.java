@@ -27,4 +27,6 @@ public class TimerViewModel extends AndroidViewModel {
         return mRepository.getAllProfiles();
     }
 
+    public void updateProfile(Profile profile) {mRepository.updateTimerProfile(profile);}
+
 }

@@ -47,9 +47,9 @@ public class Repository {
         }
     }
 
-    private class updateTaskAsync extends AsyncTask<Profile, Void, Void> {
+    private class updateAsyncTask extends AsyncTask<Profile, Void, Void> {
         private ProfileDao mAsyncTaskDao;
-        updateTaskAsync(ProfileDao dao) {
+        updateAsyncTask(ProfileDao dao) {
             mAsyncTaskDao = dao;
         }
 
