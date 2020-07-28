@@ -117,21 +117,23 @@ public class AppMonitorService extends AccessibilityService {
         String currentAppProcess = getCurrentApp();
         boolean isTrue = ("com.instagram.android".equals(currentAppProcess));
         if ("com.instagram.android".equals(currentAppProcess)) {
-            Intent startMain = new Intent(Intent.ACTION_MAIN);
-            startMain.addCategory(Intent.CATEGORY_HOME);
-            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(startMain);
+            openHomeScreen();
             //TODO add a slight delay here?
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             return true;
         }
         return false;
     }
 
-//    public boolean openHomeScreen() {
-//        Intent startHomescreen = new Intent(Intent.ACTION_MAIN);
-//        startHomescreen.addCategory(Intent.CATEGORY_HOME);
-//        startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(startHomescreen);
-//        return true;
-//    }
+    public boolean openHomeScreen() {
+        Intent startHomescreen = new Intent(Intent.ACTION_MAIN);
+        startHomescreen.addCategory(Intent.CATEGORY_HOME);
+        startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startHomescreen);
+        return true;
+    }
 }
