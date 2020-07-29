@@ -6,13 +6,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,8 +47,9 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
         timerViewModel.getAllProfiles().observe(getViewLifecycleOwner(), profiles -> {
             adapter.setProfiles(profiles);
         });
-        
-        starAppMonitorService();
+
+        startAppMonitoringService();
+        adapter.notifyDataSetChanged();
 
         return root;
     }
@@ -64,7 +61,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
             for (int i = 0; i < mProfileList.size(); i++) {
                 Profile current = mProfileList.get(i);
                 if (i == positionOfChanged) {
-                    current.setOn(true);
+                    current.setOn(current.isOn());
                 } else {
                     current.setOn(false);
                 }
@@ -78,9 +75,9 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
 
     }
 
-    private void starAppMonitorService() {
+    private void startAppMonitoringService() {
         Intent intent = new Intent(getActivity(), AppMonitorService.class);
-        intent.putExtra("serviceOn", mServiceOn);
+        intent.putExtra("serviceOn", false);
         getActivity().startService(intent);
     }
 }

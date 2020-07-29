@@ -47,7 +47,7 @@ public abstract class ProfileRoomDatabase extends RoomDatabase {
             synchronized (ProfileRoomDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            ProfileRoomDatabase.class, "profile_database").fallbackToDestructiveMigration().addCallback(sRoomDatabaseCallback).build();
+                            ProfileRoomDatabase.class, "profile_database").fallbackToDestructiveMigration().build();
                 }
             }
         }
@@ -56,30 +56,30 @@ public abstract class ProfileRoomDatabase extends RoomDatabase {
 
     //TODO Remove after testing
     //These are for populating the database with dummy data
-    private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
-        @Override
-        public void onOpen(@NonNull SupportSQLiteDatabase db) {
-            super.onOpen(db);
-            new PopulateDbAsync(INSTANCE).execute();
-        }
-    };
-
-    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
-        private  final ProfileDao mDao;
-
-        Profile[] dummyProfiles = {new Profile("Profile 1", 0, 0)};
-
-        public PopulateDbAsync(ProfileRoomDatabase db) {
-            this.mDao = db.profilesDao();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            mDao.deleteAllProfiles();
-            for (Profile profile : dummyProfiles) {
-                mDao.insertProfile(profile);
-            }
-            return null;
-        }
-    }
+//    private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
+//        @Override
+//        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+//            super.onOpen(db);
+//            new PopulateDbAsync(INSTANCE).execute();
+//        }
+//    };
+//
+//    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
+//        private  final ProfileDao mDao;
+//
+//        Profile[] dummyProfiles = {new Profile("Profile 1", 0, 0)};
+//
+//        public PopulateDbAsync(ProfileRoomDatabase db) {
+//            this.mDao = db.profilesDao();
+//        }
+//
+//        @Override
+//        protected Void doInBackground(Void... voids) {
+//            mDao.deleteAllProfiles();
+//            for (Profile profile : dummyProfiles) {
+//                mDao.insertProfile(profile);
+//            }
+//            return null;
+//        }
+//    }
 }

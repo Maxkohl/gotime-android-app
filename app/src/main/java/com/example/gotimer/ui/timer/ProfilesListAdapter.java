@@ -63,7 +63,7 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
                         profileChanged = true;
                         mSwitchListener.onSwitchChange(mProfiles, position);
                     }
-                    notifyDataSetChanged();
+//                    notifyDataSetChanged();
                 }
             });
             holder.isOn.setText("Active: " + current.isOn());
