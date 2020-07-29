@@ -81,8 +81,10 @@ public class AppSelectorActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_save) {
             ArrayList<String> appList = getAllSelectedApps();
+            ArrayList<String> processList = getAllSelectedProcesses();
             Intent intent = new Intent();
             intent.putStringArrayListExtra("appList", appList);
+            intent.putStringArrayListExtra("processList", processList);
             setResult(RESULT_OK, intent);
             finish();
 
@@ -95,6 +97,16 @@ public class AppSelectorActivity extends AppCompatActivity {
         for (Application app : allUserApps) {
             if (app.isSelected()) {
                 resultList.add(app.getAppName());
+            }
+        }
+        return resultList;
+    }
+
+    public ArrayList<String> getAllSelectedProcesses() {
+        ArrayList<String> resultList = new ArrayList<>();
+        for (Application app : allUserApps) {
+            if (app.isSelected()) {
+                resultList.add(app.getProcessName());
             }
         }
         return resultList;

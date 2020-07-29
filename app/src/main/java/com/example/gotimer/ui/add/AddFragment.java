@@ -44,6 +44,7 @@ public class AddFragment extends Fragment {
     private Button mSelectAppsButton;
 
     private List<String> mAppList;
+    private List<String> mProcessList;
     private static final int APP_REQUEST = 0;
 
     private List<Profile> mProfileList;
@@ -119,6 +120,7 @@ public class AddFragment extends Fragment {
         super.onResume();
         if (getArguments() != null) {
             mAppList = getArguments().getStringArrayList("appList");
+            mProcessList = getArguments().getStringArrayList("processList");
         }
     }
 
@@ -140,6 +142,9 @@ public class AddFragment extends Fragment {
         mSelectedDays = mDayPicker.getSelectedDaysText();
         if (mSelectedDays != null) {
             newProfile.setDaysActiveString(mSelectedDays);
+        }
+        if (mAppList != null) {
+            newProfile.setBlockedAppsString(mAppList);
         }
         if (mAppList != null) {
             newProfile.setBlockedAppsString(mAppList);
