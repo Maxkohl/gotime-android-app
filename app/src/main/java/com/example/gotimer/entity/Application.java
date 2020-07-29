@@ -8,12 +8,14 @@ public class Application implements Serializable {
 
     String appName;
     Drawable appIconRes;
+    String processName;
     boolean isSelected;
 
-    public Application(String appName, Drawable appIconRes) {
+    public Application(String appName, Drawable appIconRes, String processName) {
         this.appName = appName;
         this.appIconRes = appIconRes;
         this.isSelected = false;
+        this.processName = processName;
     }
 
     public String getAppName() {
@@ -38,5 +40,13 @@ public class Application implements Serializable {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public String getProcessName() {
+        return processName;
+    }
+
+    public void setProcessName(String processName) {
+        this.processName = processName;
     }
 }

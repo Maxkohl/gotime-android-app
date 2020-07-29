@@ -58,7 +58,8 @@ public class AppSelectorActivity extends AppCompatActivity {
             if (!isSystemPackage(app)) {
                 String appName = app.applicationInfo.loadLabel(getPackageManager()).toString();
                 Drawable appIconRes = app.applicationInfo.loadIcon(getPackageManager());
-                resultList.add(new Application(appName, appIconRes));
+                String processName = app.applicationInfo.processName;
+                resultList.add(new Application(appName, appIconRes, processName));
             }
         }
         return resultList;
