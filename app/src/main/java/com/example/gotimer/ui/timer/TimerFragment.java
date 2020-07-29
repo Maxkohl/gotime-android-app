@@ -19,6 +19,7 @@ import com.example.gotimer.entity.Profile;
 import com.example.gotimer.interfaces.OnSwitchChange;
 import com.example.gotimer.services.AppMonitorService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
@@ -43,7 +44,8 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
         View root = inflater.inflate(R.layout.fragment_timer, container, false);
 
         RecyclerView recyclerView = root.findViewById(R.id.profilesRecycler);
-        final ProfilesListAdapter adapter = new ProfilesListAdapter(mContext, switchListenerInterface);
+        final ProfilesListAdapter adapter = new ProfilesListAdapter(mContext,
+                switchListenerInterface);
         recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
         recyclerView.setAdapter(adapter);
 
@@ -51,10 +53,11 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
             adapter.setProfiles(profiles);
         });
 
-        timerViewModel.getActiveProfiles(true).observe(getViewLifecycleOwner(), new Observer<List<Profile>>() {
+        timerViewModel.getActiveProfiles(true).observe(getViewLifecycleOwner(),
+                new Observer<List<Profile>>() {
             @Override
             public void onChanged(List<Profile> profileList) {
-                if (profileList != null && profileList.size() >= 1){
+                if (profileList != null && profileList.size() >= 1) {
                     activeProfile = profileList.get(0);
                 }
             }
@@ -82,11 +85,11 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
             //CREATING INFINITE LOOP OF CHANGING SWITCH AND TRIGGERING CALLBACK
             for (int i = 0; i < mProfileList.size(); i++) {
                 Profile current = mProfileList.get(i);
-                if (i == positionOfChanged && !current.isOn()){
+                if (i == positionOfChanged && !current.isOn()) {
                     current.setOn(true);
                 } else if (i == positionOfChanged && current.isOn()) {
                     current.setOn(false);
-                } else if (i != positionOfChanged){
+                } else if (i != positionOfChanged) {
                     current.setOn(false);
                 }
                 timerViewModel.updateProfile(current);
@@ -101,8 +104,9 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
 
     private void startAppMonitoringService(Profile activeProfile) {
         Intent intent = new Intent(getActivity(), AppMonitorService.class);
-
-        intent.putExtra("serviceOn", false);
+        ArrayList<String> processList = new ArrayList(activeProfile.getBlockedProcessNames());
+        intent.putExtra("serviceOn", mServiceOn);
+        intent.putStringArrayListExtra("processList", processList);
         getActivity().startService(intent);
     }
 }
