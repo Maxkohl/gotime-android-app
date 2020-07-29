@@ -3,10 +3,17 @@ package com.example.gotimer;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.gotimer.services.AppMonitorService;
 import com.example.gotimer.services.TestOverlayService;
@@ -39,9 +46,10 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         Intent intent = new Intent(this, TestOverlayService.class);
-        startService(intent);
+        this.startService(intent);
 
     }
+
 
 
 }

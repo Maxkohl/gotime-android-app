@@ -70,7 +70,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
         }
 
 
-        startAppMonitoringService(activeProfile);
+//        startAppMonitoringService(activeProfile);
 
         //Calling this outside of recyclerview thread because if it's in recycler view error occurs
         adapter.notifyDataSetChanged();
