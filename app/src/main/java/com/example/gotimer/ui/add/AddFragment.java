@@ -1,7 +1,6 @@
 package com.example.gotimer.ui.add;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -9,22 +8,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.dpro.widgets.OnWeekdaysChangeListener;
 import com.dpro.widgets.WeekdaysPicker;
@@ -32,9 +24,6 @@ import com.example.gotimer.MainActivity;
 import com.example.gotimer.R;
 import com.example.gotimer.entity.Profile;
 import com.example.gotimer.ui.appselector.AppSelectorActivity;
-import com.example.gotimer.ui.timer.TimerFragment;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -54,8 +43,10 @@ public class AddFragment extends Fragment {
     private List<String> mSelectedDays;
     private Button mSelectAppsButton;
 
-    private List<String> appList;
+    private List<String> mAppList;
     private static final int APP_REQUEST = 0;
+
+    private List<Profile> mProfileList;
 
 
     @Override
@@ -115,6 +106,11 @@ public class AddFragment extends Fragment {
             }
         });
 
+        addViewModel.getAllProfiles().observe(getViewLifecycleOwner(), profiles -> {
+            mProfileList = profiles;
+        });
+
+
         return root;
     }
 
@@ -122,7 +118,7 @@ public class AddFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (getArguments() != null) {
-            appList = getArguments().getStringArrayList("appList");
+            mAppList = getArguments().getStringArrayList("appList");
         }
     }
 
@@ -145,8 +141,12 @@ public class AddFragment extends Fragment {
         if (mSelectedDays != null) {
             newProfile.setDaysActiveString(mSelectedDays);
         }
-        if (appList != null) {
-            newProfile.setBlockedAppsString(appList);
+        if (mAppList != null) {
+            newProfile.setBlockedAppsString(mAppList);
+        }
+        for (Profile profile : mProfileList) {
+            profile.setOn(false);
+            addViewModel.updateProfile(profile);
         }
         addViewModel.insertNewTimerProfile(newProfile);
     }
@@ -156,7 +156,7 @@ public class AddFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == APP_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                appList = data.getStringArrayListExtra("appList");
+                mAppList = data.getStringArrayListExtra("appList");
             }
         }
     }

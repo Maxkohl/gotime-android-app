@@ -2,30 +2,28 @@ package com.example.gotimer.ui.add;
 
 import android.app.Application;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import com.example.gotimer.R;
 import com.example.gotimer.Repository;
 import com.example.gotimer.entity.Profile;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class AddViewModel extends AndroidViewModel {
     private long mTime;
     private static final String TAG = AddViewModel.class.getSimpleName();
-    private Repository mReposity;
+    private Repository mRepository;
 
 
     public AddViewModel(@NonNull Application application) {
         super(application);
-        mReposity = new Repository(application);
+        mRepository = new Repository(application);
     }
 
     public void processTimePickerResult(int hourOfDay, int minute) {
@@ -47,7 +45,13 @@ public class AddViewModel extends AndroidViewModel {
     }
 
     public void insertNewTimerProfile(Profile newProfile) {
-        mReposity.insertNewTimerProfile(newProfile);
+        mRepository.insertNewTimerProfile(newProfile);
     }
+
+    public LiveData<List<Profile>> getAllProfiles() {
+        return mRepository.getAllProfiles();
+    }
+
+    public void updateProfile(Profile profile) {mRepository.updateTimerProfile(profile);}
 
 }
