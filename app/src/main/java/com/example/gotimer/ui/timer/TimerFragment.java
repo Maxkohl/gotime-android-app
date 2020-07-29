@@ -54,12 +54,20 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
         timerViewModel.getActiveProfiles(true).observe(getViewLifecycleOwner(), new Observer<List<Profile>>() {
             @Override
             public void onChanged(List<Profile> profileList) {
-                activeProfile = profileList.get(0);
+                if (profileList != null && profileList.size() >= 1){
+                    activeProfile = profileList.get(0);
+                }
             }
         });
 
+        if (activeProfile != null) {
+            mServiceOn = true;
+        } else {
+            mServiceOn = false;
+        }
 
-        startAppMonitoringService();
+
+        startAppMonitoringService(activeProfile);
 
         //Calling this outside of recyclerview thread because if it's in recycler view error occurs
         adapter.notifyDataSetChanged();
@@ -91,8 +99,9 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
 
     }
 
-    private void startAppMonitoringService() {
+    private void startAppMonitoringService(Profile activeProfile) {
         Intent intent = new Intent(getActivity(), AppMonitorService.class);
+
         intent.putExtra("serviceOn", false);
         getActivity().startService(intent);
     }

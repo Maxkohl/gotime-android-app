@@ -34,12 +34,12 @@ public class Profile {
     //TODO Uncomment. How to store in SQLite?
     private String daysActive;
 
-    String blockedApps;
+    private String blockedApps;
 
-    String blockedAppsProcessNames;
+    private String blockedAppsProcessNames;
 
     @NonNull
-    boolean isOn;
+    private boolean isOn;
 
     //TODO Add location variable to be saved into SQLite database. What's the best way to store?
 
