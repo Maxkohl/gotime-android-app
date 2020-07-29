@@ -36,6 +36,8 @@ public class Profile {
 
     String blockedApps;
 
+    String blockesAppsProcessNames;
+
     @NonNull
     boolean isOn;
 
@@ -154,6 +156,22 @@ public class Profile {
             resultString = resultString + element + "-";
         }
         return resultString;
+    }
+
+    public String getBlockesAppsProcessNames() {
+        return blockesAppsProcessNames;
+    }
+
+    public void setBlockesAppsProcessNames(String blockesAppsProcessNames) {
+        this.blockesAppsProcessNames = blockesAppsProcessNames;
+    }
+
+    public void setBlockedProcessNamesString(List<String> blockedProcessNames) {
+        this.blockedApps = stringifyList(blockedProcessNames);
+    }
+
+    public List<String> getBlockedProcessNames() {
+        return new ArrayList<String>(Arrays.asList(blockesAppsProcessNames.split("-")));
     }
 }
 
