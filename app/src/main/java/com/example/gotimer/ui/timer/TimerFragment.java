@@ -104,7 +104,10 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
 
     private void startAppMonitoringService(Profile activeProfile) {
         Intent intent = new Intent(getActivity(), AppMonitorService.class);
-        ArrayList<String> processList = new ArrayList(activeProfile.getBlockedProcessNames());
+        ArrayList<String> processList = new ArrayList<>();
+        if (activeProfile != null) {
+            processList = new ArrayList<>(activeProfile.getBlockedProcessNames());
+        }
         intent.putExtra("serviceOn", mServiceOn);
         intent.putStringArrayListExtra("processList", processList);
         getActivity().startService(intent);

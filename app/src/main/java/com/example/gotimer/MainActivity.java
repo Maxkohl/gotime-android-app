@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.gotimer.services.AppMonitorService;
+import com.example.gotimer.services.TestOverlayService;
 import com.example.gotimer.ui.add.TimePickerFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -18,6 +19,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+        Intent intent = new Intent(getActivity(), TestOverlayService.class);
+        startService(intent);
 
     }
 
