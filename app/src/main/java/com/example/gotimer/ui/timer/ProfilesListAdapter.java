@@ -54,6 +54,8 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
             holder.mDaysActive.setText(current.getDaysActive());
             holder.mBlockedApps.setText(current.getBlockedApps());
             holder.mIsActive.setChecked(current.isOn());
+            //Using OnClickListener instead of onCheckedChangeListener so that infinite loop of
+            // switch changing doesn't occur
             holder.mIsActive.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
