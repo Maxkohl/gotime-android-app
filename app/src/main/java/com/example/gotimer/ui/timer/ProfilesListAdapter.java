@@ -54,16 +54,10 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
             holder.mDaysActive.setText(current.getDaysActive());
             holder.mBlockedApps.setText(current.getBlockedApps());
             holder.mIsActive.setChecked(current.isOn());
-            holder.mIsActive.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            holder.mIsActive.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    current.setOn(!current.isOn());
-                    if (current.isOn()) {
-                        activePosition = position;
-                        profileChanged = true;
-                        mSwitchListener.onSwitchChange(mProfiles, position);
-                    }
-//                    notifyDataSetChanged();
+                public void onClick(View view) {
+                    mSwitchListener.onSwitchChange(mProfiles, position);
                 }
             });
             holder.isOn.setText("Active: " + current.isOn());

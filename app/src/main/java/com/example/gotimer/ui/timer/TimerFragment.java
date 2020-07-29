@@ -49,6 +49,8 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
         });
 
         startAppMonitoringService();
+
+        //Calling this outside of recyclerview thread because if it's in recycler view error occurs
         adapter.notifyDataSetChanged();
 
         return root;
@@ -58,11 +60,14 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
         @Override
         public void onSwitchChange(List<Profile> updatedProfileList, int positionOfChanged) {
             mProfileList = updatedProfileList;
+            //CREATING INFINITE LOOP OF CHANGING SWITCH AND TRIGGERING CALLBACK
             for (int i = 0; i < mProfileList.size(); i++) {
                 Profile current = mProfileList.get(i);
-                if (i == positionOfChanged) {
-                    current.setOn(current.isOn());
-                } else {
+                if (i == positionOfChanged && !current.isOn()){
+                    current.setOn(true);
+                } else if (i == positionOfChanged && current.isOn()) {
+                    current.setOn(false);
+                } else if (i != positionOfChanged){
                     current.setOn(false);
                 }
                 timerViewModel.updateProfile(current);
