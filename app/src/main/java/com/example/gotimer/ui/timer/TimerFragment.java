@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,7 @@ import com.example.gotimer.interfaces.OnSwitchChange;
 import com.example.gotimer.services.AppMonitorService;
 
 import java.util.List;
+import java.util.Observable;
 
 public class TimerFragment extends Fragment implements OnSwitchChange {
 
@@ -26,6 +28,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
     private Context mContext;
     private List<Profile> mProfileList;
     private boolean mServiceOn;
+    private Profile activeProfile;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -47,6 +50,14 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
         timerViewModel.getAllProfiles().observe(getViewLifecycleOwner(), profiles -> {
             adapter.setProfiles(profiles);
         });
+
+        timerViewModel.getActiveProfiles(true).observe(getViewLifecycleOwner(), new Observer<List<Profile>>() {
+            @Override
+            public void onChanged(List<Profile> profileList) {
+                activeProfile = profileList.get(0);
+            }
+        });
+
 
         startAppMonitoringService();
 

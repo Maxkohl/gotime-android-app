@@ -32,6 +32,10 @@ public class Repository {
         new updateAsyncTask(mProfileDao).execute(profile);
     }
 
+    public LiveData<List<Profile>> getActiveProfiles(boolean isOn) {
+        return mProfileDao.getActiveProfile(isOn);
+    }
+
 
     //TODO Replace AsyncTasks with NOT DEPRECATED tech
     private class insertAsyncTask extends AsyncTask<Profile, Void, Void> {

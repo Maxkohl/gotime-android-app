@@ -26,9 +26,11 @@ public interface ProfileDao {
     @Query("DELETE FROM profiles_table")
     void deleteAllProfiles();
 
-    //TODO Update profile
     @Update
     void updateProfile(Profile profile);
+
+    @Query("SELECT * FROM profiles_table WHERE isOn = :isOn")
+    LiveData<List<Profile>> getActiveProfile(boolean isOn);
 
     //TODO getTotalHoursPerDay
 
