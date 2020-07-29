@@ -1,6 +1,7 @@
 package com.example.gotimer.ui.timer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gotimer.R;
 import com.example.gotimer.entity.Profile;
 import com.example.gotimer.interfaces.OnSwitchChange;
+import com.example.gotimer.services.AppMonitorService;
 
 import java.util.List;
 
@@ -27,6 +29,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
     private TimerViewModel timerViewModel;
     private Context mContext;
     private List<Profile> mProfileList;
+    private boolean mServiceOn;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -48,6 +51,8 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
         timerViewModel.getAllProfiles().observe(getViewLifecycleOwner(), profiles -> {
             adapter.setProfiles(profiles);
         });
+        
+        starAppMonitorService();
 
         return root;
     }
@@ -71,5 +76,11 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
     @Override
     public void onSwitchChange(List<Profile> updatedProfileList, int positionOfChanged) {
 
+    }
+
+    private void starAppMonitorService() {
+        Intent intent = new Intent(getActivity(), AppMonitorService.class);
+        intent.putExtra("serviceOn", mServiceOn);
+        getActivity().startService(intent);
     }
 }
