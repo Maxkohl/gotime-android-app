@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gotimer.R;
 import com.example.gotimer.entity.Profile;
+import com.example.gotimer.interfaces.OnSwitchChange;
 
 import org.w3c.dom.Text;
 
@@ -27,9 +28,12 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
     private int activePosition;
     private boolean profileChanged = false;
 
-    public ProfilesListAdapter(Context context) {
+    private OnSwitchChange mSwitchListener;
+
+    public ProfilesListAdapter(Context context, OnSwitchChange switchListener) {
         inflater = LayoutInflater.from(context);
         this.mContext = mContext;
+        mSwitchListener = switchListener;
     }
 
     @NonNull
@@ -57,6 +61,7 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
                     if (current.isOn()) {
                         activePosition = position;
                         profileChanged = true;
+                        mSwitchListener.onSwitchChange(current);
                     }
                     notifyDataSetChanged();
                 }

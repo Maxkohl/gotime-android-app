@@ -2,6 +2,6 @@ package com.example.gotimer.interfaces;
 
 import com.example.gotimer.entity.Profile;
 
-public interface onSwitchChange {
+public interface OnSwitchChange {
     void onSwitchChange(Profile changedProfile);
 }
