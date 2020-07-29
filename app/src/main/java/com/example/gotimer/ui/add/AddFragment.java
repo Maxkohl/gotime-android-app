@@ -146,8 +146,8 @@ public class AddFragment extends Fragment {
         if (mAppList != null) {
             newProfile.setBlockedAppsString(mAppList);
         }
-        if (mAppList != null) {
-            newProfile.setBlockedAppsString(mAppList);
+        if (mProcessList != null) {
+            newProfile.setBlockedProcessNamesString(mProcessList);
         }
         for (Profile profile : mProfileList) {
             profile.setOn(false);
@@ -162,6 +162,7 @@ public class AddFragment extends Fragment {
         if (requestCode == APP_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
                 mAppList = data.getStringArrayListExtra("appList");
+                mProcessList = data.getStringArrayListExtra("processList");
             }
         }
     }

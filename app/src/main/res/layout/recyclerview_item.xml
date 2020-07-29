@@ -87,6 +87,19 @@
             app:layout_constraintLeft_toLeftOf="parent"
             />
 
+        <TextView
+            android:id="@+id/processesBlocked"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Blocked Process"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/isOnText"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
 
 
 

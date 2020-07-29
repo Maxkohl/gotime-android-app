@@ -36,7 +36,7 @@ public class Profile {
 
     String blockedApps;
 
-    String blockesAppsProcessNames;
+    String blockedAppsProcessNames;
 
     @NonNull
     boolean isOn;
@@ -158,20 +158,20 @@ public class Profile {
         return resultString;
     }
 
-    public String getBlockesAppsProcessNames() {
-        return blockesAppsProcessNames;
+    public String getBlockedAppsProcessNames() {
+        return blockedAppsProcessNames;
     }
 
-    public void setBlockesAppsProcessNames(String blockesAppsProcessNames) {
-        this.blockesAppsProcessNames = blockesAppsProcessNames;
+    public void setBlockedAppsProcessNames(String blockesAppsProcessNames) {
+        this.blockedAppsProcessNames = blockesAppsProcessNames;
     }
 
     public void setBlockedProcessNamesString(List<String> blockedProcessNames) {
-        this.blockedApps = stringifyList(blockedProcessNames);
+        this.blockedAppsProcessNames = stringifyList(blockedProcessNames);
     }
 
     public List<String> getBlockedProcessNames() {
-        return new ArrayList<String>(Arrays.asList(blockesAppsProcessNames.split("-")));
+        return new ArrayList<String>(Arrays.asList(blockedAppsProcessNames.split("-")));
     }
 }
 
