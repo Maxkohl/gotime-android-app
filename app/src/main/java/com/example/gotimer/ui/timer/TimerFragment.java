@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,10 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gotimer.R;
 import com.example.gotimer.entity.Profile;
+import com.example.gotimer.interfaces.OnSwitchChange;
 
 import java.util.List;
 
-public class TimerFragment extends Fragment {
+public class TimerFragment extends Fragment implements OnSwitchChange {
 
     private TimerViewModel timerViewModel;
     private Context mContext;
@@ -39,7 +41,7 @@ public class TimerFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_timer, container, false);
 
         RecyclerView recyclerView = root.findViewById(R.id.profilesRecycler);
-        final ProfilesListAdapter adapter = new ProfilesListAdapter(mContext);
+        final ProfilesListAdapter adapter = new ProfilesListAdapter(mContext, switchListenerInterface);
         recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
         recyclerView.setAdapter(adapter);
 
@@ -52,5 +54,15 @@ public class TimerFragment extends Fragment {
         return root;
     }
 
+    OnSwitchChange switchListenerInterface = new OnSwitchChange() {
+        @Override
+        public void onSwitchChange(Profile changedProfile) {
+            Toast.makeText(getActivity(), changedProfile.getProfileName(), Toast.LENGTH_SHORT).show();
+        }
+    };
 
+    @Override
+    public void onSwitchChange(Profile changedProfile) {
+        Toast.makeText(getActivity(), changedProfile.getProfileName(), Toast.LENGTH_SHORT).show();
+    }
 }
