@@ -46,23 +46,30 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
         recyclerView.setAdapter(adapter);
 
         timerViewModel.getAllProfiles().observe(getViewLifecycleOwner(), profiles -> {
-            mProfileList = profiles;
             adapter.setProfiles(profiles);
         });
-
 
         return root;
     }
 
     OnSwitchChange switchListenerInterface = new OnSwitchChange() {
         @Override
-        public void onSwitchChange(Profile changedProfile) {
-            Toast.makeText(getActivity(), changedProfile.getProfileName(), Toast.LENGTH_SHORT).show();
+        public void onSwitchChange(List<Profile> updatedProfileList, int positionOfChanged) {
+            mProfileList = updatedProfileList;
+            for (int i = 0; i < mProfileList.size(); i++) {
+                Profile current = mProfileList.get(i);
+                if (i == positionOfChanged) {
+                    current.setOn(true);
+                } else {
+                    current.setOn(false);
+                }
+                timerViewModel.updateProfile(current);
+            }
         }
     };
 
     @Override
-    public void onSwitchChange(Profile changedProfile) {
-        Toast.makeText(getActivity(), changedProfile.getProfileName(), Toast.LENGTH_SHORT).show();
+    public void onSwitchChange(List<Profile> updatedProfileList, int positionOfChanged) {
+
     }
 }

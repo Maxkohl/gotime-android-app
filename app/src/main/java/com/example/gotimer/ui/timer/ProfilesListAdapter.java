@@ -61,7 +61,7 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
                     if (current.isOn()) {
                         activePosition = position;
                         profileChanged = true;
-                        mSwitchListener.onSwitchChange(current);
+                        mSwitchListener.onSwitchChange(mProfiles, position);
                     }
                     notifyDataSetChanged();
                 }

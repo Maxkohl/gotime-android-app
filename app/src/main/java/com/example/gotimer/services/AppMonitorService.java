@@ -37,7 +37,6 @@ public class AppMonitorService extends AccessibilityService {
     public void onCreate() {
         super.onCreate();
         Toast.makeText(this, "Service started", Toast.LENGTH_SHORT).show();
-        //Deprecated, but safer than a Timer. Use executor?
 
     }
 
