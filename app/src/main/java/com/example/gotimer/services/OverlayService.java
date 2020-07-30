@@ -158,18 +158,18 @@ public class OverlayService extends Service {
         Intent mainIntent = new Intent(this, TransparentActivity.class);
         mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(mainIntent);
-        Intent startHomescreen = new Intent(Intent.ACTION_MAIN);
-        startHomescreen.addCategory(Intent.CATEGORY_HOME);
-        startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(startHomescreen);
+//        Intent startHomescreen = new Intent(Intent.ACTION_MAIN);
+//        startHomescreen.addCategory(Intent.CATEGORY_HOME);
+//        startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(startHomescreen);
 
         mViewGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent startHomescreen = new Intent(Intent.ACTION_MAIN);
-//                startHomescreen.addCategory(Intent.CATEGORY_HOME);
-//                startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(startHomescreen);
+                Intent startHomescreen = new Intent(Intent.ACTION_MAIN);
+                startHomescreen.addCategory(Intent.CATEGORY_HOME);
+                startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startHomescreen);
                 mViewGroup.setVisibility(View.INVISIBLE);
                 alreadyDisplayed = false;
             }
