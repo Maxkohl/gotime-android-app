@@ -33,6 +33,7 @@ import androidx.annotation.RequiresApi;
 import com.example.gotimer.MainActivity;
 import com.example.gotimer.R;
 import com.example.gotimer.ui.overlay.AppBlockOverlay;
+import com.example.gotimer.util.TransparentActivity;
 
 import java.util.List;
 import java.util.SortedMap;
@@ -157,7 +158,7 @@ public class TestOverlayService extends Service {
         if (!mViewGroup.isShown()) {
             windowManager.addView(mViewGroup, params);
         }
-        Intent mainIntent = new Intent(this, MainActivity.class);
+        Intent mainIntent = new Intent(this, TransparentActivity.class);
         mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(mainIntent);
 //        if (mViewGroup.getVisibility() != View.VISIBLE) {
