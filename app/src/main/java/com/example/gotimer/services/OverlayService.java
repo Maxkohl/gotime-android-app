@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-public class TestOverlayService extends Service {
+public class OverlayService extends Service {
 
     private ViewGroup mViewGroup;
     Handler handler;
