@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_gotime_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".util.TransparentActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"></activity>
+        <activity android:name=".util.TransparentActivity" android:theme="@style/Theme.Transparent"></activity>
         <activity
             android:name=".ui.appselector.AppSelectorActivity"
             android:parentActivityName=".MainActivity"
