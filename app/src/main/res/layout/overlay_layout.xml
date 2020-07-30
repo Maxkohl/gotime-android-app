@@ -9,7 +9,7 @@
         android:id="@+id/overlay_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="THIS IS AN OVERLAY"
+        android:text="GO TIMER HAS BLOCKED THIS APP"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -24,7 +24,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Go Home"
-            android:onClick="showHomeScreen"
             app:layout_constraintTop_toBottomOf="@id/overlay_text"
             app:layout_constraintBottom_toBottomOf="parent"
             />

@@ -1,5 +1,6 @@
 package com.example.gotimer.services;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Service;
 import android.app.usage.UsageStats;
@@ -43,12 +44,15 @@ public class TestOverlayService extends Service {
     Handler handler;
     Runnable runnableCode;
 
+    boolean removeOverlay;
+
     int LAYOUT_FLAG;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Toast.makeText(this, "Test Service Started", Toast.LENGTH_SHORT).show();
+        removeOverlay = false;
         handler = new Handler(Looper.getMainLooper());
         runnableCode = new Runnable() {
             @Override
@@ -103,29 +107,24 @@ public class TestOverlayService extends Service {
         }
     }
 
-    public boolean blockApp() {
+    public void blockApp() {
         String currentAppProcess = getCurrentApp();
-        if ("com.instagram.android".equals(currentAppProcess)) {
+        if (currentAppProcess.equals("com.instagram.android") || currentAppProcess.equals("com" +
+                ".twitter.android")) {
             displayOverlay();
-            //TODO add a slight delay here?
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            return true;
         }
-        return false;
+
+        if (removeOverlay) {
+            mViewGroup.setVisibility(View.INVISIBLE);
+        }
     }
 
-    public boolean openHomeScreen() {
-        Intent startHomescreen = new Intent(Intent.ACTION_MAIN);
-        startHomescreen.addCategory(Intent.CATEGORY_HOME);
-        startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(startHomescreen);
-        return true;
-    }
-
+    @SuppressLint("ClickableViewAccessibility")
     public void displayOverlay() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
@@ -134,30 +133,59 @@ public class TestOverlayService extends Service {
         windowManager.getDefaultDisplay().getMetrics(metrics);
 
         mViewGroup = (ViewGroup) inflater.inflate(R.layout.overlay_layout, null);
-//        mViewGroup = new AppBlockOverlay(this);
-        final Button button = mViewGroup.findViewById(R.id.exit_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent startHomescreen = new Intent(Intent.ACTION_MAIN);
-                startHomescreen.addCategory(Intent.CATEGORY_HOME);
-                startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(startHomescreen);
-
-            }
-        });
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+                        | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
                 PixelFormat.TRANSLUCENT);
         params.gravity = Gravity.TOP | Gravity.LEFT;
 
 
         params.width = metrics.widthPixels;
         params.height = metrics.heightPixels;
-        windowManager.addView(mViewGroup, params);
+        if (mViewGroup.getWindowToken() == null) {
+            windowManager.addView(mViewGroup, params);
+        }
+        if (mViewGroup.getVisibility() != View.VISIBLE) {
+            mViewGroup.setVisibility(View.VISIBLE);
+        }
+        removeOverlay = false;
+
+        final Button button = mViewGroup.findViewById(R.id.exit_button);
+        button.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                Intent startHomescreen = new Intent(Intent.ACTION_MAIN);
+                startHomescreen.addCategory(Intent.CATEGORY_HOME);
+                startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startHomescreen);
+//                if (mViewGroup.getWindowToken() != null) {
+//                    windowManager.removeView(mViewGroup);
+//                }
+
+                removeOverlay = true;
+                return false;
+            }
+        });
+    }
+
+    public void removeOverlay() {
+        if (removeOverlay) {
+            removeOverlay = false;
+            mViewGroup.setVisibility(View.INVISIBLE);
+//            try {
+//                windowManager.removeView(mViewGroup);
+//            } catch (IllegalArgumentException e) {
+//                Log.e("REMOVE OVERLAY", "ERROR");
+//            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }
