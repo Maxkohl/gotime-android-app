@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.example.gotimer.R;
+import com.example.gotimer.ui.overlay.AppBlockOverlay;
 
 import java.util.List;
 import java.util.SortedMap;
@@ -127,7 +128,7 @@ public class TestOverlayService extends Service {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         mViewGroup = (ViewGroup) inflater.inflate(R.layout.overlay_layout, null);
-
+//        mViewGroup = new AppBlockOverlay(this);
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
