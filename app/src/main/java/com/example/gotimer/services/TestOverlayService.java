@@ -30,6 +30,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.example.gotimer.MainActivity;
 import com.example.gotimer.R;
 import com.example.gotimer.ui.overlay.AppBlockOverlay;
 
@@ -39,12 +40,12 @@ import java.util.TreeMap;
 
 public class TestOverlayService extends Service {
 
-    private WindowManager windowManager;
     private ViewGroup mViewGroup;
     Handler handler;
     Runnable runnableCode;
+    WindowManager windowManager;
 
-    boolean removeOverlay;
+    boolean alreadyDisplayed;
 
     int LAYOUT_FLAG;
 
@@ -52,7 +53,7 @@ public class TestOverlayService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Toast.makeText(this, "Test Service Started", Toast.LENGTH_SHORT).show();
-        removeOverlay = false;
+        alreadyDisplayed = false;
         handler = new Handler(Looper.getMainLooper());
         runnableCode = new Runnable() {
             @Override
@@ -109,19 +110,28 @@ public class TestOverlayService extends Service {
 
     public void blockApp() {
         String currentAppProcess = getCurrentApp();
-        if (currentAppProcess.equals("com.instagram.android") || currentAppProcess.equals("com" +
-                ".twitter.android")) {
-            displayOverlay();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        String lastProcess = "";
+        if (currentAppProcess != lastProcess) {
+            if (currentAppProcess.equals("com.instagram.android") || currentAppProcess.equals(
+                    "com" +
+                            ".twitter.android")) {
+                if (!alreadyDisplayed) {
+                    displayOverlay();
+                    alreadyDisplayed = true;
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
+        } else {
+            if (mViewGroup != null) {
+                mViewGroup.setVisibility(View.INVISIBLE);
+            }
+
         }
 
-        if (removeOverlay) {
-            mViewGroup.setVisibility(View.INVISIBLE);
-        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -137,55 +147,51 @@ public class TestOverlayService extends Service {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-                        | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PixelFormat.TRANSLUCENT);
         params.gravity = Gravity.TOP | Gravity.LEFT;
 
 
         params.width = metrics.widthPixels;
         params.height = metrics.heightPixels;
-        if (mViewGroup.getWindowToken() == null) {
+        if (!mViewGroup.isShown()) {
             windowManager.addView(mViewGroup, params);
         }
-        if (mViewGroup.getVisibility() != View.VISIBLE) {
-            mViewGroup.setVisibility(View.VISIBLE);
-        }
-        removeOverlay = false;
+        Intent mainIntent = new Intent(this, MainActivity.class);
+        mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(mainIntent);
+//        if (mViewGroup.getVisibility() != View.VISIBLE) {
+//            mViewGroup.setVisibility(View.VISIBLE);
+//        }
 
-        final Button button = mViewGroup.findViewById(R.id.exit_button);
-        button.setOnTouchListener(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
+        mViewGroup.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public void onClick(View view) {
                 Intent startHomescreen = new Intent(Intent.ACTION_MAIN);
                 startHomescreen.addCategory(Intent.CATEGORY_HOME);
                 startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(startHomescreen);
-//                if (mViewGroup.getWindowToken() != null) {
-//                    windowManager.removeView(mViewGroup);
-//                }
-
-                removeOverlay = true;
-                return false;
+                mViewGroup.setVisibility(View.INVISIBLE);
+                alreadyDisplayed = false;
             }
         });
     }
 
-    public void removeOverlay() {
-        if (removeOverlay) {
-            removeOverlay = false;
-            mViewGroup.setVisibility(View.INVISIBLE);
+//    public void removeOverlay() {
+//        if (removeOverlay) {
+//            removeOverlay = false;
+//            mViewGroup.setVisibility(View.INVISIBLE);
 //            try {
 //                windowManager.removeView(mViewGroup);
 //            } catch (IllegalArgumentException e) {
 //                Log.e("REMOVE OVERLAY", "ERROR");
 //            }
-        }
-    }
+//        }
+//    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        windowManager.removeView(mViewGroup);
     }
 }
