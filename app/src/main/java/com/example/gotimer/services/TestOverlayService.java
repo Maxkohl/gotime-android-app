@@ -113,18 +113,18 @@ public class TestOverlayService extends Service {
         String currentAppProcess = getCurrentApp();
         String lastProcess = "";
 //        if (currentAppProcess != lastProcess) {
-            if (currentAppProcess.equals("com.instagram.android") || currentAppProcess.equals(
-                    "com" +
-                            ".twitter.android")) {
-                if (!alreadyDisplayed) {
-                    displayOverlay();
-                    alreadyDisplayed = true;
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        if (currentAppProcess.equals("com.instagram.android") || currentAppProcess.equals(
+                "com" +
+                        ".twitter.android")) {
+            if (!alreadyDisplayed) {
+                displayOverlay();
+                alreadyDisplayed = true;
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+            }
 //            }
         }
     }
@@ -152,20 +152,24 @@ public class TestOverlayService extends Service {
         if (!mViewGroup.isShown()) {
             windowManager.addView(mViewGroup, params);
         }
+
+        //Launches TransparentActivity to "clear" last process name on actual phone. Then
+        // launches home screen
         Intent mainIntent = new Intent(this, TransparentActivity.class);
         mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(mainIntent);
-//        if (mViewGroup.getVisibility() != View.VISIBLE) {
-//            mViewGroup.setVisibility(View.VISIBLE);
-//        }
+        Intent startHomescreen = new Intent(Intent.ACTION_MAIN);
+        startHomescreen.addCategory(Intent.CATEGORY_HOME);
+        startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startHomescreen);
 
         mViewGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent startHomescreen = new Intent(Intent.ACTION_MAIN);
-                startHomescreen.addCategory(Intent.CATEGORY_HOME);
-                startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(startHomescreen);
+//                Intent startHomescreen = new Intent(Intent.ACTION_MAIN);
+//                startHomescreen.addCategory(Intent.CATEGORY_HOME);
+//                startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(startHomescreen);
                 mViewGroup.setVisibility(View.INVISIBLE);
                 alreadyDisplayed = false;
             }
