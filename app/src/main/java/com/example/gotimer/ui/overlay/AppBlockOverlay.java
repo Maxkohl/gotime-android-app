@@ -3,6 +3,7 @@ package com.example.gotimer.ui.overlay;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -11,10 +12,12 @@ import android.widget.Toast;
 public class AppBlockOverlay extends ViewGroup {
 
     private Paint mLoadPaint;
+    private Context mContext;
 
     public AppBlockOverlay(Context context) {
         super(context);
         Toast.makeText(getContext(),"HUDView", Toast.LENGTH_LONG).show();
+        mContext = context;
 
         mLoadPaint = new Paint();
         mLoadPaint.setAntiAlias(true);
@@ -25,7 +28,7 @@ public class AppBlockOverlay extends ViewGroup {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawText("Hello World", 5, 15, mLoadPaint);
+
     }
 
     @Override

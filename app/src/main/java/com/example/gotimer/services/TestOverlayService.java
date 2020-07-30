@@ -18,8 +18,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -125,7 +127,6 @@ public class TestOverlayService extends Service {
     }
 
     public void displayOverlay() {
-        LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
@@ -134,11 +135,23 @@ public class TestOverlayService extends Service {
 
         mViewGroup = (ViewGroup) inflater.inflate(R.layout.overlay_layout, null);
 //        mViewGroup = new AppBlockOverlay(this);
+        final Button button = mViewGroup.findViewById(R.id.exit_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent startHomescreen = new Intent(Intent.ACTION_MAIN);
+                startHomescreen.addCategory(Intent.CATEGORY_HOME);
+                startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startHomescreen);
+
+            }
+        });
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                LAYOUT_FLAG,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
                 PixelFormat.TRANSLUCENT);
         params.gravity = Gravity.TOP | Gravity.LEFT;
 
