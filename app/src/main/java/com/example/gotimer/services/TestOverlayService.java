@@ -112,7 +112,7 @@ public class TestOverlayService extends Service {
     public void blockApp() {
         String currentAppProcess = getCurrentApp();
         String lastProcess = "";
-        if (currentAppProcess != lastProcess) {
+//        if (currentAppProcess != lastProcess) {
             if (currentAppProcess.equals("com.instagram.android") || currentAppProcess.equals(
                     "com" +
                             ".twitter.android")) {
@@ -125,14 +125,8 @@ public class TestOverlayService extends Service {
                         e.printStackTrace();
                     }
                 }
-            }
-        } else {
-            if (mViewGroup != null) {
-                mViewGroup.setVisibility(View.INVISIBLE);
-            }
-
+//            }
         }
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
