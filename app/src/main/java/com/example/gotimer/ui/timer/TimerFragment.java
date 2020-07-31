@@ -17,13 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gotimer.R;
 import com.example.gotimer.entity.Profile;
+import com.example.gotimer.interfaces.OnDeleteClickListener;
 import com.example.gotimer.interfaces.OnSwitchChange;
 import com.example.gotimer.services.OverlayService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimerFragment extends Fragment implements OnSwitchChange {
+public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteClickListener {
 
     private TimerViewModel timerViewModel;
     private Context mContext;
@@ -129,5 +130,16 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
         return false;
     }
 
+    OnDeleteClickListener deleteClickListener = new OnDeleteClickListener() {
+        @Override
+        public void OnDeleteClickListener(int profileId) {
+//            timerViewModel.deleteProfile(profileId);
+        }
+    };
 
+
+    @Override
+    public void OnDeleteClickListener(int profileId) {
+
+    }
 }

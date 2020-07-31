@@ -68,7 +68,7 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
             holder.deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    
+
                 }
             });
         }
