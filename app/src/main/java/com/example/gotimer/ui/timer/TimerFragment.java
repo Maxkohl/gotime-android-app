@@ -32,7 +32,6 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     private boolean mServiceOn;
     private Profile activeProfile;
     Intent serviceIntent;
-    private int serviceCount = 0;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -138,7 +137,6 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             timerViewModel.deleteProfile(profileId);
         }
     };
-
 
     @Override
     public void OnDeleteClickListener(int profileId) {
