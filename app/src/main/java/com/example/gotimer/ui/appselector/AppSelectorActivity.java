@@ -55,7 +55,7 @@ public class AppSelectorActivity extends AppCompatActivity {
         List<PackageInfo> allApps = pm.getInstalledPackages(PackageManager.GET_META_DATA);
         //        return pm.getInstalledApplications(PackageManager.GET_META_DATA);
         for (PackageInfo app : allApps) {
-            if (!isSystemPackage(app)) {
+            if (!isSystemPackage(app) && !app.applicationInfo.processName.equals("com.example.gotimer")) {
                 String appName = app.applicationInfo.loadLabel(getPackageManager()).toString();
                 Drawable appIconRes = app.applicationInfo.loadIcon(getPackageManager());
                 String processName = app.applicationInfo.processName;
