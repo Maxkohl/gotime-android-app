@@ -67,8 +67,11 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
                                 toggleAppMonitoringService(mServiceOn);
                             }
                         } else {
-                            mServiceOn = false;
-                            toggleAppMonitoringService(mServiceOn);
+                            if (isMyServiceRunning(OverlayService.class)) {
+                                mServiceOn = false;
+                                toggleAppMonitoringService(mServiceOn);
+                                getActivity().stopService(serviceIntent);
+                            }
                         }
                     }
                 });
@@ -110,13 +113,10 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
             if (activeProfile != null) {
                 processList = new ArrayList<>(activeProfile.getBlockedProcessNames());
             }
-            serviceIntent.putExtra("serviceOn", mServiceOn);
             serviceIntent.putStringArrayListExtra("processList", processList);
-            getActivity().startService(serviceIntent);
-        } else {
-            getActivity().stopService(serviceIntent);
         }
-
+            serviceIntent.putExtra("serviceOn", mServiceOn);
+            getActivity().startService(serviceIntent);
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {

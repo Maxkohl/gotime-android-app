@@ -42,6 +42,7 @@ import com.example.gotimer.ui.overlay.AppBlockOverlay;
 import com.example.gotimer.ui.timer.TimerFragment;
 import com.example.gotimer.util.TransparentActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -52,6 +53,7 @@ public class OverlayService extends Service {
     Handler handler;
     Runnable runnableCode;
     WindowManager windowManager;
+    ArrayList<String> processList;
 
     boolean alreadyDisplayed;
     public static boolean isServiceRunning = false;
@@ -71,6 +73,7 @@ public class OverlayService extends Service {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        processList = intent.getStringArrayListExtra("processList");
         isServiceRunning = intent.getBooleanExtra("serviceOn", false);
         if (isServiceRunning) {
             Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
@@ -86,7 +89,7 @@ public class OverlayService extends Service {
             handler.post(runnableCode);
 
         } else {
-            onDestroy();
+            stopMyService();
         }
         return START_STICKY;
     }
@@ -101,19 +104,19 @@ public class OverlayService extends Service {
         String currentAppProcess = getCurrentApp();
         String lastProcess = "";
 //        if (currentAppProcess != lastProcess) {
-        if (currentAppProcess.equals("com.instagram.android") || currentAppProcess.equals(
-                "com" +
-                        ".twitter.android")) {
-            if (!alreadyDisplayed) {
-                displayOverlay();
-                alreadyDisplayed = true;
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        for (String processName : processList) {
+            if (currentAppProcess.equals(processName)){
+                if (!alreadyDisplayed) {
+                    displayOverlay();
+                    alreadyDisplayed = true;
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
 //            }
+            }
         }
     }
 
@@ -184,7 +187,8 @@ public class OverlayService extends Service {
                 startHomescreen.addCategory(Intent.CATEGORY_HOME);
                 startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(startHomescreen);
-                mViewGroup.setVisibility(View.INVISIBLE);
+//                mViewGroup.setVisibility(View.INVISIBLE);
+                windowManager.removeViewImmediate(mViewGroup);
                 alreadyDisplayed = false;
             }
         });
@@ -217,7 +221,7 @@ public class OverlayService extends Service {
         Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
         notificationIntent.setAction(Intent.ACTION_MAIN);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         builder.setContentTitle("GoTimer"
@@ -228,16 +232,25 @@ public class OverlayService extends Service {
 
     @Override
     public void onDestroy() {
+//        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+//        mNotificationManager.deleteNotificationChannel(NOTIFICATION_CHANNEL_ID);
+//        mNotificationManager.cancel(NOTIFICATION_ID);
+//        stopForeground(true);
+//        stopSelf();
+//        isServiceRunning = false;
+//        Toast.makeText(this, "Service Destroyed", Toast.LENGTH_SHORT).show();
         super.onDestroy();
-        stopForeground(true);
-        isServiceRunning = false;
-        Toast.makeText(this, "On Destroy Service", Toast.LENGTH_SHORT).show();
-
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void stopMyService() {
+        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.deleteNotificationChannel(NOTIFICATION_CHANNEL_ID);
+        mNotificationManager.cancel(NOTIFICATION_ID);
         stopForeground(true);
+        stopSelf();
         isServiceRunning = false;
+        Log.e("STOP SERVICE", "SHOULD HAVE STOPPED");
         Toast.makeText(this, "Service Stopped", Toast.LENGTH_SHORT).show();
     }
 }
