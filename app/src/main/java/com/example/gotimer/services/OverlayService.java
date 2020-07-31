@@ -178,7 +178,7 @@ public class OverlayService extends Service {
 
         //Launches TransparentActivity to "clear" last process name on actual phone. Then
         // launches home screen
-        Intent mainIntent = new Intent(this, TransparentActivity.class);
+        Intent mainIntent = new Intent(this, MainActivity.class);
         mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(mainIntent);
 
