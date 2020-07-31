@@ -68,6 +68,7 @@ public class AddFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_add, container, false);
         mNameEditText = root.findViewById(R.id.profilename_input);
+
         mStartButton = root.findViewById(R.id.starttime_button);
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +76,7 @@ public class AddFragment extends Fragment {
                 showTimePickerDialog(view);
             }
         });
+
         mEndButton = root.findViewById(R.id.endtime_button);
         mEndButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +84,7 @@ public class AddFragment extends Fragment {
                 showTimePickerDialog(view);
             }
         });
+
         mSaveButton = root.findViewById(R.id.save_profile_button);
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -137,8 +140,9 @@ public class AddFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void createTimerProfile() {
         mProfileName = mNameEditText.getText().toString();
-        mStartTime = addViewModel.getTime();
-        Profile newProfile = new Profile(mProfileName, mStartTime, mStartTime);
+        mStartTime = addViewModel.getStartTime();
+        mEndTime = addViewModel.getEndTime();
+        Profile newProfile = new Profile(mProfileName, mStartTime, mEndTime);
         mSelectedDays = mDayPicker.getSelectedDaysText();
         if (mSelectedDays != null) {
             newProfile.setDaysActiveString(mSelectedDays);
@@ -148,10 +152,6 @@ public class AddFragment extends Fragment {
         }
         if (mProcessList != null) {
             newProfile.setBlockedProcessNamesString(mProcessList);
-        }
-        for (Profile profile : mProfileList) {
-            profile.setOn(false);
-            addViewModel.updateProfile(profile);
         }
         addViewModel.insertNewTimerProfile(newProfile);
     }

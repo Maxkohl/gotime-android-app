@@ -16,7 +16,8 @@ import java.util.Date;
 import java.util.List;
 
 public class AddViewModel extends AndroidViewModel {
-    private long mTime;
+    private long mStartTime;
+    private long mEndTime;
     private static final String TAG = AddViewModel.class.getSimpleName();
     private Repository mRepository;
 
@@ -33,15 +34,23 @@ public class AddViewModel extends AndroidViewModel {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             Date stringFormatted = format.parse("1999-12-12 " + hourString + ":" + minuteString + ":00");
-            mTime = stringFormatted.getTime() / 1000;
+            if (mStartTime == 0) {
+                mStartTime = stringFormatted.getTime() / 1000;
+            } else {
+                mEndTime = stringFormatted.getTime() / 1000;
+            }
         } catch (ParseException e) {
             Log.d(TAG, "Exception when parsing time into formatted time");
             e.printStackTrace();
         }
     }
 
-    public long getTime() {
-        return mTime;
+    public long getStartTime() {
+        return mStartTime;
+    }
+
+    public long getEndTime() {
+        return mEndTime;
     }
 
     public void insertNewTimerProfile(Profile newProfile) {

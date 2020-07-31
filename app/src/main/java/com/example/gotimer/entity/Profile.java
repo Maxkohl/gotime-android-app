@@ -49,7 +49,7 @@ public class Profile {
         this.profileName = profileName;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.isOn = true;
+        this.isOn = false;
     }
 
     public int getProfileId() {
