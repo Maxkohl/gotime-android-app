@@ -48,7 +48,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
 
         RecyclerView recyclerView = root.findViewById(R.id.profilesRecycler);
         final ProfilesListAdapter adapter = new ProfilesListAdapter(mContext,
-                switchListenerInterface);
+                switchListenerInterface, deleteClickInterface);
         recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
         recyclerView.setAdapter(adapter);
 
@@ -130,16 +130,15 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         return false;
     }
 
-    OnDeleteClickListener deleteClickListener = new OnDeleteClickListener() {
+    OnDeleteClickListener deleteClickInterface= new OnDeleteClickListener() {
         @Override
         public void OnDeleteClickListener(int profileId) {
-//            timerViewModel.deleteProfile(profileId);
+            timerViewModel.deleteProfile(profileId);
         }
     };
 
 
     @Override
     public void OnDeleteClickListener(int profileId) {
-
     }
 }

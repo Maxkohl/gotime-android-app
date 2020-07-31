@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gotimer.R;
 import com.example.gotimer.entity.Profile;
+import com.example.gotimer.interfaces.OnDeleteClickListener;
 import com.example.gotimer.interfaces.OnSwitchChange;
 
 import org.w3c.dom.Text;
@@ -30,11 +31,13 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
     private boolean profileChanged = false;
 
     private OnSwitchChange mSwitchListener;
+    private OnDeleteClickListener mDeleteClickListener;
 
-    public ProfilesListAdapter(Context context, OnSwitchChange switchListener) {
+    public ProfilesListAdapter(Context context, OnSwitchChange switchListener, OnDeleteClickListener deleteClickListener) {
         inflater = LayoutInflater.from(context);
         this.mContext = mContext;
         mSwitchListener = switchListener;
+        mDeleteClickListener = deleteClickListener;
     }
 
     @NonNull
@@ -68,7 +71,7 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
             holder.deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    mDeleteClickListener.OnDeleteClickListener(current.getProfileId());
                 }
             });
         }
