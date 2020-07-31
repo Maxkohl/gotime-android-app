@@ -58,25 +58,6 @@ public class OverlayService extends Service {
     private static final int NOTIFICATION_ID = 5;
     private static final String NOTIFICATION_CHANNEL_ID = "com.example.gotimer.services.overlayservice";
 
-    int LAYOUT_FLAG;
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "Test Service Started", Toast.LENGTH_SHORT).show();
-        alreadyDisplayed = false;
-        handler = new Handler(Looper.getMainLooper());
-        runnableCode = new Runnable() {
-            @Override
-            public void run() {
-                blockApp();
-                handler.postDelayed(runnableCode, 1000);
-            }
-        };
-        handler.post(runnableCode);
-        return super.onStartCommand(intent, flags, startId);
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onCreate() {
@@ -87,10 +68,53 @@ public class OverlayService extends Service {
         startServiceAndNotification();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        isServiceRunning = intent.getBooleanExtra("serviceOn", false);
+        if (isServiceRunning) {
+            Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
+            alreadyDisplayed = false;
+            handler = new Handler(Looper.getMainLooper());
+            runnableCode = new Runnable() {
+                @Override
+                public void run() {
+                    blockApp();
+                    handler.postDelayed(runnableCode, 1000);
+                }
+            };
+            handler.post(runnableCode);
+
+        } else {
+            onDestroy();
+        }
+        return START_STICKY;
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    public void blockApp() {
+        String currentAppProcess = getCurrentApp();
+        String lastProcess = "";
+//        if (currentAppProcess != lastProcess) {
+        if (currentAppProcess.equals("com.instagram.android") || currentAppProcess.equals(
+                "com" +
+                        ".twitter.android")) {
+            if (!alreadyDisplayed) {
+                displayOverlay();
+                alreadyDisplayed = true;
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+//            }
+        }
     }
 
     private String getCurrentApp() {
@@ -120,26 +144,6 @@ public class OverlayService extends Service {
             String mm = (manager.getRunningTasks(1).get(0)).topActivity.getPackageName();
             Log.e("AppMontiorService", "Current App in foreground is: " + mm);
             return mm;
-        }
-    }
-
-    public void blockApp() {
-        String currentAppProcess = getCurrentApp();
-        String lastProcess = "";
-//        if (currentAppProcess != lastProcess) {
-        if (currentAppProcess.equals("com.instagram.android") || currentAppProcess.equals(
-                "com" +
-                        ".twitter.android")) {
-            if (!alreadyDisplayed) {
-                displayOverlay();
-                alreadyDisplayed = true;
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-//            }
         }
     }
 
@@ -210,7 +214,7 @@ public class OverlayService extends Service {
         if (isServiceRunning) return;
         isServiceRunning = true;
 
-        Intent notificationIntent = new Intent(getApplicationContext(), TimerFragment.class);
+        Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
         notificationIntent.setAction(Intent.ACTION_MAIN);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -225,6 +229,15 @@ public class OverlayService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        stopForeground(true);
+        isServiceRunning = false;
+        Toast.makeText(this, "On Destroy Service", Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void stopMyService() {
+        stopForeground(true);
+        isServiceRunning = false;
         Toast.makeText(this, "Service Stopped", Toast.LENGTH_SHORT).show();
     }
 }

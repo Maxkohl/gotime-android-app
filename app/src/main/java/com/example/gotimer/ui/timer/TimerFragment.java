@@ -1,5 +1,6 @@
 package com.example.gotimer.ui.timer;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,12 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gotimer.R;
 import com.example.gotimer.entity.Profile;
 import com.example.gotimer.interfaces.OnSwitchChange;
-import com.example.gotimer.services.AppMonitorService;
 import com.example.gotimer.services.OverlayService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 public class TimerFragment extends Fragment implements OnSwitchChange {
 
@@ -32,6 +31,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
     private boolean mServiceOn;
     private Profile activeProfile;
     Intent serviceIntent;
+    private int serviceCount = 0;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -59,9 +59,16 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
                 new Observer<List<Profile>>() {
                     @Override
                     public void onChanged(List<Profile> profileList) {
-                        if (profileList != null && profileList.size() >= 1) {
-                            activeProfile = profileList.get(0);
-                            startAppMonitoringService();
+                        if (profileList != null && profileList.size() == 1) {
+                            //This is happening twice creating 2 services and I don't know why
+                            if (!isMyServiceRunning(OverlayService.class)) {
+                                activeProfile = profileList.get(0);
+                                mServiceOn = true;
+                                toggleAppMonitoringService(mServiceOn);
+                            }
+                        } else {
+                            mServiceOn = false;
+                            toggleAppMonitoringService(mServiceOn);
                         }
                     }
                 });
@@ -96,15 +103,31 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
 
     }
 
-    private void startAppMonitoringService() {
+    private void toggleAppMonitoringService(boolean mServiceOn) {
         serviceIntent = new Intent(getActivity(), OverlayService.class);
-        ArrayList<String> processList = new ArrayList<>();
-        if (activeProfile != null) {
-            processList = new ArrayList<>(activeProfile.getBlockedProcessNames());
+        if (mServiceOn) {
+            ArrayList<String> processList = new ArrayList<>();
+            if (activeProfile != null) {
+                processList = new ArrayList<>(activeProfile.getBlockedProcessNames());
+            }
+            serviceIntent.putExtra("serviceOn", mServiceOn);
+            serviceIntent.putStringArrayListExtra("processList", processList);
+            getActivity().startService(serviceIntent);
+        } else {
+            getActivity().stopService(serviceIntent);
         }
-        serviceIntent.putExtra("serviceOn", mServiceOn);
-        serviceIntent.putStringArrayListExtra("processList", processList);
-        getActivity().startService(serviceIntent);
+
     }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager)getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }
