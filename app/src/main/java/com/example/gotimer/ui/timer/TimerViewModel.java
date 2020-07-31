@@ -33,4 +33,6 @@ public class TimerViewModel extends AndroidViewModel {
         return mRepository.getActiveProfiles(isOn);
     }
 
+    public void deleteProfile(int profileId) { mRepository.deleteProfile(profileId);}
+
 }

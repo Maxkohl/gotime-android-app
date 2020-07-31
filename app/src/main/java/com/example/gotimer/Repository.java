@@ -1,6 +1,7 @@
 package com.example.gotimer;
 
 import android.app.Application;
+import android.content.Intent;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
@@ -36,6 +37,10 @@ public class Repository {
         return mProfileDao.getActiveProfile(isOn);
     }
 
+    public void deleteProfile(int profileId) {
+        new deleteAsyncTask(mProfileDao).execute(profileId);
+    }
+
 
     //TODO Replace AsyncTasks with NOT DEPRECATED tech
     private class insertAsyncTask extends AsyncTask<Profile, Void, Void> {
@@ -60,6 +65,19 @@ public class Repository {
         @Override
         protected Void doInBackground(Profile... profiles) {
             mAsyncTaskDao.updateProfile(profiles[0]);
+            return null;
+        }
+    }
+
+    private class deleteAsyncTask extends AsyncTask<Integer, Void, Void> {
+        private ProfileDao mAsyncTaskDao;
+        deleteAsyncTask(ProfileDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Integer... profileIds) {
+            mAsyncTaskDao.deleteProfile(profileIds[0]);
             return null;
         }
     }
