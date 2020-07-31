@@ -33,7 +33,8 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
     private OnSwitchChange mSwitchListener;
     private OnDeleteClickListener mDeleteClickListener;
 
-    public ProfilesListAdapter(Context context, OnSwitchChange switchListener, OnDeleteClickListener deleteClickListener) {
+    public ProfilesListAdapter(Context context, OnSwitchChange switchListener,
+                               OnDeleteClickListener deleteClickListener) {
         inflater = LayoutInflater.from(context);
         this.mContext = mContext;
         mSwitchListener = switchListener;

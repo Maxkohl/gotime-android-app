@@ -45,6 +45,7 @@ public class Repository {
     //TODO Replace AsyncTasks with NOT DEPRECATED tech
     private class insertAsyncTask extends AsyncTask<Profile, Void, Void> {
         private ProfileDao mAsyncTaskDao;
+
         insertAsyncTask(ProfileDao dao) {
             mAsyncTaskDao = dao;
         }
@@ -58,6 +59,7 @@ public class Repository {
 
     private class updateAsyncTask extends AsyncTask<Profile, Void, Void> {
         private ProfileDao mAsyncTaskDao;
+
         updateAsyncTask(ProfileDao dao) {
             mAsyncTaskDao = dao;
         }
@@ -71,6 +73,7 @@ public class Repository {
 
     private class deleteAsyncTask extends AsyncTask<Integer, Void, Void> {
         private ProfileDao mAsyncTaskDao;
+
         deleteAsyncTask(ProfileDao dao) {
             mAsyncTaskDao = dao;
         }

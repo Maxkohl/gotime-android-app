@@ -116,13 +116,15 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             }
             serviceIntent.putStringArrayListExtra("processList", processList);
         }
-            serviceIntent.putExtra("serviceOn", mServiceOn);
-            getActivity().startService(serviceIntent);
+        serviceIntent.putExtra("serviceOn", mServiceOn);
+        getActivity().startService(serviceIntent);
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager)getActivity().getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+        ActivityManager manager =
+                (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service :
+                manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
                 return true;
             }
@@ -130,7 +132,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         return false;
     }
 
-    OnDeleteClickListener deleteClickInterface= new OnDeleteClickListener() {
+    OnDeleteClickListener deleteClickInterface = new OnDeleteClickListener() {
         @Override
         public void OnDeleteClickListener(int profileId) {
             timerViewModel.deleteProfile(profileId);
