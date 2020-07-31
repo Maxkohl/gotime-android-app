@@ -2,12 +2,17 @@ package com.example.gotimer.services;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.os.Build;
@@ -29,10 +34,12 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import com.example.gotimer.MainActivity;
 import com.example.gotimer.R;
 import com.example.gotimer.ui.overlay.AppBlockOverlay;
+import com.example.gotimer.ui.timer.TimerFragment;
 import com.example.gotimer.util.TransparentActivity;
 
 import java.util.List;
@@ -47,6 +54,9 @@ public class OverlayService extends Service {
     WindowManager windowManager;
 
     boolean alreadyDisplayed;
+    public static boolean isServiceRunning = false;
+    private static final int NOTIFICATION_ID = 5;
+    private static final String NOTIFICATION_CHANNEL_ID = "com.example.gotimer.services.overlayservice";
 
     int LAYOUT_FLAG;
 
@@ -67,10 +77,14 @@ public class OverlayService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onCreate() {
         super.onCreate();
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createChannel();
+        }
+        startServiceAndNotification();
     }
 
     @Nullable
@@ -158,10 +172,6 @@ public class OverlayService extends Service {
         Intent mainIntent = new Intent(this, TransparentActivity.class);
         mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(mainIntent);
-//        Intent startHomescreen = new Intent(Intent.ACTION_MAIN);
-//        startHomescreen.addCategory(Intent.CATEGORY_HOME);
-//        startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(startHomescreen);
 
         mViewGroup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,21 +186,45 @@ public class OverlayService extends Service {
         });
     }
 
-//    public void removeOverlay() {
-//        if (removeOverlay) {
-//            removeOverlay = false;
-//            mViewGroup.setVisibility(View.INVISIBLE);
-//            try {
-//                windowManager.removeView(mViewGroup);
-//            } catch (IllegalArgumentException e) {
-//                Log.e("REMOVE OVERLAY", "ERROR");
-//            }
-//        }
-//    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private synchronized String createChannel() {
+        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        String name = "GoTimer";
+        int importance = NotificationManager.IMPORTANCE_LOW;
+
+        NotificationChannel mChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
+
+        mChannel.enableLights(true);
+        mChannel.setLightColor(Color.BLUE);
+        if (mNotificationManager != null) {
+            mNotificationManager.createNotificationChannel(mChannel);
+        } else {
+            stopSelf();
+        }
+        return "GoTimer";
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void startServiceAndNotification() {
+        if (isServiceRunning) return;
+        isServiceRunning = true;
+
+        Intent notificationIntent = new Intent(getApplicationContext(), TimerFragment.class);
+        notificationIntent.setAction(Intent.ACTION_MAIN);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        builder.setContentTitle("GoTimer"
+        ).setContentText("GoTimer is currently running").setSmallIcon(R.drawable.ic_timer).setContentIntent(pendingIntent).setOngoing(true).setPriority(NotificationManager.IMPORTANCE_MIN)
+                .setCategory(Notification.CATEGORY_SERVICE);
+        startForeground(NOTIFICATION_ID, builder.build());
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        windowManager.removeView(mViewGroup);
+        Toast.makeText(this, "Service Stopped", Toast.LENGTH_SHORT).show();
     }
 }

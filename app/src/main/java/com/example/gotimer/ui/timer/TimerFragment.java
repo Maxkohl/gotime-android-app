@@ -31,6 +31,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
     private List<Profile> mProfileList;
     private boolean mServiceOn;
     private Profile activeProfile;
+    Intent serviceIntent;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -56,16 +57,14 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
 
         timerViewModel.getActiveProfiles(true).observe(getViewLifecycleOwner(),
                 new Observer<List<Profile>>() {
-            @Override
-            public void onChanged(List<Profile> profileList) {
-                if (profileList != null && profileList.size() >= 1) {
-                    activeProfile = profileList.get(0);
-                    startAppMonitoringService();
-                }
-            }
-        });
-
-
+                    @Override
+                    public void onChanged(List<Profile> profileList) {
+                        if (profileList != null && profileList.size() >= 1) {
+                            activeProfile = profileList.get(0);
+                            startAppMonitoringService();
+                        }
+                    }
+                });
 
         //Calling this outside of recyclerview thread because if it's in recycler view error occurs
         adapter.notifyDataSetChanged();
@@ -98,14 +97,14 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
     }
 
     private void startAppMonitoringService() {
-        Intent intent = new Intent(getActivity(), OverlayService.class);
+        serviceIntent = new Intent(getActivity(), OverlayService.class);
         ArrayList<String> processList = new ArrayList<>();
         if (activeProfile != null) {
             processList = new ArrayList<>(activeProfile.getBlockedProcessNames());
         }
-        intent.putExtra("serviceOn", mServiceOn);
-        intent.putStringArrayListExtra("processList", processList);
-        getActivity().startService(intent);
+        serviceIntent.putExtra("serviceOn", mServiceOn);
+        serviceIntent.putStringArrayListExtra("processList", processList);
+        getActivity().startService(serviceIntent);
     }
 
 }
