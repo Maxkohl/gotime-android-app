@@ -29,13 +29,12 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_delete"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/profileStartTime"
             style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="Start Time"
@@ -47,14 +46,23 @@
         <TextView
             android:id="@+id/profileEndTime"
             style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="End Time"
             android:textSize="12dp"
             android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/profileStartTime" />
+            app:layout_constraintBaseline_toBaselineOf="@id/profileStartTime"
+            app:layout_constraintLeft_toRightOf="@id/profileStartTime"
+            app:layout_constraintRight_toRightOf="@id/isActive" />
+
+        <Switch
+            android:id="@+id/isActive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBaseline_toBaselineOf="@id/profileEndTime"
+            app:layout_constraintLeft_toLeftOf="@id/profileEndTime"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <TextView
             android:id="@+id/profileDaysActive"
@@ -80,37 +88,13 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profileDaysActive" />
 
-        <Switch
-            android:id="@+id/isActive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/blockedApps"
-            app:layout_constraintLeft_toLeftOf="parent"
-            />
-
         <TextView
             android:id="@+id/isOnText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/isActive"
             app:layout_constraintLeft_toLeftOf="parent"
-            />
-
-        <TextView
-            android:id="@+id/processesBlocked"
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Blocked Process"
-            android:textSize="12dp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/isOnText"
-            app:layout_constraintLeft_toLeftOf="parent"
-            />
-
-
-
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/isActive" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -68,7 +68,6 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
                 }
             });
             holder.isOn.setText("Active: " + current.isOn());
-            holder.mBlockedProcesses.setText(current.getBlockedAppsProcessNames());
             holder.deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -100,7 +99,6 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
         private final TextView mBlockedApps;
         private final Switch mIsActive;
         private final TextView isOn;
-        private final TextView mBlockedProcesses;
         private final ImageButton deleteButton;
 
         public ProfilesViewHolder(@NonNull View itemView) {
@@ -112,7 +110,6 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
             mBlockedApps = itemView.findViewById(R.id.blockedApps);
             mIsActive = itemView.findViewById(R.id.isActive);
             isOn = itemView.findViewById(R.id.isOnText);
-            mBlockedProcesses = itemView.findViewById(R.id.processesBlocked);
             deleteButton = itemView.findViewById(R.id.delete_imagebutton);
         }
     }
