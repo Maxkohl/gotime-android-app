@@ -104,18 +104,20 @@ public class OverlayService extends Service {
         String currentAppProcess = getCurrentApp();
         String lastProcess = "";
 //        if (currentAppProcess != lastProcess) {
-        for (String processName : processList) {
-            if (currentAppProcess.equals(processName)){
-                if (!alreadyDisplayed) {
-                    displayOverlay();
-                    alreadyDisplayed = true;
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+        if (processList != null) {
+            for (String processName : processList) {
+                if (currentAppProcess.equals(processName)) {
+                    if (!alreadyDisplayed) {
+                        displayOverlay();
+                        alreadyDisplayed = true;
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
 //            }
+                }
             }
         }
     }
