@@ -171,7 +171,10 @@ public class Profile {
     }
 
     public List<String> getBlockedProcessNames() {
-        return new ArrayList<String>(Arrays.asList(blockedAppsProcessNames.split("-")));
+        if (blockedAppsProcessNames != null) {
+            return new ArrayList<String>(Arrays.asList(blockedAppsProcessNames.split("-")));
+        }
+        return new ArrayList<>();
     }
 }
 

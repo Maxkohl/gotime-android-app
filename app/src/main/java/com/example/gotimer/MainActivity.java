@@ -28,9 +28,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        Intent intent = new Intent(this, OverlayService.class);
-        this.startService(intent);
-
     }
 
 

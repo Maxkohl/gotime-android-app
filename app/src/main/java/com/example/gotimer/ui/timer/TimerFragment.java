@@ -18,6 +18,7 @@ import com.example.gotimer.R;
 import com.example.gotimer.entity.Profile;
 import com.example.gotimer.interfaces.OnSwitchChange;
 import com.example.gotimer.services.AppMonitorService;
+import com.example.gotimer.services.OverlayService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,18 +60,12 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
             public void onChanged(List<Profile> profileList) {
                 if (profileList != null && profileList.size() >= 1) {
                     activeProfile = profileList.get(0);
+                    startAppMonitoringService();
                 }
             }
         });
 
-        if (activeProfile != null) {
-            mServiceOn = true;
-        } else {
-            mServiceOn = false;
-        }
 
-
-//        startAppMonitoringService(activeProfile);
 
         //Calling this outside of recyclerview thread because if it's in recycler view error occurs
         adapter.notifyDataSetChanged();
@@ -102,8 +97,8 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
 
     }
 
-    private void startAppMonitoringService(Profile activeProfile) {
-        Intent intent = new Intent(getActivity(), AppMonitorService.class);
+    private void startAppMonitoringService() {
+        Intent intent = new Intent(getActivity(), OverlayService.class);
         ArrayList<String> processList = new ArrayList<>();
         if (activeProfile != null) {
             processList = new ArrayList<>(activeProfile.getBlockedProcessNames());
@@ -112,4 +107,5 @@ public class TimerFragment extends Fragment implements OnSwitchChange {
         intent.putStringArrayListExtra("processList", processList);
         getActivity().startService(intent);
     }
+
 }
