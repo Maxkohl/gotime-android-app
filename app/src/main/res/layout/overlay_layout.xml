@@ -22,12 +22,17 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Go Home"
-        android:textSize="64dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginLeft="24dp"
+        android:text="Exit"
+        android:textSize="64sp"
+        android:textColor="@android:color/holo_orange_dark"
         android:textAlignment="center"
         app:layout_constraintTop_toBottomOf="@id/overlay_text"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/cardview_light_background"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/rounded_corners"
         android:gravity="center_horizontal" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
