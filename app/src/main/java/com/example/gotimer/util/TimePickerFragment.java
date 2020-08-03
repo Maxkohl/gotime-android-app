@@ -1,4 +1,4 @@
-package com.example.gotimer.ui.add;
+package com.example.gotimer.util;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.TimePicker;
 
 import com.example.gotimer.R;
+import com.example.gotimer.ui.add.AddViewModel;
 import com.example.gotimer.ui.timer.TimerViewModel;
 
 
@@ -53,6 +54,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         //TODO Is this the best place to put this shared view model? It works though...
         AddViewModel model = new ViewModelProvider(requireActivity()).get(AddViewModel.class);
+
        model.processTimePickerResult(hourOfDay, minute);
     }
 }

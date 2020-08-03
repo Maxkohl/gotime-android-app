@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.add.TimePickerFragment">
+    tools:context=".util.TimePickerFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

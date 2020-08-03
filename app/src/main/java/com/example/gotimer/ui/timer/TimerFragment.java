@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -23,6 +25,8 @@ import com.example.gotimer.entity.Profile;
 import com.example.gotimer.interfaces.OnDeleteClickListener;
 import com.example.gotimer.interfaces.OnSwitchChange;
 import com.example.gotimer.services.OverlayService;
+import com.example.gotimer.util.EndTimePickerFragment;
+import com.example.gotimer.util.TimePickerFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,11 +180,20 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
+                showTimePickerDialog();
             }
         });
         builder.setNegativeButton("Cancel", null);
 
         AlertDialog dialog = builder.create();
         dialog.show();
+
+
     }
+
+    public void showTimePickerDialog() {
+        DialogFragment newFragment = new EndTimePickerFragment();
+        newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
+    }
+
 }
