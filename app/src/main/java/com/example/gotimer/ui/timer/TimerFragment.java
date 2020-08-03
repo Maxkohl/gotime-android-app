@@ -160,8 +160,16 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     }
 
     private void quickBlock() {
+        getBlockedProfile();
+
+
+    }
+
+    public void getBlockedProfile() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Choose a profile");
+
+        final Profile[] blockedProfile = new Profile[1];
 
         String[] profiles = new String[mProfileList.size()];
         for (int i = 0; i < profiles.length; i++) {
@@ -169,17 +177,24 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         }
 
         int checkedItem = 0;
+        final int[] selectedItem = {0};
         builder.setSingleChoiceItems(profiles, checkedItem, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // user checked an item
+                selectedItem[0] = which;
             }
         });
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                Profile selectedProfile = mProfileList.get(selectedItem[0]);
+                for (Profile profile : mProfileList) {
+                    profile.setOn(false);
+                    timerViewModel.updateProfile(profile);
+                }
+                selectedProfile.setOn(true);
+                timerViewModel.updateProfile(selectedProfile);
                 showTimePickerDialog();
             }
         });
@@ -187,7 +202,6 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
 
         AlertDialog dialog = builder.create();
         dialog.show();
-
 
     }
 
