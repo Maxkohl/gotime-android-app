@@ -16,9 +16,18 @@
         android:roundIcon="@mipmap/ic_gotime_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver
+            android:name=".receivers.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA_yCvVrerW3hsbj1mUkmNpNeTPUra8vm4" />
+
         <activity
             android:name=".util.TransparentActivity"
-            android:theme="@style/Theme.Transparent"></activity>
+            android:theme="@style/Theme.Transparent" />
         <activity
             android:name=".ui.appselector.AppSelectorActivity"
             android:parentActivityName=".MainActivity"
@@ -34,9 +43,6 @@
         </activity>
 
         <service android:name=".services.OverlayService" />
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAcXQksbBt1lb6o7uAKZUozwYXURxaTK60"/>
     </application>
 
 </manifest>
