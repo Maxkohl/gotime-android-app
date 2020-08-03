@@ -1,9 +1,11 @@
 package com.example.gotimer.ui.timer;
 
 import android.app.Application;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -14,6 +16,7 @@ import com.example.gotimer.entity.Profile;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +24,7 @@ public class TimerViewModel extends AndroidViewModel {
 
     private Repository mRepository;
     private static final String TAG = TimerViewModel.class.getSimpleName();
-    long mEndTime;
+    private long mEndTime;
 
 
     public TimerViewModel(@NonNull Application application) {
@@ -45,15 +48,15 @@ public class TimerViewModel extends AndroidViewModel {
         mRepository.deleteProfile(profileId);
     }
 
+
     public void processTimePickerResult(int hourOfDay, int minute) {
         String hourString = Integer.toString(hourOfDay);
         String minuteString = Integer.toString(minute);
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            Date stringFormatted = format.parse("1999-12-12 " + hourString + ":" + minuteString + ":00");
-            mEndTime = stringFormatted.getTime() / 1000;
-
+            Date stringFormatted = format.parse("1970-01-01 " + hourString + ":" + minuteString + ":00");
+            mEndTime = stringFormatted.getTime();
         } catch (ParseException e) {
             Log.d(TAG, "Exception when parsing time into formatted time");
             e.printStackTrace();

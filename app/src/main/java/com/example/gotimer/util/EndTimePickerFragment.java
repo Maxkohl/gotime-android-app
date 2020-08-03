@@ -54,7 +54,6 @@ public class EndTimePickerFragment extends DialogFragment implements TimePickerD
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        //TODO Is this the best place to put this shared view model? It works though...
         TimerViewModel model = new ViewModelProvider(requireActivity()).get(TimerViewModel.class);
 
         model.processTimePickerResult(hourOfDay, minute);

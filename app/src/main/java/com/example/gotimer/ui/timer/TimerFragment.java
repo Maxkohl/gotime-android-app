@@ -6,16 +6,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,11 +28,14 @@ import com.example.gotimer.entity.Profile;
 import com.example.gotimer.interfaces.OnDeleteClickListener;
 import com.example.gotimer.interfaces.OnSwitchChange;
 import com.example.gotimer.services.OverlayService;
+import com.example.gotimer.ui.add.AddViewModel;
 import com.example.gotimer.util.EndTimePickerFragment;
-import com.example.gotimer.util.TimePickerFragment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteClickListener {
 
@@ -40,6 +46,11 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     private Profile activeProfile;
     Intent serviceIntent;
     private Button quickBlockButton;
+    private Button startTimerButton;
+    private TextView timerCountdown;
+    private Profile selectedQuickBlockProfile;
+    private long mEndTime;
+    private boolean isQuickBlockActive = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -47,25 +58,54 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         mContext = context;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        timerViewModel = new ViewModelProvider(requireActivity()).get(TimerViewModel.class);
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        timerViewModel =
-                ViewModelProviders.of(this).get(TimerViewModel.class);
         View root = inflater.inflate(R.layout.fragment_timer, container, false);
-
-        quickBlockButton = root.findViewById(R.id.quick_block_bttn);
-        quickBlockButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                quickBlock();
-            }
-        });
 
         RecyclerView recyclerView = root.findViewById(R.id.profilesRecycler);
         final ProfilesListAdapter adapter = new ProfilesListAdapter(mContext,
                 switchListenerInterface, deleteClickInterface);
         recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
         recyclerView.setAdapter(adapter);
+
+        timerCountdown = root.findViewById(R.id.timer_countdown);
+
+        quickBlockButton = root.findViewById(R.id.quick_block_bttn);
+        quickBlockButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createQuickBlock();
+            }
+        });
+
+        startTimerButton = root.findViewById(R.id.start_timer_bttn);
+        if (isQuickBlockActive) {
+            startTimerButton.setText("STOP TIMER");
+        } else {
+            startTimerButton.setText("START");
+        }
+        startTimerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (selectedQuickBlockProfile != null) {
+                    if (isQuickBlockActive) {
+                        isQuickBlockActive = false;
+                    } else {
+                        startQuickBlock();
+                        isQuickBlockActive = true;
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+
+            }
+        });
+
 
         timerViewModel.getAllProfiles().observe(getViewLifecycleOwner(), profiles -> {
             mProfileList = profiles;
@@ -103,7 +143,6 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         @Override
         public void onSwitchChange(List<Profile> updatedProfileList, int positionOfChanged) {
             mProfileList = updatedProfileList;
-            //CREATING INFINITE LOOP OF CHANGING SWITCH AND TRIGGERING CALLBACK
             for (int i = 0; i < mProfileList.size(); i++) {
                 Profile current = mProfileList.get(i);
                 if (i == positionOfChanged && !current.isOn()) {
@@ -159,17 +198,9 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     public void OnDeleteClickListener(int profileId) {
     }
 
-    private void quickBlock() {
-        getBlockedProfile();
-
-
-    }
-
-    public void getBlockedProfile() {
+    public void createQuickBlock() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Choose a profile");
-
-        final Profile[] blockedProfile = new Profile[1];
 
         String[] profiles = new String[mProfileList.size()];
         for (int i = 0; i < profiles.length; i++) {
@@ -188,13 +219,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Profile selectedProfile = mProfileList.get(selectedItem[0]);
-                for (Profile profile : mProfileList) {
-                    profile.setOn(false);
-                    timerViewModel.updateProfile(profile);
-                }
-                selectedProfile.setOn(true);
-                timerViewModel.updateProfile(selectedProfile);
+                selectedQuickBlockProfile = mProfileList.get(selectedItem[0]);
                 showTimePickerDialog();
             }
         });
@@ -208,6 +233,33 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     public void showTimePickerDialog() {
         DialogFragment newFragment = new EndTimePickerFragment();
         newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
+    }
+
+    private void startCountdown() {
+        mEndTime = timerViewModel.getEndTime();
+        long currentTime = System.currentTimeMillis() ;
+        long durationTime = currentTime - mEndTime;
+        new CountDownTimer(durationTime, 1000) {
+            public void onTick(long millisUntilFinished) {
+                timerCountdown.setText("Time Remaining: " + new SimpleDateFormat("yyyy-MM-dd " +
+                        "HH:mm:ss").format(new Date(millisUntilFinished)));
+            }
+
+            public void onFinish() {
+                timerCountdown.setText("done!");
+            }
+        }.start();
+    }
+
+    private void startQuickBlock() {
+        for (Profile profile : mProfileList) {
+            profile.setOn(false);
+            timerViewModel.updateProfile(profile);
+        }
+        selectedQuickBlockProfile.setOn(true);
+        timerViewModel.updateProfile(selectedQuickBlockProfile);
+        startCountdown();
+
     }
 
 }

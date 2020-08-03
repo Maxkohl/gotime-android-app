@@ -43,6 +43,7 @@ public class AddFragment extends Fragment {
     private WeekdaysPicker mDayPicker;
     private List<String> mSelectedDays;
     private Button mSelectAppsButton;
+    boolean quickBlockStarted = false;
 
     private List<String> mAppList;
     private List<String> mProcessList;
