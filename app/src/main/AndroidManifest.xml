@@ -39,6 +39,9 @@
             </intent-filter>
         </service>
         <service android:name=".services.OverlayService" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAcXQksbBt1lb6o7uAKZUozwYXURxaTK60"/>
     </application>
 
 </manifest>
