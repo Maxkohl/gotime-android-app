@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_timer"
-        android:name="com.example.gotimer.ui.timer.TimerFragment"
+        android:name="com.maxkohl.gotimer.ui.timer.TimerFragment"
         android:label="@string/title_timer"
         tools:layout="@layout/fragment_timer" />
 
     <fragment
         android:id="@+id/navigation_add"
-        android:name="com.example.gotimer.ui.add.AddFragment"
+        android:name="com.maxkohl.gotimer.ui.add.AddFragment"
         android:label="@string/title_add"
         tools:layout="@layout/fragment_add" />
 
     <fragment
         android:id="@+id/navigation_stats"
-        android:name="com.example.gotimer.ui.stats.StatsFragment"
+        android:name="com.maxkohl.gotimer.ui.stats.StatsFragment"
         android:label="@string/title_stats"
         tools:layout="@layout/fragment_stats" />
 </navigation>
