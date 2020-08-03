@@ -43,6 +43,7 @@ public class AddFragment extends Fragment {
     private WeekdaysPicker mDayPicker;
     private List<String> mSelectedDays;
     private Button mSelectAppsButton;
+    private Button mSelectLocationButton;
     boolean quickBlockStarted = false;
 
     private List<String> mAppList;
@@ -109,6 +110,13 @@ public class AddFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 launchAppSelectorActivity();
+            }
+        });
+        mSelectLocationButton = root.findViewById(R.id.location_button);
+        mSelectLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                
             }
         });
 
