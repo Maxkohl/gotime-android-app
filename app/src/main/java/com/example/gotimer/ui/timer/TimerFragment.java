@@ -237,11 +237,11 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
 
     private void startCountdown() {
         mEndTime = timerViewModel.getEndTime();
-        long currentTime = System.currentTimeMillis() ;
-        long durationTime = currentTime - mEndTime;
+        long currentTime = System.currentTimeMillis();
+        long durationTime = mEndTime - currentTime;
         new CountDownTimer(durationTime, 1000) {
             public void onTick(long millisUntilFinished) {
-                timerCountdown.setText("Time Remaining: " + new SimpleDateFormat("yyyy-MM-dd " +
+                timerCountdown.setText("Time Remaining: " + new SimpleDateFormat(
                         "HH:mm:ss").format(new Date(millisUntilFinished)));
             }
 

@@ -104,7 +104,7 @@ public class OverlayService extends Service {
         String currentAppProcess = getCurrentApp();
         String lastProcess = "";
 //        if (currentAppProcess != lastProcess) {
-        if (processList != null) {
+        if (processList != null && currentAppProcess != null) {
             for (String processName : processList) {
                 if (currentAppProcess.equals(processName)) {
                     if (!alreadyDisplayed) {
