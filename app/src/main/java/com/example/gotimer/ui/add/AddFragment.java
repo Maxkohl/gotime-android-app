@@ -25,6 +25,9 @@ import com.example.gotimer.R;
 import com.example.gotimer.entity.Profile;
 import com.example.gotimer.ui.appselector.AppSelectorActivity;
 import com.example.gotimer.util.TimePickerFragment;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.List;
 
@@ -49,6 +52,7 @@ public class AddFragment extends Fragment {
     private List<String> mAppList;
     private List<String> mProcessList;
     private static final int APP_REQUEST = 0;
+    private static final int REQUEST_PICK_PLACE = 2;
 
     private List<Profile> mProfileList;
 
@@ -116,6 +120,12 @@ public class AddFragment extends Fragment {
         mSelectLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                try {
+                    startActivityForResult(builder.build(getActivity()), REQUEST_PICK_PLACE);
+                } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
                 
             }
         });
