@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="com.maxkohl.gotimer.ui.add.AddFragment">
+    tools:context=".ui.add.AddFragment">
 
 
     <TextView
@@ -15,7 +15,7 @@
         android:text="@string/timer_name"
         android:textColor="@color/colorPrimary" />
 
-    <com.maxkohl.gotimer.customviews.EditTextWithClear
+    <com.example.gotimer.customviews.EditTextWithClear
         android:id="@+id/profilename_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

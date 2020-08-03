@@ -5,7 +5,7 @@ android {
     buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "com.maxkohl.gotimer"
+        applicationId "com.example.gotimer"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 1

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.maxkohl.gotimer">
+    package="com.example.gotimer">
 
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
     <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
@@ -17,14 +17,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.maxkohl.gotimer.util.TransparentActivity"
+            android:name=".util.TransparentActivity"
             android:theme="@style/Theme.Transparent"></activity>
         <activity
-            android:name="com.maxkohl.gotimer.ui.appselector.AppSelectorActivity"
-            android:parentActivityName="com.maxkohl.gotimer.MainActivity"
+            android:name=".ui.appselector.AppSelectorActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.maxkohl.gotimer.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.maxkohl.gotimer.services.OverlayService" />
+        <service android:name=".services.OverlayService" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAcXQksbBt1lb6o7uAKZUozwYXURxaTK60"/>
