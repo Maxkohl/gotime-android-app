@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -32,6 +33,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     private boolean mServiceOn;
     private Profile activeProfile;
     Intent serviceIntent;
+    private Button quickBlockButton;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -44,6 +46,14 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         timerViewModel =
                 ViewModelProviders.of(this).get(TimerViewModel.class);
         View root = inflater.inflate(R.layout.fragment_timer, container, false);
+
+        quickBlockButton = root.findViewById(R.id.quick_block_bttn);
+        quickBlockButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quickBlock();
+            }
+        });
 
         RecyclerView recyclerView = root.findViewById(R.id.profilesRecycler);
         final ProfilesListAdapter adapter = new ProfilesListAdapter(mContext,
@@ -140,5 +150,9 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
 
     @Override
     public void OnDeleteClickListener(int profileId) {
+    }
+
+    private void quickBlock() {
+
     }
 }
