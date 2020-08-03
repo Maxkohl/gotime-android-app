@@ -1,7 +1,9 @@
 package com.example.gotimer.ui.timer;
 
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -62,6 +64,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         recyclerView.setAdapter(adapter);
 
         timerViewModel.getAllProfiles().observe(getViewLifecycleOwner(), profiles -> {
+            mProfileList = profiles;
             adapter.setProfiles(profiles);
         });
 
@@ -153,6 +156,31 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     }
 
     private void quickBlock() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Choose a profile");
 
+        String[] profiles = new String[mProfileList.size()];
+        for (int i = 0; i < profiles.length; i++) {
+            profiles[i] = mProfileList.get(i).getProfileName();
+        }
+
+        int checkedItem = 0;
+        builder.setSingleChoiceItems(profiles, checkedItem, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // user checked an item
+            }
+        });
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
