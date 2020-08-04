@@ -148,18 +148,9 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     OnSwitchChange switchListenerInterface = new OnSwitchChange() {
         @Override
         public void onSwitchChange(List<Profile> updatedProfileList, int positionOfChanged) {
-            mProfileList = updatedProfileList;
-            for (int i = 0; i < mProfileList.size(); i++) {
-                Profile current = mProfileList.get(i);
-                if (i == positionOfChanged && !current.isBlockActive()) {
-                    current.setBlockActive(true);
-                } else if (i == positionOfChanged && current.isBlockActive()) {
-                    current.setBlockActive(false);
-                } else if (i != positionOfChanged) {
-                    current.setBlockActive(false);
-                }
-                timerViewModel.updateProfile(current);
-            }
+            Profile switchedProfile = updatedProfileList.get(positionOfChanged);
+            switchedProfile.setAlarmActive(!switchedProfile.isAlarmActive());
+            timerViewModel.updateProfile(switchedProfile);
         }
     };
 

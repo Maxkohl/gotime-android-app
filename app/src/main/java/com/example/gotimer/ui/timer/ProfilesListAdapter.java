@@ -54,7 +54,7 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
             holder.mEndTime.setText(current.getEndTimeString());
             holder.mDaysActive.setText(current.getDaysActive());
             holder.mBlockedApps.setText(current.getBlockedApps());
-            holder.mIsActive.setChecked(current.isBlockActive());
+            holder.mIsActive.setChecked(current.isAlarmActive());
             //Using OnClickListener instead of onCheckedChangeListener so that infinite loop of
             // switch changing doesn't occur
             holder.mIsActive.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +63,7 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
                     mSwitchListener.onSwitchChange(mProfiles, position);
                 }
             });
-            holder.isOn.setText("Active: " + current.isBlockActive());
+            holder.isOn.setText("Active: " + current.isAlarmActive());
             holder.deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
