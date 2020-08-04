@@ -12,7 +12,6 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,14 +34,12 @@ import com.example.gotimer.entity.Profile;
 import com.example.gotimer.interfaces.OnDeleteClickListener;
 import com.example.gotimer.interfaces.OnSwitchChange;
 import com.example.gotimer.services.OverlayService;
-import com.example.gotimer.ui.add.AddViewModel;
 import com.example.gotimer.util.EndTimePickerFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteClickListener {
 
@@ -155,12 +151,12 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             mProfileList = updatedProfileList;
             for (int i = 0; i < mProfileList.size(); i++) {
                 Profile current = mProfileList.get(i);
-                if (i == positionOfChanged && !current.isOn()) {
-                    current.setOn(true);
-                } else if (i == positionOfChanged && current.isOn()) {
-                    current.setOn(false);
+                if (i == positionOfChanged && !current.isBlockActive()) {
+                    current.setBlockActive(true);
+                } else if (i == positionOfChanged && current.isBlockActive()) {
+                    current.setBlockActive(false);
                 } else if (i != positionOfChanged) {
-                    current.setOn(false);
+                    current.setBlockActive(false);
                 }
                 timerViewModel.updateProfile(current);
             }
@@ -272,10 +268,10 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void startQuickBlock() {
         for (Profile profile : mProfileList) {
-            profile.setOn(false);
+            profile.setBlockActive(false);
             timerViewModel.updateProfile(profile);
         }
-        selectedQuickBlockProfile.setOn(true);
+        selectedQuickBlockProfile.setBlockActive(true);
         timerViewModel.updateProfile(selectedQuickBlockProfile);
         startCountdown();
 
@@ -287,7 +283,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         public void onReceive(Context context, Intent intent) {
             Toast.makeText(context, "Quick Block Timer has ended", Toast.LENGTH_SHORT).show();
             for (Profile profile : mProfileList) {
-                profile.setOn(false);
+                profile.setBlockActive(false);
                 timerViewModel.updateProfile(profile);
             }
         }

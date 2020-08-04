@@ -39,7 +39,10 @@ public class Profile {
     private String blockedAppsProcessNames;
 
     @NonNull
-    private boolean isOn;
+    private boolean isBlockActive;
+
+    @NonNull
+    private boolean isAlarmActive;
 
     //TODO Add location variable to be saved into SQLite database. What's the best way to store?
 
@@ -49,7 +52,8 @@ public class Profile {
         this.profileName = profileName;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.isOn = false;
+        this.isBlockActive = false;
+        this.isAlarmActive = false;
     }
 
     public int getProfileId() {
@@ -105,8 +109,8 @@ public class Profile {
         return blockedApps;
     }
 
-    public boolean isOn() {
-        return isOn;
+    public boolean isBlockActive() {
+        return isBlockActive;
     }
 
     public void setProfileName(@NonNull String profileName) {
@@ -130,8 +134,8 @@ public class Profile {
         this.blockedApps = blockedApps;
     }
 
-    public void setOn(boolean on) {
-        isOn = on;
+    public void setBlockActive(boolean blockActive) {
+        isBlockActive = blockActive;
     }
 
     public String getDaysActive() {
@@ -175,6 +179,14 @@ public class Profile {
             return new ArrayList<String>(Arrays.asList(blockedAppsProcessNames.split("-")));
         }
         return new ArrayList<>();
+    }
+
+    public boolean isAlarmActive() {
+        return isAlarmActive;
+    }
+
+    public void setAlarmActive(boolean alarmActive) {
+        isAlarmActive = alarmActive;
     }
 }
 

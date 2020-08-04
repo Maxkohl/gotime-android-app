@@ -18,7 +18,7 @@ import androidx.sqlite.db.SupportSQLiteOpenHelper;
 import com.example.gotimer.dao.ProfileDao;
 import com.example.gotimer.entity.Profile;
 
-@Database(entities = {Profile.class}, version = 7, exportSchema = false)
+@Database(entities = {Profile.class}, version = 8, exportSchema = false)
 public abstract class ProfileRoomDatabase extends RoomDatabase {
 
     public abstract ProfileDao profilesDao();

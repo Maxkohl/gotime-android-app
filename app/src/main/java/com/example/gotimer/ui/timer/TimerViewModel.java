@@ -40,8 +40,8 @@ public class TimerViewModel extends AndroidViewModel {
         mRepository.updateTimerProfile(profile);
     }
 
-    public LiveData<List<Profile>> getActiveProfiles(boolean isOn) {
-        return mRepository.getActiveProfiles(isOn);
+    public LiveData<List<Profile>> getActiveProfiles(boolean isBlockActive) {
+        return mRepository.getActiveProfiles(isBlockActive);
     }
 
     public void deleteProfile(int profileId) {

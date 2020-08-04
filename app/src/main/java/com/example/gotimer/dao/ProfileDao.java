@@ -29,8 +29,11 @@ public interface ProfileDao {
     @Update
     void updateProfile(Profile profile);
 
-    @Query("SELECT * FROM profiles_table WHERE isOn = :isOn")
-    LiveData<List<Profile>> getActiveProfile(boolean isOn);
+    @Query("SELECT * FROM profiles_table WHERE isBlockActive = :isBlockActive")
+    LiveData<List<Profile>> getActiveProfile(boolean isBlockActive);
+
+    @Query("SELECT * FROM profiles_table WHERE isAlarmActive = :isAlarmActive")
+    LiveData<List<Profile>> getActiveAlarmProfiles(boolean isAlarmActive);
 
     //TODO getTotalHoursPerDay
 

@@ -33,8 +33,8 @@ public class Repository {
         new updateAsyncTask(mProfileDao).execute(profile);
     }
 
-    public LiveData<List<Profile>> getActiveProfiles(boolean isOn) {
-        return mProfileDao.getActiveProfile(isOn);
+    public LiveData<List<Profile>> getActiveProfiles(boolean isBlockActive) {
+        return mProfileDao.getActiveProfile(isBlockActive);
     }
 
     public void deleteProfile(int profileId) {
