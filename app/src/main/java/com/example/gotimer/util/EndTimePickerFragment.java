@@ -59,10 +59,9 @@ public class EndTimePickerFragment extends DialogFragment implements TimePickerD
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         TimerViewModel model = new ViewModelProvider(requireActivity()).get(TimerViewModel.class);
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR, hourOfDay);
+        c.setTimeInMillis(c.getTimeInMillis());
+        c.set(Calendar.HOUR_OF_DAY, hourOfDay);
         c.set(Calendar.MINUTE, minute);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
 
 
         long mEndTime = c.getTimeInMillis();

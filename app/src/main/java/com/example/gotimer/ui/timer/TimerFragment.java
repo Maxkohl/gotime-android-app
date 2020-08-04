@@ -266,7 +266,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         Intent intent = new Intent("QuickBlockAlarm");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 9, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime(), pendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, mEndTime, pendingIntent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
