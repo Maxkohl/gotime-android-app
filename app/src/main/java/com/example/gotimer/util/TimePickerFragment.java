@@ -51,10 +51,18 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
                 DateFormat.is24HourFormat(getActivity()));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         //TODO Is this the best place to put this shared view model? It works though...
         AddViewModel model = new ViewModelProvider(requireActivity()).get(AddViewModel.class);
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(c.getTimeInMillis());
+        c.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        c.set(Calendar.MINUTE, minute);
 
-       model.processTimePickerResult(hourOfDay, minute);
+
+        long mTimePicked = c.getTimeInMillis();
+
+        model.processTimePickerResult(mTimePicked);
     }
 }

@@ -36,6 +36,10 @@ public class TimerViewModel extends AndroidViewModel {
         return mRepository.getAllProfiles();
     }
 
+    public LiveData<List<Profile>> getActiveAlarmProfiles(boolean isAlarmActive) {
+        return mRepository.getActiveAlarmProfiles(isAlarmActive);
+    }
+
     public void updateProfile(Profile profile) {
         mRepository.updateTimerProfile(profile);
     }

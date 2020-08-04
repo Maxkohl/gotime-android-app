@@ -14,6 +14,7 @@ import java.util.List;
 public class Repository {
     private ProfileDao mProfileDao;
     private LiveData<List<Profile>> getAllProfiles;
+    private LiveData<List<Profile>> getActiveAlarmProfiles;
 
     public Repository(Application application) {
         ProfileRoomDatabase db = ProfileRoomDatabase.getDatabase(application);
@@ -23,6 +24,10 @@ public class Repository {
 
     public LiveData<List<Profile>> getAllProfiles() {
         return getAllProfiles;
+    }
+
+    public LiveData<List<Profile>> getActiveAlarmProfiles(boolean isAlarmActive) {
+        return getActiveAlarmProfiles = mProfileDao.getActiveAlarmProfiles(isAlarmActive);
     }
 
     public void insertNewTimerProfile(Profile profile) {

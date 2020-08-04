@@ -44,6 +44,8 @@ public class Profile {
     @NonNull
     private boolean isAlarmActive;
 
+    private int alarmId;
+
     //TODO Add location variable to be saved into SQLite database. What's the best way to store?
 
 
@@ -87,7 +89,7 @@ public class Profile {
 //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         sdf.setTimeZone(TimeZone.getDefault());
         String formattedDate = "Start Time: " + sdf.format(date);
-        return formattedDate;
+        return (new SimpleDateFormat("HH:mm")).format(new Date(unixSeconds));
     }
 
     public String getEndTimeString() {
@@ -98,7 +100,7 @@ public class Profile {
 //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         sdf.setTimeZone(TimeZone.getDefault());
         String formattedTime = "End Time: " + sdf.format(date);
-        return formattedTime;
+        return (new SimpleDateFormat("HH:mm")).format(new Date(unixSeconds));
     }
 
     public List<String> getDaysActiveList() {
@@ -187,6 +189,14 @@ public class Profile {
 
     public void setAlarmActive(boolean alarmActive) {
         isAlarmActive = alarmActive;
+    }
+
+    public int getAlarmId() {
+        return alarmId;
+    }
+
+    public void setAlarmId(int alarmId) {
+        this.alarmId = alarmId;
     }
 }
 

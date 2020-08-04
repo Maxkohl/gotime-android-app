@@ -40,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteClickListener {
 
@@ -97,6 +98,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             startTimerButton.setText("START");
         }
         startTimerButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
                 if (selectedQuickBlockProfile != null) {
@@ -117,6 +119,37 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             mProfileList = profiles;
             adapter.setProfiles(profiles);
         });
+
+
+        timerViewModel.getActiveAlarmProfiles(true).observe(getViewLifecycleOwner(), profiles -> {
+            for (int i = 0; i < profiles.size(); i++) {
+                Profile currentProfile = profiles.get(i);
+                long startTime = currentProfile.getStartTime();
+                int randomNum = new Random().nextInt(1000);
+                if (currentProfile.getAlarmId() == 0) {
+                    Intent intent = new Intent("StartAlarm");
+                    intent.putExtra("profileId", currentProfile.getProfileId());
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),
+                            randomNum, intent,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
+                    currentProfile.setAlarmId(randomNum);
+                    timerViewModel.updateProfile(currentProfile);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, startTime, pendingIntent);
+                }
+            }
+        });
+
+        timerViewModel.getActiveAlarmProfiles(false).observe(getViewLifecycleOwner(), profiles -> {
+            for (int i = 0; i < profiles.size(); i++) {
+                Profile currentProfile = profiles.get(i);
+                if (currentProfile.getAlarmId() != 0) {
+//                    alarmManager.cancel();
+//                    currentProfile.setAlarmId(0);
+//                    timerViewModel.updateProfile(currentProfile);
+                }
+            }
+        });
+
 
         timerViewModel.getActiveProfiles(true).observe(getViewLifecycleOwner(),
                 new Observer<List<Profile>>() {
@@ -251,6 +284,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             }
         }.start();
         Intent intent = new Intent("QuickBlockAlarm");
+        intent.putExtra("profileId", selectedQuickBlockProfile.getProfileId());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 9, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, mEndTime, pendingIntent);
@@ -269,13 +303,31 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     }
 
     //Inner broadcast receiver class to change isActive boolean of profile when time starts/ends
-    BroadcastReceiver alarmReceiver = new BroadcastReceiver() {
+    BroadcastReceiver startAlarmReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Toast.makeText(context, "Quick Block Timer has ended", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Alarm Started", Toast.LENGTH_SHORT).show();
+            int profileId = intent.getIntExtra("profileId", 0);
             for (Profile profile : mProfileList) {
-                profile.setBlockActive(false);
-                timerViewModel.updateProfile(profile);
+                if (profile.getProfileId() == profileId) {
+                    profile.setBlockActive(true);
+                    timerViewModel.updateProfile(profile);
+                }
+            }
+        }
+
+    };
+
+    BroadcastReceiver endAlarmReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Toast.makeText(context, "Block Alarm Ended", Toast.LENGTH_SHORT).show();
+            int profileId = intent.getIntExtra("profileId", 0);
+            for (Profile profile : mProfileList) {
+                if (profile.getProfileId() == profileId) {
+                    profile.setBlockActive(false);
+                    timerViewModel.updateProfile(profile);
+                }
             }
         }
 
@@ -284,8 +336,10 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     @Override
     public void onResume() {
         super.onResume();
-        IntentFilter filter = new IntentFilter("QuickBlockAlarm");
-        getContext().registerReceiver(alarmReceiver, filter);
+        IntentFilter startFilter = new IntentFilter("StartAlarm");
+        getContext().registerReceiver(startAlarmReceiver, startFilter);
+        IntentFilter endFilter = new IntentFilter("EndAlarm");
+        getContext().registerReceiver(endAlarmReceiver, endFilter);
     }
 
     @Override
