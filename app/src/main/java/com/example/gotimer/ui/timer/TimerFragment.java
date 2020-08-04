@@ -266,9 +266,10 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         Intent intent = new Intent("QuickBlockAlarm");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 9, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, mEndTime, pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime(), pendingIntent);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void startQuickBlock() {
         for (Profile profile : mProfileList) {
             profile.setOn(false);
@@ -284,7 +285,11 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     BroadcastReceiver alarmReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Toast.makeText(context, "RECEIVED ALARM BROADCAST", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Quick Block Timer has ended", Toast.LENGTH_SHORT).show();
+            for (Profile profile : mProfileList) {
+                profile.setOn(false);
+                timerViewModel.updateProfile(profile);
+            }
         }
 
     };
@@ -299,6 +304,6 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     @Override
     public void onPause() {
         super.onPause();
-        getContext().unregisterReceiver(alarmReceiver);
+//        getContext().unregisterReceiver(alarmReceiver);
     }
 }
