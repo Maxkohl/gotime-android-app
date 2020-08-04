@@ -56,7 +56,7 @@ public class TimerViewModel extends AndroidViewModel {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             Date stringFormatted = format.parse("20299-08-03 " + hourString + ":" + minuteString + ":00");
-            mEndTime = stringFormatted.getTime();
+            mEndTime = stringFormatted.getTime() - 72000000;
         } catch (ParseException e) {
             Log.d(TAG, "Exception when parsing time into formatted time");
             e.printStackTrace();
