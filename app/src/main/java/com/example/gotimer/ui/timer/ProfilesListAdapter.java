@@ -16,6 +16,8 @@ import com.example.gotimer.entity.Profile;
 import com.example.gotimer.interfaces.OnDeleteClickListener;
 import com.example.gotimer.interfaces.OnSwitchChange;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotimer.ui.timer.ProfilesListAdapter.ProfilesViewHolder> {
@@ -70,6 +72,7 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
                     mDeleteClickListener.OnDeleteClickListener(current.getProfileId());
                 }
             });
+            holder.mLocationAddress.setText(current.getLocationAddress());
         }
 
     }
@@ -96,6 +99,7 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
         private final Switch mIsActive;
         private final TextView isOn;
         private final ImageButton deleteButton;
+        private final TextView mLocationAddress;
 
         public ProfilesViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,6 +111,8 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
             mIsActive = itemView.findViewById(R.id.isActive);
             isOn = itemView.findViewById(R.id.isOnText);
             deleteButton = itemView.findViewById(R.id.delete_imagebutton);
+            mLocationAddress = itemView.findViewById(R.id.locationAddress);
+
         }
     }
 

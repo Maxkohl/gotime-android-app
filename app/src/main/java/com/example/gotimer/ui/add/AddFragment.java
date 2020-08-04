@@ -177,6 +177,7 @@ public class AddFragment extends Fragment {
         if (mProcessList != null) {
             newProfile.setBlockedProcessNamesString(mProcessList);
         }
+        newProfile.setLocationAddress(locationAddress);
         addViewModel.insertNewTimerProfile(newProfile);
     }
 
@@ -192,10 +193,9 @@ public class AddFragment extends Fragment {
         if (requestCode == REQUEST_PICK_PLACE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(getContext(), data);
-                locationAddress = place.getAddress().toString();
+                locationAddress = place.getLatLng().toString();
             }
         }
     }
-
 
 }
