@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -57,7 +58,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     private long mEndTime;
     private boolean isQuickBlockActive = false;
     private AlarmManager alarmManager;
-
+    private SharedPreferences prefs;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -73,6 +74,9 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_timer, container, false);
+        prefs = getActivity().getSharedPreferences(
+                "com.example.gotimer", Context.MODE_PRIVATE);
+        isQuickBlockActive = prefs.getBoolean("quickBlockKey", false);
         alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
 
         RecyclerView recyclerView = root.findViewById(R.id.profilesRecycler);
@@ -92,16 +96,25 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         });
 
         startTimerButton = root.findViewById(R.id.start_timer_bttn);
+        if (isQuickBlockActive) {
+            startTimerButton.setText("STOP");
+        } else {
+            startTimerButton.setText("START");
+        }
         startTimerButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
                 if (selectedQuickBlockProfile != null) {
-                    if (isQuickBlockActive) {
+                    if (isQuickBlockActive || isMyServiceRunning(OverlayService.class)) {
                         isQuickBlockActive = false;
+                        startTimerButton.setText("START");
+                        getActivity().stopService(serviceIntent);
+                        adapter.notifyDataSetChanged();
                     } else {
                         startQuickBlock();
                         isQuickBlockActive = true;
+                        startTimerButton.setText("STOP");
                         adapter.notifyDataSetChanged();
                     }
                 }
@@ -350,11 +363,15 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         getContext().registerReceiver(startAlarmReceiver, startFilter);
         IntentFilter endFilter = new IntentFilter("EndAlarm");
         getContext().registerReceiver(endAlarmReceiver, endFilter);
+        if (prefs != null) {
+            isQuickBlockActive = prefs.getBoolean("quickBlockKey", false);
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        prefs.edit().putBoolean("quickBlockKey", isQuickBlockActive);
 //        getContext().unregisterReceiver(alarmReceiver);
     }
 }
