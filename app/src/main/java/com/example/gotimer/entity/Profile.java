@@ -46,6 +46,8 @@ public class Profile {
 
     private int alarmId;
 
+    private String locationAddress;
+
     //TODO Add location variable to be saved into SQLite database. What's the best way to store?
 
 
@@ -197,6 +199,14 @@ public class Profile {
 
     public void setAlarmId(int alarmId) {
         this.alarmId = alarmId;
+    }
+
+    public String getLocationAddress() {
+        return locationAddress;
+    }
+
+    public void setLocationAddress(String locationAddress) {
+        this.locationAddress = locationAddress;
     }
 }
 
