@@ -49,19 +49,23 @@ public class TimerViewModel extends AndroidViewModel {
     }
 
 
-    public void processTimePickerResult(int hourOfDay, int minute) {
-        String hourString = Integer.toString(hourOfDay);
-        String minuteString = Integer.toString(minute);
-
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Date stringFormatted = format.parse("20299-08-03 " + hourString + ":" + minuteString + ":00");
-            mEndTime = stringFormatted.getTime() - 72000000;
-        } catch (ParseException e) {
-            Log.d(TAG, "Exception when parsing time into formatted time");
-            e.printStackTrace();
-        }
+    public void processTimePickerResult(long receivedEndTime) {
+        mEndTime= receivedEndTime;
     }
+
+//    public void processTimePickerResult(int hourOfDay, int minute) {
+//        String hourString = Integer.toString(hourOfDay);
+//        String minuteString = Integer.toString(minute);
+//
+//        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+//        try {
+//            Date stringFormatted = format.parse(hourString + ":" + minuteString + ":00");
+//            mEndTime = stringFormatted.getTime();
+//        } catch (ParseException e) {
+//            Log.d(TAG, "Exception when parsing time into formatted time");
+//            e.printStackTrace();
+//        }
+//    }
 
     public long getEndTime() {
         return mEndTime;

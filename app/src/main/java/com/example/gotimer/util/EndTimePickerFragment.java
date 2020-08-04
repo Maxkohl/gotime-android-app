@@ -3,6 +3,7 @@ package com.example.gotimer.util;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.icu.util.Calendar;
+import android.icu.util.TimeZone;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.os.SystemClock;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,9 +55,18 @@ public class EndTimePickerFragment extends DialogFragment implements TimePickerD
                 DateFormat.is24HourFormat(getActivity()));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         TimerViewModel model = new ViewModelProvider(requireActivity()).get(TimerViewModel.class);
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR, hourOfDay);
+        c.set(Calendar.MINUTE, minute);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
 
-        model.processTimePickerResult(hourOfDay, minute);
+
+        long mEndTime = c.getTimeInMillis();
+
+        model.processTimePickerResult(mEndTime);
     }
 }
