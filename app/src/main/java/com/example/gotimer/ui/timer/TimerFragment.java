@@ -135,6 +135,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
                     currentProfile.setAlarmId(randomNum);
                     timerViewModel.updateProfile(currentProfile);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, startTime, pendingIntent);
+                    Toast.makeText(mContext, "Alarm Set", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -142,10 +143,16 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         timerViewModel.getActiveAlarmProfiles(false).observe(getViewLifecycleOwner(), profiles -> {
             for (int i = 0; i < profiles.size(); i++) {
                 Profile currentProfile = profiles.get(i);
+                int profileAlarmId = currentProfile.getAlarmId();
                 if (currentProfile.getAlarmId() != 0) {
-//                    alarmManager.cancel();
-//                    currentProfile.setAlarmId(0);
-//                    timerViewModel.updateProfile(currentProfile);
+                    Intent intent = new Intent("StartAlarm");
+                    PendingIntent cancelStartIntent = PendingIntent.getBroadcast(getActivity(),
+                            profileAlarmId, intent,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.cancel(cancelStartIntent);
+                    currentProfile.setAlarmId(0);
+                    timerViewModel.updateProfile(currentProfile);
+                    Toast.makeText(mContext, "Alarm Turned Off", Toast.LENGTH_SHORT).show();
                 }
             }
         });
