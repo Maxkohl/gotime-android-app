@@ -92,11 +92,6 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         });
 
         startTimerButton = root.findViewById(R.id.start_timer_bttn);
-        if (isQuickBlockActive) {
-            startTimerButton.setText("STOP TIMER");
-        } else {
-            startTimerButton.setText("START");
-        }
         startTimerButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -125,16 +120,23 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             for (int i = 0; i < profiles.size(); i++) {
                 Profile currentProfile = profiles.get(i);
                 long startTime = currentProfile.getStartTime();
+                long endTime = currentProfile.getEndTime();
                 int randomNum = new Random().nextInt(1000);
                 if (currentProfile.getAlarmId() == 0) {
-                    Intent intent = new Intent("StartAlarm");
-                    intent.putExtra("profileId", currentProfile.getProfileId());
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),
-                            randomNum, intent,
-                            PendingIntent.FLAG_UPDATE_CURRENT);
                     currentProfile.setAlarmId(randomNum);
                     timerViewModel.updateProfile(currentProfile);
-                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, startTime, pendingIntent);
+                    Intent intent = new Intent("StartAlarm");
+                    intent.putExtra("profileId", currentProfile.getProfileId());
+                    PendingIntent pendingStartIntent = PendingIntent.getBroadcast(getActivity(),
+                            randomNum, intent,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
+                    Intent endIntent = new Intent("EndAlarm");
+                    intent.putExtra("profileId", currentProfile.getProfileId());
+                    PendingIntent pendingEndIntent = PendingIntent.getBroadcast(getActivity(),
+                            randomNum, endIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, startTime, pendingStartIntent);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, endTime, pendingEndIntent);
                     Toast.makeText(mContext, "Alarm Set", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -151,12 +153,14 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
                             PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.cancel(cancelStartIntent);
                     currentProfile.setAlarmId(0);
+                    mServiceOn = false;
+                    toggleAppMonitoringService(mServiceOn);
+                    getActivity().stopService(serviceIntent);
                     timerViewModel.updateProfile(currentProfile);
                     Toast.makeText(mContext, "Alarm Turned Off", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
 
         timerViewModel.getActiveProfiles(true).observe(getViewLifecycleOwner(),
                 new Observer<List<Profile>>() {
@@ -290,7 +294,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
                 timerCountdown.setText("done!");
             }
         }.start();
-        Intent intent = new Intent("QuickBlockAlarm");
+        Intent intent = new Intent("EndAlarm");
         intent.putExtra("profileId", selectedQuickBlockProfile.getProfileId());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 9, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
@@ -331,10 +335,9 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             Toast.makeText(context, "Block Alarm Ended", Toast.LENGTH_SHORT).show();
             int profileId = intent.getIntExtra("profileId", 0);
             for (Profile profile : mProfileList) {
-                if (profile.getProfileId() == profileId) {
-                    profile.setBlockActive(false);
-                    timerViewModel.updateProfile(profile);
-                }
+                profile.setBlockActive(false);
+                timerViewModel.updateProfile(profile);
+
             }
         }
 
