@@ -41,6 +41,7 @@ import com.example.gotimer.services.CountdownTimerService;
 import com.example.gotimer.services.CountdownTimerWidget;
 import com.example.gotimer.services.OverlayService;
 import com.example.gotimer.util.EndTimePickerFragment;
+import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,17 +57,20 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     private List<Profile> mProfileList;
     private boolean mServiceOn;
     private Profile activeProfile;
-    Intent serviceIntent;
+    private Intent serviceIntent;
+    private Intent countdownIntent;
     private ImageView quickBlockButton;
     private Button startTimerButton;
     private TextView timerCountdown;
     private Profile selectedQuickBlockProfile;
     private long mEndTime;
-    private boolean isQuickBlockActive = false;
+    private boolean isQuickBlockActive;
     private AlarmManager alarmManager;
     private SharedPreferences prefs;
+    private String sharedPrefsFile = "come.example.gotimer.ui.timefragment";
     private static final String COUNTDOWN_BR = "com.example.gotimer.services.countdowntimerservice";
     private static final String UPDATE_WIDGET = "com.example.gotimer.services.countdowntimerwidget";
+    private String selectedQuickBlockProfileName;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -78,14 +82,18 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         timerViewModel = new ViewModelProvider(requireActivity()).get(TimerViewModel.class);
+        prefs = getActivity().getSharedPreferences(
+                sharedPrefsFile, Context.MODE_PRIVATE);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_timer, container, false);
-        prefs = getActivity().getSharedPreferences(
-                "com.example.gotimer", Context.MODE_PRIVATE);
         isQuickBlockActive = prefs.getBoolean("quickBlockKey", false);
+
+        Gson gson = new Gson();
+        String json = prefs.getString("selectedQuickBlockProfile", "");
+        selectedQuickBlockProfile = gson.fromJson(json, Profile.class);
         alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
 
         RecyclerView recyclerView = root.findViewById(R.id.profilesRecycler);
@@ -105,6 +113,11 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         });
 
         startTimerButton = root.findViewById(R.id.start_timer_bttn);
+        if (isQuickBlockActive) {
+            startTimerButton.setText("STOP");
+        } else {
+            startTimerButton.setText("START");
+        }
         startTimerButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -113,7 +126,12 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
                     if (isQuickBlockActive) {
                         isQuickBlockActive = false;
                         startTimerButton.setText("START");
-                        getActivity().stopService(serviceIntent);
+                        if (isMyServiceRunning(OverlayService.class) && serviceIntent != null) {
+                            getActivity().stopService(serviceIntent);
+                        }
+                        if (isMyServiceRunning(CountdownTimerService.class) && countdownIntent != null) {
+                            getActivity().stopService(countdownIntent);
+                        }
                         adapter.notifyDataSetChanged();
                     } else {
                         startQuickBlock();
@@ -121,9 +139,11 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
                         startTimerButton.setText("STOP");
                         adapter.notifyDataSetChanged();
                     }
+                } else {
+                    Toast.makeText(getContext(), "Please Choose Profile", Toast.LENGTH_SHORT).show();
                 }
-
             }
+
         });
 
 
@@ -249,6 +269,8 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         @Override
         public void OnDeleteClickListener(int profileId) {
             timerViewModel.deleteProfile(profileId);
+            isQuickBlockActive = false;
+            selectedQuickBlockProfileName = "";
         }
     };
 
@@ -278,6 +300,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 selectedQuickBlockProfile = mProfileList.get(selectedItem[0]);
+                selectedQuickBlockProfileName = selectedQuickBlockProfile.getProfileName();
                 showTimePickerDialog();
             }
         });
@@ -294,22 +317,6 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private void startCountdown() {
-        mEndTime = timerViewModel.getEndTime();
-        long currentTime = System.currentTimeMillis();
-        long durationTime = mEndTime - currentTime;
-
-        Intent countdownIntent = new Intent(getActivity(), CountdownTimerService.class);
-        countdownIntent.putExtra("durationTime", durationTime);
-        getActivity().startService(countdownIntent);
-        Intent intent = new Intent("EndAlarm");
-        intent.putExtra("profileId", selectedQuickBlockProfile.getProfileId());
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 9, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, mEndTime, pendingIntent);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void startQuickBlock() {
         for (Profile profile : mProfileList) {
             profile.setBlockActive(false);
@@ -319,6 +326,22 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         timerViewModel.updateProfile(selectedQuickBlockProfile);
         startCountdown();
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void startCountdown() {
+        mEndTime = timerViewModel.getEndTime();
+        long currentTime = System.currentTimeMillis();
+        long durationTime = mEndTime - currentTime;
+
+        countdownIntent = new Intent(getActivity(), CountdownTimerService.class);
+        countdownIntent.putExtra("durationTime", durationTime);
+        getActivity().startService(countdownIntent);
+        Intent intent = new Intent("EndAlarm");
+        intent.putExtra("profileId", selectedQuickBlockProfile.getProfileId());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 9, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, mEndTime, pendingIntent);
     }
 
     //Inner broadcast receiver class to change isActive boolean of profile when time starts/ends
@@ -393,7 +416,13 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     @Override
     public void onPause() {
         super.onPause();
-        prefs.edit().putBoolean("quickBlockKey", isQuickBlockActive);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putBoolean("quickBlockKey", isQuickBlockActive);
+        Gson gson = new Gson();
+        String json = gson.toJson(selectedQuickBlockProfile);
+        prefsEditor.putString("selectedQuickBlockProfile", json);
+        prefsEditor.commit();
+        prefsEditor.apply();
 //        getContext().unregisterReceiver(alarmReceiver);
     }
 }
