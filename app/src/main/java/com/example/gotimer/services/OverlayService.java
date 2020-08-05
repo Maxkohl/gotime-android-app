@@ -59,7 +59,8 @@ public class OverlayService extends Service {
     boolean alreadyDisplayed;
     public static boolean isServiceRunning = false;
     private static final int NOTIFICATION_ID = 5;
-    private static final String NOTIFICATION_CHANNEL_ID = "com.example.gotimer.services.overlayservice";
+    private static final String NOTIFICATION_CHANNEL_ID = "com.example.gotimer.services" +
+            ".overlayservice";
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -203,12 +204,14 @@ public class OverlayService extends Service {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private synchronized String createChannel() {
-        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager mNotificationManager =
+                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         String name = "GoTimer";
         int importance = NotificationManager.IMPORTANCE_LOW;
 
-        NotificationChannel mChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
+        NotificationChannel mChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name,
+                importance);
 
         mChannel.enableLights(true);
         mChannel.setLightColor(Color.BLUE);
@@ -228,9 +231,11 @@ public class OverlayService extends Service {
         Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
         notificationIntent.setAction(Intent.ACTION_MAIN);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,
+                NOTIFICATION_CHANNEL_ID);
         builder.setContentTitle("GoTimer"
         ).setContentText("GoTimer is currently running").setSmallIcon(R.drawable.ic_timer).setContentIntent(pendingIntent).setOngoing(true).setPriority(NotificationManager.IMPORTANCE_MIN)
                 .setCategory(Notification.CATEGORY_SERVICE);
@@ -239,7 +244,8 @@ public class OverlayService extends Service {
 
     @Override
     public void onDestroy() {
-//        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+//        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService
+//        (Context.NOTIFICATION_SERVICE);
 //        mNotificationManager.deleteNotificationChannel(NOTIFICATION_CHANNEL_ID);
 //        mNotificationManager.cancel(NOTIFICATION_ID);
 //        stopForeground(true);
@@ -251,7 +257,8 @@ public class OverlayService extends Service {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void stopMyService() {
-        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager mNotificationManager =
+                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.deleteNotificationChannel(NOTIFICATION_CHANNEL_ID);
         mNotificationManager.cancel(NOTIFICATION_ID);
         stopForeground(true);
