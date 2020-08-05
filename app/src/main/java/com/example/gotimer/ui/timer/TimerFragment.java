@@ -206,7 +206,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
                     @Override
                     public void onChanged(List<Profile> profileList) {
                         if (profileList != null && profileList.size() == 1) {
-                            //This is happening twice creating 2 services and I don't know why
+                            //TODO This is happening twice creating 2 services and I don't know why
                             if (!isMyServiceRunning(OverlayService.class)) {
                                 activeProfile = profileList.get(0);
                                 mServiceOn = true;
@@ -234,6 +234,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             Profile switchedProfile = updatedProfileList.get(positionOfChanged);
             switchedProfile.setAlarmActive(!switchedProfile.isAlarmActive());
             timerViewModel.updateProfile(switchedProfile);
+            mServiceOn = !mServiceOn;
         }
     };
 
@@ -252,7 +253,12 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             serviceIntent.putStringArrayListExtra("processList", processList);
         }
         serviceIntent.putExtra("serviceOn", mServiceOn);
-        getActivity().startService(serviceIntent);
+        if (mServiceOn) {
+            getActivity().startService(serviceIntent);
+        } else {
+            deactivateAllProfiles();
+            getActivity().stopService(serviceIntent);
+        }
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
