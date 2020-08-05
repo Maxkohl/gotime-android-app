@@ -108,8 +108,7 @@ public class OverlayService extends Service {
 
     public void blockApp() {
         String currentAppProcess = getCurrentApp();
-        String lastProcess = "";
-//        if (currentAppProcess != lastProcess) {
+        //IF THIS GIVES YOU ERROR CHECK PERMISSIONS (USAGE, LOCATION, BATTERY)
         if (processList != null && currentAppProcess != null) {
             for (String processName : processList) {
                 if (currentAppProcess.equals(processName)) {
