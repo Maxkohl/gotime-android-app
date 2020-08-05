@@ -76,7 +76,7 @@ public class OverlayService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         processList = intent.getStringArrayListExtra("processList");
-        
+
         isServiceRunning = intent.getBooleanExtra("serviceOn", false);
         if (isServiceRunning) {
             Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();

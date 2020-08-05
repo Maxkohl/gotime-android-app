@@ -12,6 +12,7 @@ import com.example.gotimer.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Implementation of App Widget functionality.
@@ -46,10 +47,11 @@ public class CountdownTimerWidget extends AppWidgetProvider {
             int[] appWidgetId = AppWidgetManager.getInstance(context).getAppWidgetIds(name);
             // handle intent here
             long mEndTime = intent.getLongExtra("countdown", 0);
-            String timeString = new SimpleDateFormat(
-                    "hh:mm:ss").format(new Date(mEndTime));
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            String formattedString = sdf.format(new Date(mEndTime));
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.countdown_timer_widget);
-            views.setTextViewText(R.id.countdown_text, timeString);
+            views.setTextViewText(R.id.countdown_text, formattedString);
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
 

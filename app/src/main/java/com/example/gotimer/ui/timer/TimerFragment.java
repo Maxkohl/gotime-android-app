@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.TimeZone;
 
 public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteClickListener {
 
@@ -352,8 +353,10 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         @Override
         public void onReceive(Context context, Intent intent) {
             long millisUntilFinished = intent.getLongExtra("countdown", 0);
-            timerCountdown.setText(new SimpleDateFormat(
-                    "hh:mm:ss").format(new Date(millisUntilFinished)));
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            String formattedString = sdf.format(new Date(millisUntilFinished));
+            timerCountdown.setText(formattedString);
             updateWidget(context, millisUntilFinished);
         }
     };
