@@ -86,10 +86,6 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         isQuickBlockActive = prefs.getBoolean("quickBlockKey", false);
         alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
 
-        //TODO Move this to proper place
-        Intent countdownIntent = new Intent(getActivity(), CountdownTimerService.class);
-        getActivity().startService(countdownIntent);
-
         RecyclerView recyclerView = root.findViewById(R.id.profilesRecycler);
         final ProfilesListAdapter adapter = new ProfilesListAdapter(mContext,
                 switchListenerInterface, deleteClickInterface);
@@ -112,7 +108,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             @Override
             public void onClick(View view) {
                 if (selectedQuickBlockProfile != null) {
-                    if (isQuickBlockActive ) {
+                    if (isQuickBlockActive) {
                         isQuickBlockActive = false;
                         startTimerButton.setText("START");
                         getActivity().stopService(serviceIntent);
@@ -297,27 +293,20 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void startCountdown() {
-//        mEndTime = timerViewModel.getEndTime();
-//        long currentTime = System.currentTimeMillis();
-//        long durationTime = mEndTime - currentTime;
-//        new CountDownTimer(durationTime, 1000) {
-//            public void onTick(long millisUntilFinished) {
-//                timerCountdown.setText("Time Remaining: " + new SimpleDateFormat(
-//                        "HH:mm:ss").format(new Date(millisUntilFinished)));
-//                if (timerCountdown.getText().equals("00:00:00")) {
-//                    onFinish();
-//                }
-//            }
-//
-//            public void onFinish() {
-//                timerCountdown.setText("done!");
-//            }
-//        }.start();
+        mEndTime = timerViewModel.getEndTime();
+        long currentTime = System.currentTimeMillis();
+        long durationTime = mEndTime - currentTime;
+        
+        Intent countdownIntent = new Intent(getActivity(), CountdownTimerService.class);
+        countdownIntent.putExtra("durationTime", durationTime);
+        getActivity().startService(countdownIntent);
 //        Intent intent = new Intent("EndAlarm");
 //        intent.putExtra("profileId", selectedQuickBlockProfile.getProfileId());
 //        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 9, intent,
 //                PendingIntent.FLAG_UPDATE_CURRENT);
 //        alarmManager.setExact(AlarmManager.RTC_WAKEUP, mEndTime, pendingIntent);
+
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -375,9 +364,10 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         Intent intent = new Intent(context.getApplicationContext(), CountdownTimerWidget.class);
         intent.setAction(UPDATE_WIDGET);
         AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
-        int[] ids = widgetManager.getAppWidgetIds(new ComponentName(context, CountdownTimerWidget.class));
+        int[] ids = widgetManager.getAppWidgetIds(new ComponentName(context,
+                CountdownTimerWidget.class));
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
             widgetManager.notifyAppWidgetViewDataChanged(ids, android.R.id.list);
 
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);

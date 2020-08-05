@@ -8,35 +8,29 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class CountdownTimerService extends Service {
 
     private static final String TAG = "CountdownTimerService";
     private static final String COUNTDOWN_BR = "com.example.gotimer.services.countdowntimerservice";
 
     Intent broadcastIntent = new Intent((COUNTDOWN_BR));
-    private long mEndTime;
+    private long mDurationTime;
     CountDownTimer timer = null;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Toast.makeText(this, "TIMER SERVICE STARTED", Toast.LENGTH_SHORT).show();
-
-        long currentTime = System.currentTimeMillis();
-        long durationTime = mEndTime - currentTime;
-        timer = new CountDownTimer(270000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                broadcastIntent.putExtra("countdown", millisUntilFinished);
-                sendBroadcast(broadcastIntent);
-            }
-
-            public void onFinish() {
-//                timerCountdown.setText("done!");
-            }
-        }.start();
+//        Toast.makeText(this, "TIMER SERVICE STARTED", Toast.LENGTH_SHORT).show();
+//        timer = new CountDownTimer(mEndTime, 1000) {
+//            public void onTick(long millisUntilFinished) {
+//                broadcastIntent.putExtra("countdown", millisUntilFinished);
+//                sendBroadcast(broadcastIntent);
+//            }
+//
+//            public void onFinish() {
+////                timerCountdown.setText("done!");
+//            }
+//        }.start();
     }
 
     @Override
@@ -47,8 +41,19 @@ public class CountdownTimerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        mDurationTime = intent.getLongExtra("durationTime", 0);
 
-        mEndTime = intent.getLongExtra("endTime", 0);
+        Toast.makeText(this, "TIMER SERVICE STARTED", Toast.LENGTH_SHORT).show();
+        timer = new CountDownTimer(mDurationTime, 1000) {
+            public void onTick(long millisUntilFinished) {
+                broadcastIntent.putExtra("countdown", millisUntilFinished);
+                sendBroadcast(broadcastIntent);
+            }
+
+            public void onFinish() {
+//                timerCountdown.setText("done!");
+            }
+        }.start();
         return super.onStartCommand(intent, flags, startId);
     }
 
