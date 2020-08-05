@@ -7,16 +7,24 @@
     tools:context=".ui.stats.StatsFragment">
 
     <TextView
-        android:id="@+id/text_notifications"
+        android:id="@+id/data_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="300dp"
+        android:text="NOT LIVE DATA"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="46sp"
+        app:layout_constraintBottom_toTopOf="@id/any_chart_view"
+        tools:layout_editor_absoluteX="-16dp" />
+
+    <com.anychart.AnyChartView
+        android:id="@+id/any_chart_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/data_text" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
