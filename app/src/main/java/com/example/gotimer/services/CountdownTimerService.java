@@ -20,17 +20,7 @@ public class CountdownTimerService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-//        Toast.makeText(this, "TIMER SERVICE STARTED", Toast.LENGTH_SHORT).show();
-//        timer = new CountDownTimer(mEndTime, 1000) {
-//            public void onTick(long millisUntilFinished) {
-//                broadcastIntent.putExtra("countdown", millisUntilFinished);
-//                sendBroadcast(broadcastIntent);
-//            }
-//
-//            public void onFinish() {
-////                timerCountdown.setText("done!");
-//            }
-//        }.start();
+
     }
 
     @Override

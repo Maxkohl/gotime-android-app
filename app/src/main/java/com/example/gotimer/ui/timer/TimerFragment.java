@@ -296,17 +296,15 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         mEndTime = timerViewModel.getEndTime();
         long currentTime = System.currentTimeMillis();
         long durationTime = mEndTime - currentTime;
-        
+
         Intent countdownIntent = new Intent(getActivity(), CountdownTimerService.class);
         countdownIntent.putExtra("durationTime", durationTime);
         getActivity().startService(countdownIntent);
-//        Intent intent = new Intent("EndAlarm");
-//        intent.putExtra("profileId", selectedQuickBlockProfile.getProfileId());
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 9, intent,
-//                PendingIntent.FLAG_UPDATE_CURRENT);
-//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, mEndTime, pendingIntent);
-
-
+        Intent intent = new Intent("EndAlarm");
+        intent.putExtra("profileId", selectedQuickBlockProfile.getProfileId());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 9, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, mEndTime, pendingIntent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
