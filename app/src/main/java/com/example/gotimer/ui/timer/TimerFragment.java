@@ -124,14 +124,16 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             public void onClick(View view) {
                 if (selectedQuickBlockProfile != null) {
                     if (isQuickBlockActive) {
+                        deactivateAllProfiles();
                         isQuickBlockActive = false;
                         startTimerButton.setText("START");
                         if (isMyServiceRunning(OverlayService.class) && serviceIntent != null) {
                             getActivity().stopService(serviceIntent);
                         }
-                        if (isMyServiceRunning(CountdownTimerService.class) && countdownIntent != null) {
-                            getActivity().stopService(countdownIntent);
-                        }
+                        countdownIntent = new Intent(getActivity(), CountdownTimerService.class);
+                        getActivity().stopService(countdownIntent);
+                        timerCountdown.setText("Click to Quick Block");
+                        toggleAppMonitoringService(false);
                         adapter.notifyDataSetChanged();
                     } else {
                         startQuickBlock();
@@ -424,5 +426,12 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         prefsEditor.commit();
         prefsEditor.apply();
 //        getContext().unregisterReceiver(alarmReceiver);
+    }
+
+    private void deactivateAllProfiles() {
+        for (Profile profile : mProfileList) {
+            profile.setBlockActive(false);
+            timerViewModel.updateProfile(profile);
+        }
     }
 }

@@ -33,7 +33,7 @@
         android:id="@+id/timer_countdown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Timer Countdown"
+        android:text="Click to Quick Block"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@id/quick_block_bttn"
         app:layout_constraintHorizontal_bias="0.502"
