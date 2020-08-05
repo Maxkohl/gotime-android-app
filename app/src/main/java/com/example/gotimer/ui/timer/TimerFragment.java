@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,7 +57,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     private boolean mServiceOn;
     private Profile activeProfile;
     Intent serviceIntent;
-    private Button quickBlockButton;
+    private ImageView quickBlockButton;
     private Button startTimerButton;
     private TextView timerCountdown;
     private Profile selectedQuickBlockProfile;

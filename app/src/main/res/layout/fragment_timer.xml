@@ -6,35 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".ui.timer.TimerFragment">
 
-    <TextView
-        android:id="@+id/timer_countdown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Timer Countdown"
-        android:textSize="24sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/quick_block_bttn"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        />
-
-    <Button
-        android:id="@+id/quick_block_bttn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Quick Timer"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@id/start_timer_bttn"
-        app:layout_constraintStart_toStartOf="parent"/>
     <Button
         android:id="@+id/start_timer_bttn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Start"
         android:textSize="24sp"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/profilesRecycler"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.673" />
+
+    <TextView
+        android:id="@+id/timer_countdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Timer Countdown"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@id/quick_block_bttn"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.878" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/quick_block_bttn"
+        android:layout_width="140dp"
+        android:layout_height="156dp"
+        android:src="@drawable/ic_create_timer"
+        android:text="Quick Timer"
+        app:layout_constraintBottom_toTopOf="@id/start_timer_bttn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/profilesRecycler"
