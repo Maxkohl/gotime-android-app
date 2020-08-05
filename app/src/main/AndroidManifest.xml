@@ -52,6 +52,7 @@
         </activity>
 
         <service android:name=".services.OverlayService" />
+        <service android:name=".services.CountdownTimerService" />
     </application>
 
 </manifest>

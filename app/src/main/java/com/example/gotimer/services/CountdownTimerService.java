@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.os.IBinder;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -22,23 +23,18 @@ public class CountdownTimerService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Toast.makeText(this, "TIMER SERVICE STARTED", Toast.LENGTH_SHORT).show();
 
-
-        mEndTime = timerViewModel.getEndTime();
         long currentTime = System.currentTimeMillis();
         long durationTime = mEndTime - currentTime;
-        timer = new CountDownTimer(durationTime, 1000) {
+        timer = new CountDownTimer(270000, 1000) {
             public void onTick(long millisUntilFinished) {
                 broadcastIntent.putExtra("countdown", millisUntilFinished);
                 sendBroadcast(broadcastIntent);
-
-//                timerCountdown.setText("Time Remaining: " + new SimpleDateFormat(
-//                        "HH:mm:ss").format(new Date(millisUntilFinished)));
-
             }
 
             public void onFinish() {
-                timerCountdown.setText("done!");
+//                timerCountdown.setText("done!");
             }
         }.start();
     }
@@ -51,6 +47,8 @@ public class CountdownTimerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        mEndTime = intent.getLongExtra("endTime", 0);
         return super.onStartCommand(intent, flags, startId);
     }
 

@@ -34,6 +34,7 @@ import com.example.gotimer.R;
 import com.example.gotimer.entity.Profile;
 import com.example.gotimer.interfaces.OnDeleteClickListener;
 import com.example.gotimer.interfaces.OnSwitchChange;
+import com.example.gotimer.services.CountdownTimerService;
 import com.example.gotimer.services.OverlayService;
 import com.example.gotimer.util.EndTimePickerFragment;
 
@@ -59,6 +60,8 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     private boolean isQuickBlockActive = false;
     private AlarmManager alarmManager;
     private SharedPreferences prefs;
+    private static final String COUNTDOWN_BR = "com.example.gotimer.services.countdowntimerservice";
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -78,6 +81,9 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
                 "com.example.gotimer", Context.MODE_PRIVATE);
         isQuickBlockActive = prefs.getBoolean("quickBlockKey", false);
         alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+
+        Intent countdownIntent = new Intent(getActivity(), CountdownTimerService.class);
+        getActivity().startService(countdownIntent);
 
         RecyclerView recyclerView = root.findViewById(R.id.profilesRecycler);
         final ProfilesListAdapter adapter = new ProfilesListAdapter(mContext,
@@ -286,27 +292,27 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void startCountdown() {
-        mEndTime = timerViewModel.getEndTime();
-        long currentTime = System.currentTimeMillis();
-        long durationTime = mEndTime - currentTime;
-        new CountDownTimer(durationTime, 1000) {
-            public void onTick(long millisUntilFinished) {
-                timerCountdown.setText("Time Remaining: " + new SimpleDateFormat(
-                        "HH:mm:ss").format(new Date(millisUntilFinished)));
-                if (timerCountdown.getText().equals("00:00:00")) {
-                    onFinish();
-                }
-            }
-
-            public void onFinish() {
-                timerCountdown.setText("done!");
-            }
-        }.start();
-        Intent intent = new Intent("EndAlarm");
-        intent.putExtra("profileId", selectedQuickBlockProfile.getProfileId());
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 9, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, mEndTime, pendingIntent);
+//        mEndTime = timerViewModel.getEndTime();
+//        long currentTime = System.currentTimeMillis();
+//        long durationTime = mEndTime - currentTime;
+//        new CountDownTimer(durationTime, 1000) {
+//            public void onTick(long millisUntilFinished) {
+//                timerCountdown.setText("Time Remaining: " + new SimpleDateFormat(
+//                        "HH:mm:ss").format(new Date(millisUntilFinished)));
+//                if (timerCountdown.getText().equals("00:00:00")) {
+//                    onFinish();
+//                }
+//            }
+//
+//            public void onFinish() {
+//                timerCountdown.setText("done!");
+//            }
+//        }.start();
+//        Intent intent = new Intent("EndAlarm");
+//        intent.putExtra("profileId", selectedQuickBlockProfile.getProfileId());
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 9, intent,
+//                PendingIntent.FLAG_UPDATE_CURRENT);
+//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, mEndTime, pendingIntent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -345,10 +351,18 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             for (Profile profile : mProfileList) {
                 profile.setBlockActive(false);
                 timerViewModel.updateProfile(profile);
-
             }
         }
 
+    };
+
+    BroadcastReceiver countdownServiceReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            long millisUntilFinished = intent.getLongExtra("countdown", 0);
+            timerCountdown.setText("Time Remaining: " + new SimpleDateFormat(
+                    "HH:mm:ss").format(new Date(millisUntilFinished)));
+        }
     };
 
     @Override
@@ -358,6 +372,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         getContext().registerReceiver(startAlarmReceiver, startFilter);
         IntentFilter endFilter = new IntentFilter("EndAlarm");
         getContext().registerReceiver(endAlarmReceiver, endFilter);
+        getContext().registerReceiver(countdownServiceReceiver, new IntentFilter(COUNTDOWN_BR));
         if (prefs != null) {
             isQuickBlockActive = prefs.getBoolean("quickBlockKey", false);
         }
