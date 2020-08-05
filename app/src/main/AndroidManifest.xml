@@ -16,10 +16,19 @@
         android:roundIcon="@mipmap/ic_gotime_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver android:name=".services.CountdownTimerWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/countdown_timer_widget_info" />
+        </receiver>
         <receiver
             android:name=".receivers.AlarmReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
