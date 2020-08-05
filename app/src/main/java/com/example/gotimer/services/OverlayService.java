@@ -43,6 +43,7 @@ import com.example.gotimer.ui.timer.TimerFragment;
 import com.example.gotimer.util.TransparentActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -73,7 +74,11 @@ public class OverlayService extends Service {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        processList = intent.getStringArrayListExtra("processList");
+        if (intent.getStringArrayExtra("processList") == null) {
+            processList = new ArrayList<>(Arrays.asList(""));
+        } else {
+            processList = intent.getStringArrayListExtra("processList");
+        }
         isServiceRunning = intent.getBooleanExtra("serviceOn", false);
         if (isServiceRunning) {
             Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
@@ -104,7 +109,7 @@ public class OverlayService extends Service {
         String currentAppProcess = getCurrentApp();
         String lastProcess = "";
 //        if (currentAppProcess != lastProcess) {
-        if (processList != null) {
+        if (processList != null && currentAppProcess != null) {
             for (String processName : processList) {
                 if (currentAppProcess.equals(processName)) {
                     if (!alreadyDisplayed) {

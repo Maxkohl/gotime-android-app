@@ -96,17 +96,12 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         });
 
         startTimerButton = root.findViewById(R.id.start_timer_bttn);
-        if (isQuickBlockActive) {
-            startTimerButton.setText("STOP");
-        } else {
-            startTimerButton.setText("START");
-        }
         startTimerButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
                 if (selectedQuickBlockProfile != null) {
-                    if (isQuickBlockActive || isMyServiceRunning(OverlayService.class)) {
+                    if (isQuickBlockActive ) {
                         isQuickBlockActive = false;
                         startTimerButton.setText("START");
                         getActivity().stopService(serviceIntent);
