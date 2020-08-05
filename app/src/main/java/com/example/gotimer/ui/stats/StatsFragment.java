@@ -43,13 +43,13 @@ public class StatsFragment extends Fragment {
         Cartesian cartesian = AnyChart.column();
 
         List<DataEntry> data = new ArrayList<>();
-        data.add(new ValueDataEntry("Instagram", 80540));
-        data.add(new ValueDataEntry("Facebook", 94190));
-        data.add(new ValueDataEntry("Netflix", 102610));
-        data.add(new ValueDataEntry("Tiktok", 110430));
-        data.add(new ValueDataEntry("Reddit", 128000));
-        data.add(new ValueDataEntry("Hulu", 143760));
-        data.add(new ValueDataEntry("Subby", 170670));
+        data.add(new ValueDataEntry("Instagram", 25));
+        data.add(new ValueDataEntry("Facebook", 50));
+        data.add(new ValueDataEntry("Netflix", 55));
+        data.add(new ValueDataEntry("Tiktok", 60));
+        data.add(new ValueDataEntry("Reddit", 100));
+        data.add(new ValueDataEntry("Hulu", 37));
+        data.add(new ValueDataEntry("Subby", 123));
 
         Column column = cartesian.column(data);
 
@@ -71,8 +71,8 @@ public class StatsFragment extends Fragment {
         cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
         cartesian.interactivity().hoverMode(HoverMode.BY_X);
 
-        cartesian.xAxis(0).title("Hours");
-        cartesian.yAxis(0).title("App");
+        cartesian.xAxis(0).title("Apps");
+        cartesian.yAxis(0).title("Hours");
 
         anyChartView.setChart(cartesian);
 

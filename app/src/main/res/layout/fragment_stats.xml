@@ -6,25 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.stats.StatsFragment">
 
-    <TextView
-        android:id="@+id/data_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="300dp"
-        android:text="NOT LIVE DATA"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_red_dark"
-        android:textSize="46sp"
-        app:layout_constraintBottom_toTopOf="@id/any_chart_view"
-        tools:layout_editor_absoluteX="-16dp" />
-
     <com.anychart.AnyChartView
         android:id="@+id/any_chart_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="370dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/data_text" />
+        app:layout_constraintHorizontal_bias="0.695"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
