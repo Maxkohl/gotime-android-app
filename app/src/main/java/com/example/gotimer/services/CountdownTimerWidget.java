@@ -2,24 +2,28 @@ package com.example.gotimer.services;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.example.gotimer.R;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class CountdownTimerWidget extends AppWidgetProvider {
 
+    private static final String UPDATE_WIDGET = "com.example.gotimer.services.countdowntimerwidget";
+
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.countdown_timer_widget);
-        views.setTextViewText(R.id.timer_countdown, "Test");
-        views.setTextColor(R.id.timer_countdown, R.color.white);
-
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
@@ -30,16 +34,29 @@ public class CountdownTimerWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
+
     }
 
     @Override
-    public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+        final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        ComponentName name = new ComponentName(context, CountdownTimerWidget.class);
+        if (intent.getAction().equals(UPDATE_WIDGET)) {
+            int[] appWidgetId = AppWidgetManager.getInstance(context).getAppWidgetIds(name);
+            // handle intent here
+            long mEndTime = intent.getLongExtra("countdown", 0);
+            String timeString = new SimpleDateFormat(
+                    "hh:mm:ss").format(new Date(mEndTime));
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.countdown_timer_widget);
+            views.setTextViewText(R.id.countdown_text, timeString);
+            // Instruct the widget manager to update the widget
+            appWidgetManager.updateAppWidget(appWidgetId, views);
+
+        }
+
     }
 
-    @Override
-    public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
-    }
+
 }
 

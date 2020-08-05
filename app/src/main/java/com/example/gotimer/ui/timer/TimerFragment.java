@@ -4,7 +4,9 @@ import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,6 +37,7 @@ import com.example.gotimer.entity.Profile;
 import com.example.gotimer.interfaces.OnDeleteClickListener;
 import com.example.gotimer.interfaces.OnSwitchChange;
 import com.example.gotimer.services.CountdownTimerService;
+import com.example.gotimer.services.CountdownTimerWidget;
 import com.example.gotimer.services.OverlayService;
 import com.example.gotimer.util.EndTimePickerFragment;
 
@@ -61,6 +64,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     private AlarmManager alarmManager;
     private SharedPreferences prefs;
     private static final String COUNTDOWN_BR = "com.example.gotimer.services.countdowntimerservice";
+    private static final String UPDATE_WIDGET = "com.example.gotimer.services.countdowntimerwidget";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -82,6 +86,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         isQuickBlockActive = prefs.getBoolean("quickBlockKey", false);
         alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
 
+        //TODO Move this to proper place
         Intent countdownIntent = new Intent(getActivity(), CountdownTimerService.class);
         getActivity().startService(countdownIntent);
 
@@ -360,10 +365,25 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         @Override
         public void onReceive(Context context, Intent intent) {
             long millisUntilFinished = intent.getLongExtra("countdown", 0);
-            timerCountdown.setText("Time Remaining: " + new SimpleDateFormat(
-                    "HH:mm:ss").format(new Date(millisUntilFinished)));
+            timerCountdown.setText(new SimpleDateFormat(
+                    "hh:mm:ss").format(new Date(millisUntilFinished)));
+            updateWidget(context, millisUntilFinished);
         }
     };
+
+    public void updateWidget(Context context, long millisUntilFinished) {
+        Intent intent = new Intent(context.getApplicationContext(), CountdownTimerWidget.class);
+        intent.setAction(UPDATE_WIDGET);
+        AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
+        int[] ids = widgetManager.getAppWidgetIds(new ComponentName(context, CountdownTimerWidget.class));
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            widgetManager.notifyAppWidgetViewDataChanged(ids, android.R.id.list);
+
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        intent.putExtra("countdown", millisUntilFinished);
+        context.sendBroadcast(intent);
+    }
 
     @Override
     public void onResume() {
