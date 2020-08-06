@@ -87,7 +87,6 @@ public class Profile {
         long unixSeconds = startTime;
         Date date = new java.util.Date(unixSeconds * 1000L);
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("HH:mm");
-        //TODO Stackoverflow says to use UTC but that sets time 5 hours ahead
 //        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         sdf.setTimeZone(TimeZone.getDefault());
         String formattedDate = "Start Time: " + sdf.format(date);
@@ -155,13 +154,13 @@ public class Profile {
     }
 
     public List<String> getBlockedAppsList() {
-        return new ArrayList<String>(Arrays.asList(blockedApps.split("-")));
+        return new ArrayList<String>(Arrays.asList(blockedApps.split(" ")));
     }
 
     private String stringifyList(List<String> list) {
         String resultString = "";
         for (String element : list) {
-            resultString = resultString + element + "-";
+            resultString = resultString + element + " ";
         }
         return resultString;
     }
@@ -180,7 +179,7 @@ public class Profile {
 
     public List<String> getBlockedProcessNames() {
         if (blockedAppsProcessNames != null) {
-            return new ArrayList<String>(Arrays.asList(blockedAppsProcessNames.split("-")));
+            return new ArrayList<String>(Arrays.asList(blockedAppsProcessNames.split(" ")));
         }
         return new ArrayList<>();
     }
