@@ -28,4 +28,17 @@
     <string name="hyphon">-</string>
     <string name="days_active">Days Active: </string>
     <string name="blocked_apps">Blocked Apps:</string>
+    <string name="exit">Exit</string>
+    <string name="blocked_prompt">GO TIMER HAS BLOCKED THIS APP</string>
+    <string name="placeholder">Placeholder</string>
+    <string name="blocked_apps_placeholder">Blocked Apps</string>
+    <string name="location_placeholder">location</string>
+    <string name="profile_name">Profile Name</string>
+    <string name="delete_profile_dialog">Delete Profile</string>
+    <string name="delete_profile_prompt">Are you sure you want to delete this profile?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="deleted_toast">Profile deleted</string>
+    <string name="delete_canceled_toast">Canceled delete profile</string>
+    <string name="choose_profile_dialog">Choose a profile</string>
 </resources>

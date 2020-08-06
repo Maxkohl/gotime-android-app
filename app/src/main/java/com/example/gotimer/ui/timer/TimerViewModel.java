@@ -57,20 +57,6 @@ public class TimerViewModel extends AndroidViewModel {
         mEndTime= receivedEndTime;
     }
 
-//    public void processTimePickerResult(int hourOfDay, int minute) {
-//        String hourString = Integer.toString(hourOfDay);
-//        String minuteString = Integer.toString(minute);
-//
-//        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-//        try {
-//            Date stringFormatted = format.parse(hourString + ":" + minuteString + ":00");
-//            mEndTime = stringFormatted.getTime();
-//        } catch (ParseException e) {
-//            Log.d(TAG, "Exception when parsing time into formatted time");
-//            e.printStackTrace();
-//        }
-//    }
-
     public long getEndTime() {
         return mEndTime;
     }

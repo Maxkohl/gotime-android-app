@@ -51,9 +51,7 @@ public class AppSelectorActivity extends AppCompatActivity {
         final PackageManager pm = getPackageManager();
         List<Application> resultList =  new ArrayList<>();
         //get a list of installed apps.
-        //TODO Change this back to ApplicationInfo to remove a step and cleaner code?
         List<PackageInfo> allApps = pm.getInstalledPackages(PackageManager.GET_META_DATA);
-        //        return pm.getInstalledApplications(PackageManager.GET_META_DATA);
         for (PackageInfo app : allApps) {
             if (!isSystemPackage(app) && !app.applicationInfo.processName.equals("com.example.gotimer")) {
                 String appName = app.applicationInfo.loadLabel(getPackageManager()).toString();

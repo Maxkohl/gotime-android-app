@@ -81,14 +81,12 @@ public class AppListAdapter extends RecyclerView.Adapter<com.example.gotimer.ui.
     public class AppsViewHolder extends RecyclerView.ViewHolder {
         private ImageView mAppIcon;
         private TextView mAppName;
-        private Switch mBlockAppSwitch;
         private CardView mAppCard;
 
         public AppsViewHolder(@NonNull View itemView) {
             super(itemView);
             mAppIcon = itemView.findViewById(R.id.appIcon);
             mAppName = itemView.findViewById(R.id.appName);
-            mBlockAppSwitch = itemView.findViewById(R.id.appBlockSwitch);
             mAppCard = itemView.findViewById(R.id.appCard);
         }
 

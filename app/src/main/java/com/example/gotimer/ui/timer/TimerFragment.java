@@ -71,7 +71,6 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     private String sharedPrefsFile = "come.example.gotimer.ui.timefragment";
     private static final String COUNTDOWN_BR = "com.example.gotimer.services.countdowntimerservice";
     private static final String UPDATE_WIDGET = "com.example.gotimer.services.countdowntimerwidget";
-    private String selectedQuickBlockProfileName;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -208,7 +207,6 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
                     public void onChanged(List<Profile> profileList) {
                         boolean isOverlayServiceRunning = isMyServiceRunning(OverlayService.class);
                         if (profileList != null && profileList.size() == 1) {
-                            //TODO This is happening twice creating 2 services and I don't know why
                             if (!isOverlayServiceRunning) {
                                 activeProfile = profileList.get(0);
                                 toggleAppMonitoringService(true);
@@ -216,13 +214,11 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
                         } else {
                             if (isOverlayServiceRunning) {
                                 isQuickBlockActive = false;
-                                selectedQuickBlockProfileName = "";
                                 deactivateAllProfiles();
                                 toggleAppMonitoringService(false);
                                 getActivity().stopService(serviceIntent);
                             } else {
                                 isQuickBlockActive = false;
-                                selectedQuickBlockProfileName = "";
                             }
                         }
                     }
@@ -285,25 +281,23 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         public void OnDeleteClickListener(int profileId) {
             androidx.appcompat.app.AlertDialog.Builder builder =
                     new androidx.appcompat.app.AlertDialog.Builder(getContext());
-            builder.setTitle("Delete Profile").setMessage("Are you sure you want to " +
-                    "delete this profile?");
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            builder.setTitle(R.string.delete_profile_dialog).setMessage(R.string.delete_profile_prompt);
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     timerViewModel.deleteProfile(profileId);
                     isQuickBlockActive = false;
-                    selectedQuickBlockProfileName = "";
                     startActivity(new Intent(getContext(), MainActivity.class));
                     Toast.makeText(getContext(),
-                            "Profile deleted"
+                            R.string.deleted_toast
                             , Toast.LENGTH_LONG).show();
                 }
             });
-            builder.setNegativeButton("Cancel",
+            builder.setNegativeButton(R.string.cancel,
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(getContext(), "Canceled delete profile",
+                            Toast.makeText(getContext(), R.string.delete_canceled_toast,
                                     Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -317,7 +311,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
 
     public void createQuickBlock() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Choose a profile");
+        builder.setTitle(R.string.choose_profile_dialog);
 
         String[] profiles = new String[mProfileList.size()];
         for (int i = 0; i < profiles.length; i++) {
@@ -333,15 +327,14 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             }
         });
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 selectedQuickBlockProfile = mProfileList.get(selectedItem[0]);
-                selectedQuickBlockProfileName = selectedQuickBlockProfile.getProfileName();
                 showTimePickerDialog();
             }
         });
-        builder.setNegativeButton("Cancel", null);
+        builder.setNegativeButton(R.string.cancel, null);
 
         AlertDialog dialog = builder.create();
         dialog.show();

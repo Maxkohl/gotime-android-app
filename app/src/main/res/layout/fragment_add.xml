@@ -52,8 +52,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/end_time_layout"
-            android:layout_marginRight="24dp"
-            android:layout_marginLeft="8dp">
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="8dp">
 
             <TextView
                 android:id="@+id/starttime_display"

@@ -36,24 +36,6 @@ public class AddViewModel extends AndroidViewModel {
             }
     }
 
-//    public void processTimePickerResult(int hourOfDay, int minute) {
-//        String hourString = Integer.toString(hourOfDay);
-//        String minuteString = Integer.toString(minute);
-//
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        try {
-//            Date stringFormatted = format.parse("1999-12-12 " + hourString + ":" + minuteString + ":00");
-//            if (mStartTime == 0) {
-//                mStartTime = stringFormatted.getTime() / 1000;
-//            } else {
-//                mEndTime = stringFormatted.getTime() / 1000;
-//            }
-//        } catch (ParseException e) {
-//            Log.d(TAG, "Exception when parsing time into formatted time");
-//            e.printStackTrace();
-//        }
-//    }
-
     public long getStartTime() {
         return mStartTime;
     }

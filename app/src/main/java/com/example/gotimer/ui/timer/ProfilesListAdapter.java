@@ -113,21 +113,4 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
         }
     }
 
-
-    public boolean getProfileChanged() {
-        return profileChanged;
-    }
-
-    public void setProfileChanged(boolean isChanged) {
-        profileChanged = isChanged;
-    }
-
-    public int getPositionOfUpdatedProfile() {
-        return activePosition;
-    }
-
-    public Profile getProfileAtPosition(int position) {
-        return mProfiles.get(position);
-    }
-
 }
