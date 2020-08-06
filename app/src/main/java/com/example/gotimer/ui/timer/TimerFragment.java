@@ -205,18 +205,23 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
                 new Observer<List<Profile>>() {
                     @Override
                     public void onChanged(List<Profile> profileList) {
+                        boolean isOverlayServiceRunning = isMyServiceRunning(OverlayService.class);
                         if (profileList != null && profileList.size() == 1) {
                             //TODO This is happening twice creating 2 services and I don't know why
-                            if (!isMyServiceRunning(OverlayService.class)) {
+                            if (!isOverlayServiceRunning) {
                                 activeProfile = profileList.get(0);
-                                mServiceOn = true;
-                                toggleAppMonitoringService(mServiceOn);
+                                toggleAppMonitoringService(true);
                             }
                         } else {
-                            if (isMyServiceRunning(OverlayService.class)) {
-                                mServiceOn = false;
-                                toggleAppMonitoringService(mServiceOn);
+                            if (isOverlayServiceRunning) {
+                                isQuickBlockActive = false;
+                                selectedQuickBlockProfileName = "";
+                                deactivateAllProfiles();
+                                toggleAppMonitoringService(false);
                                 getActivity().stopService(serviceIntent);
+                            } else {
+                                isQuickBlockActive = false;
+                                selectedQuickBlockProfileName = "";
                             }
                         }
                     }
@@ -326,10 +331,11 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void startQuickBlock() {
-        for (Profile profile : mProfileList) {
-            profile.setBlockActive(false);
-            timerViewModel.updateProfile(profile);
-        }
+//        for (Profile profile : mProfileList) {
+//            profile.setBlockActive(false);
+//            timerViewModel.updateProfile(profile);
+//        }
+        deactivateAllProfiles();
         selectedQuickBlockProfile.setBlockActive(true);
         timerViewModel.updateProfile(selectedQuickBlockProfile);
         startCountdown();
@@ -358,6 +364,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         public void onReceive(Context context, Intent intent) {
             Toast.makeText(context, "Alarm Started", Toast.LENGTH_SHORT).show();
             int profileId = intent.getIntExtra("profileId", 0);
+            deactivateAllProfiles();
             for (Profile profile : mProfileList) {
                 if (profile.getProfileId() == profileId) {
                     profile.setBlockActive(true);
@@ -373,10 +380,12 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         public void onReceive(Context context, Intent intent) {
             Toast.makeText(context, "Block Alarm Ended", Toast.LENGTH_SHORT).show();
             int profileId = intent.getIntExtra("profileId", 0);
-            for (Profile profile : mProfileList) {
-                profile.setBlockActive(false);
-                timerViewModel.updateProfile(profile);
-            }
+            toggleAppMonitoringService(false);
+//            for (Profile profile : mProfileList) {
+//                profile.setBlockActive(false);
+//                timerViewModel.updateProfile(profile);
+//            }
+            deactivateAllProfiles();
         }
 
     };

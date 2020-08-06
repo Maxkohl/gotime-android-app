@@ -90,8 +90,8 @@ public class OverlayService extends Service {
                 }
             };
             handler.post(runnableCode);
-
         } else {
+            processList = null;
             stopMyService();
         }
         return START_STICKY;
@@ -244,10 +244,11 @@ public class OverlayService extends Service {
 //        (Context.NOTIFICATION_SERVICE);
 //        mNotificationManager.deleteNotificationChannel(NOTIFICATION_CHANNEL_ID);
 //        mNotificationManager.cancel(NOTIFICATION_ID);
-//        stopForeground(true);
-//        stopSelf();
-//        isServiceRunning = false;
-//        Toast.makeText(this, "Service Destroyed", Toast.LENGTH_SHORT).show();
+        processList = null;
+        stopForeground(true);
+        stopSelf();
+        isServiceRunning = false;
+        Toast.makeText(this, "Service Destroyed", Toast.LENGTH_SHORT).show();
         super.onDestroy();
     }
 
@@ -260,7 +261,6 @@ public class OverlayService extends Service {
         stopForeground(true);
         stopSelf();
         isServiceRunning = false;
-        Log.e("STOP SERVICE", "SHOULD HAVE STOPPED");
         Toast.makeText(this, "Service Stopped", Toast.LENGTH_SHORT).show();
     }
 }
