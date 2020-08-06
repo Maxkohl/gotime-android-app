@@ -79,7 +79,8 @@ public class OverlayService extends Service {
 
         isServiceRunning = intent.getBooleanExtra("serviceOn", false);
         if (isServiceRunning) {
-            Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "GoTimer Enabled", Toast.LENGTH_SHORT).show();
             alreadyDisplayed = false;
             handler = new Handler(Looper.getMainLooper());
             runnableCode = new Runnable() {
@@ -233,7 +234,7 @@ public class OverlayService extends Service {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,
                 NOTIFICATION_CHANNEL_ID);
         builder.setContentTitle("GoTimer"
-        ).setContentText("GoTimer is currently running").setSmallIcon(R.drawable.ic_timer).setContentIntent(pendingIntent).setOngoing(true).setPriority(NotificationManager.IMPORTANCE_MIN)
+        ).setContentText("Currently blocking selected applications").setSmallIcon(R.drawable.ic_timer).setContentIntent(pendingIntent).setOngoing(true).setPriority(NotificationManager.IMPORTANCE_MIN)
                 .setCategory(Notification.CATEGORY_SERVICE);
         startForeground(NOTIFICATION_ID, builder.build());
     }
@@ -244,7 +245,8 @@ public class OverlayService extends Service {
         stopForeground(true);
         stopSelf();
         isServiceRunning = false;
-        Toast.makeText(this, "Service Destroyed", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Service Destroyed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "App Block Ended", Toast.LENGTH_SHORT).show();
         super.onDestroy();
     }
 

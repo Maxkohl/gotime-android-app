@@ -359,7 +359,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     BroadcastReceiver startAlarmReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Toast.makeText(context, "Alarm Started", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "Alarm Started", Toast.LENGTH_SHORT).show();
             int profileId = intent.getIntExtra("profileId", 0);
             deactivateAllProfiles();
             for (Profile profile : mProfileList) {
@@ -378,7 +378,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     BroadcastReceiver endAlarmReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Toast.makeText(context, "Block Alarm Ended", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "Block Ended", Toast.LENGTH_SHORT).show();
             int profileId = intent.getIntExtra("profileId", 0);
             toggleAppMonitoringService(false);
             deactivateAllProfiles();
