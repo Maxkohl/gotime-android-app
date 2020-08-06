@@ -239,6 +239,7 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         public void onSwitchChange(List<Profile> updatedProfileList, int positionOfChanged) {
             Profile switchedProfile = updatedProfileList.get(positionOfChanged);
             switchedProfile.setAlarmActive(!switchedProfile.isAlarmActive());
+            switchedProfile.setBlockActive(!switchedProfile.isBlockActive());
             timerViewModel.updateProfile(switchedProfile);
             mServiceOn = !mServiceOn;
         }
@@ -282,7 +283,8 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     OnDeleteClickListener deleteClickInterface = new OnDeleteClickListener() {
         @Override
         public void OnDeleteClickListener(int profileId) {
-            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+            androidx.appcompat.app.AlertDialog.Builder builder =
+                    new androidx.appcompat.app.AlertDialog.Builder(getContext());
             builder.setTitle("Delete Profile").setMessage("Are you sure you want to " +
                     "delete this profile?");
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
