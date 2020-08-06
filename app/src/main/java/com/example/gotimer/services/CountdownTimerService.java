@@ -25,7 +25,9 @@ public class CountdownTimerService extends Service {
 
     @Override
     public void onDestroy() {
-        timer.cancel();
+        if (timer != null) {
+            timer.cancel();
+        }
         super.onDestroy();
     }
 
