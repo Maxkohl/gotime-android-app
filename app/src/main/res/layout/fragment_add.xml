@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/timer_name"
-        android:textColor="@color/colorPrimary" />
+        style="@style/label" />
 
     <com.example.gotimer.customviews.EditTextWithClear
         android:id="@+id/profilename_input"
@@ -27,20 +27,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Location"
-        android:textColor="@color/colorPrimary" />
+        style="@style/label" />
 
     <TextView
         android:id="@+id/starttime_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/from"
-        android:textColor="@color/colorPrimary" />
+        style="@style/label" />
 
     <Button
         android:id="@+id/selectapps_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select Apps"
+        style="@style/ButtonStyle"
         />
 
     <TextView
@@ -48,26 +49,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Placeholder Time"
-        android:textColor="@color/colorPrimary"/>
+        style="@style/label"/>
 
     <Button
         android:id="@+id/starttime_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/starttime_button_text" />
+        android:text="@string/starttime_button_text"
+        style="@style/ButtonStyle"/>
 
     <TextView
         android:id="@+id/endtime_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/to"
-        android:textColor="@color/colorPrimary" />
+        style="@style/label" />
 
     <Button
         android:id="@+id/endtime_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/endtime_button_text" />
+        android:text="@string/endtime_button_text"
+        style="@style/ButtonStyle"/>
 
     <com.dpro.widgets.WeekdaysPicker
         android:id="@+id/weekdays"
@@ -81,13 +84,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Pick Location"
+        style="@style/ButtonStyle"
         />
 
     <Button
         android:id="@+id/save_profile_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save Timer Profile" />
+        android:text="Save Timer Profile"
+        style="@style/ButtonStyle"/>
 
 </LinearLayout>
 

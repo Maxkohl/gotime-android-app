@@ -33,7 +33,11 @@ public class CountdownTimerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mDurationTime = intent.getLongExtra("durationTime", 0);
+        if (intent != null) {
+            mDurationTime = intent.getLongExtra("durationTime", 0);
+        } else {
+            mDurationTime = 1000;
+        }
 
         Toast.makeText(this, "TIMER SERVICE STARTED", Toast.LENGTH_SHORT).show();
         timer = new CountDownTimer(mDurationTime, 1000) {
