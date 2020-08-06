@@ -26,4 +26,6 @@
     <string name="pick_location">Pick Location</string>
     <string name="save_timer_profile">Save Timer Profile</string>
     <string name="hyphon">-</string>
+    <string name="days_active">Days Active: </string>
+    <string name="blocked_apps">Blocked Apps:</string>
 </resources>
