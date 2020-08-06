@@ -6,29 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.timer.TimerFragment">
 
-    <Button
-        android:id="@+id/start_timer_bttn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/start"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@id/profilesRecycler"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.842"
-        style="@style/ButtonStyle"/>
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/quick_block_bttn"
-        android:layout_width="140dp"
-        android:layout_height="156dp"
-        android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_create_timer"
-        app:layout_constraintBottom_toTopOf="@id/start_timer_bttn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
         android:id="@+id/timer_countdown"
         android:layout_width="wrap_content"
@@ -42,6 +19,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.975"
         android:textColor="@color/black"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/quick_block_bttn"
+        android:layout_width="140dp"
+        android:layout_height="156dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/ic_create_timer"
+        app:layout_constraintBottom_toTopOf="@id/start_timer_bttn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/start_timer_bttn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/start"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@id/profilesRecycler"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.842"
+        style="@style/ButtonStyle"/>
 
     <TextView
         android:id="@+id/alarms_label"
