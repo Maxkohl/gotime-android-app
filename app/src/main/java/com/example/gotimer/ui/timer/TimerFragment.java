@@ -33,6 +33,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gotimer.MainActivity;
 import com.example.gotimer.R;
 import com.example.gotimer.entity.Profile;
 import com.example.gotimer.interfaces.OnDeleteClickListener;
@@ -364,9 +365,12 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             for (Profile profile : mProfileList) {
                 if (profile.getProfileId() == profileId) {
                     profile.setBlockActive(true);
+                    activeProfile = profile;
                     timerViewModel.updateProfile(profile);
                 }
             }
+            startActivity(new Intent(getContext(), MainActivity.class));
+
         }
 
     };
