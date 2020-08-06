@@ -282,9 +282,30 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     OnDeleteClickListener deleteClickInterface = new OnDeleteClickListener() {
         @Override
         public void OnDeleteClickListener(int profileId) {
-            timerViewModel.deleteProfile(profileId);
-            isQuickBlockActive = false;
-            selectedQuickBlockProfileName = "";
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+            builder.setTitle("Delete Profile").setMessage("Are you sure you want to " +
+                    "delete this profile?");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    timerViewModel.deleteProfile(profileId);
+                    isQuickBlockActive = false;
+                    selectedQuickBlockProfileName = "";
+                    startActivity(new Intent(getContext(), MainActivity.class));
+                    Toast.makeText(getContext(),
+                            "Profile deleted"
+                            , Toast.LENGTH_LONG).show();
+                }
+            });
+            builder.setNegativeButton("Cancel",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Toast.makeText(getContext(), "Canceled delete profile",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            builder.show();
         }
     };
 
