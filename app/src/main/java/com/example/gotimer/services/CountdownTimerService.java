@@ -38,8 +38,7 @@ public class CountdownTimerService extends Service {
         } else {
             mDurationTime = 1000;
         }
-
-        Toast.makeText(this, "TIMER SERVICE STARTED", Toast.LENGTH_SHORT).show();
+        
         timer = new CountDownTimer(mDurationTime, 1000) {
             public void onTick(long millisUntilFinished) {
                 broadcastIntent.putExtra("countdown", millisUntilFinished);
