@@ -240,10 +240,6 @@ public class OverlayService extends Service {
 
     @Override
     public void onDestroy() {
-//        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService
-//        (Context.NOTIFICATION_SERVICE);
-//        mNotificationManager.deleteNotificationChannel(NOTIFICATION_CHANNEL_ID);
-//        mNotificationManager.cancel(NOTIFICATION_ID);
         processList = null;
         stopForeground(true);
         stopSelf();
