@@ -65,7 +65,6 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
                     mSwitchListener.onSwitchChange(mProfiles, position);
                 }
             });
-            holder.isOn.setText("Active: " + current.isAlarmActive());
             holder.deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -97,7 +96,6 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
         private final TextView mDaysActive;
         private final TextView mBlockedApps;
         private final Switch mIsActive;
-        private final TextView isOn;
         private final ImageButton deleteButton;
         private final TextView mLocationAddress;
 
@@ -109,7 +107,6 @@ public class ProfilesListAdapter extends RecyclerView.Adapter<com.example.gotime
             mDaysActive = itemView.findViewById(R.id.profileDaysActive);
             mBlockedApps = itemView.findViewById(R.id.blockedApps);
             mIsActive = itemView.findViewById(R.id.isActive);
-            isOn = itemView.findViewById(R.id.isOnText);
             deleteButton = itemView.findViewById(R.id.delete_imagebutton);
             mLocationAddress = itemView.findViewById(R.id.locationAddress);
 

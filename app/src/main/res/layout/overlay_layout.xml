@@ -26,7 +26,7 @@
         android:layout_marginLeft="24dp"
         android:text="Exit"
         android:textSize="64sp"
-        android:textColor="@android:color/holo_orange_dark"
+        android:textColor="@color/colorPrimary"
         android:textAlignment="center"
         app:layout_constraintTop_toBottomOf="@id/overlay_text"
         app:layout_constraintBottom_toBottomOf="parent"

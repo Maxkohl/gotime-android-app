@@ -15,4 +15,15 @@
     <string name="action_save">SAVE</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="scheduled_block_alarms">Scheduled Block Alarms</string>
+    <string name="quick_block_prompt">Click to Quick Block</string>
+    <string name="start">Start</string>
+    <string name="location">Location</string>
+    <string name="select_apps">Select Apps</string>
+    <string name="start_time">Start Time</string>
+    <string name="choose_time">Choose Time</string>
+    <string name="end_time">End Time</string>
+    <string name="pick_location">Pick Location</string>
+    <string name="save_timer_profile">Save Timer Profile</string>
+    <string name="hyphon">-</string>
 </resources>
