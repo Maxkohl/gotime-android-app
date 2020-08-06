@@ -41,7 +41,6 @@ public class CountdownTimerService extends Service {
             }
 
             public void onFinish() {
-//                timerCountdown.setText("done!");
             }
         }.start();
         return super.onStartCommand(intent, flags, startId);

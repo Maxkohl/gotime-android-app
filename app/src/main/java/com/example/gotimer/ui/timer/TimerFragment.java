@@ -331,10 +331,6 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void startQuickBlock() {
-//        for (Profile profile : mProfileList) {
-//            profile.setBlockActive(false);
-//            timerViewModel.updateProfile(profile);
-//        }
         deactivateAllProfiles();
         selectedQuickBlockProfile.setBlockActive(true);
         timerViewModel.updateProfile(selectedQuickBlockProfile);
@@ -381,10 +377,6 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             Toast.makeText(context, "Block Alarm Ended", Toast.LENGTH_SHORT).show();
             int profileId = intent.getIntExtra("profileId", 0);
             toggleAppMonitoringService(false);
-//            for (Profile profile : mProfileList) {
-//                profile.setBlockActive(false);
-//                timerViewModel.updateProfile(profile);
-//            }
             deactivateAllProfiles();
         }
 
@@ -440,7 +432,6 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         prefsEditor.putString("selectedQuickBlockProfile", json);
         prefsEditor.commit();
         prefsEditor.apply();
-//        getContext().unregisterReceiver(alarmReceiver);
     }
 
     private void deactivateAllProfiles() {
