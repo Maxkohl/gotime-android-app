@@ -192,7 +192,6 @@ public class OverlayService extends Service {
                 startHomescreen.addCategory(Intent.CATEGORY_HOME);
                 startHomescreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(startHomescreen);
-//                mViewGroup.setVisibility(View.INVISIBLE);
                 windowManager.removeViewImmediate(mViewGroup);
                 alreadyDisplayed = false;
             }

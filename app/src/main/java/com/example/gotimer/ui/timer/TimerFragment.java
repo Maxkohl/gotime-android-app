@@ -196,7 +196,6 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
                     toggleAppMonitoringService(mServiceOn);
                     getActivity().stopService(serviceIntent);
                     timerViewModel.updateProfile(currentProfile);
-                    Toast.makeText(mContext, "Alarm Turned Off", Toast.LENGTH_SHORT).show();
                 }
             }
         });
