@@ -38,7 +38,7 @@ public class CountdownTimerService extends Service {
         } else {
             mDurationTime = 1000;
         }
-        
+
         timer = new CountDownTimer(mDurationTime, 1000) {
             public void onTick(long millisUntilFinished) {
                 broadcastIntent.putExtra("countdown", millisUntilFinished);
