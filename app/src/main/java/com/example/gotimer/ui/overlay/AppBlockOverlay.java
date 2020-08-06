@@ -16,7 +16,6 @@ public class AppBlockOverlay extends ViewGroup {
 
     public AppBlockOverlay(Context context) {
         super(context);
-        Toast.makeText(getContext(),"HUDView", Toast.LENGTH_LONG).show();
         mContext = context;
 
         mLoadPaint = new Paint();
