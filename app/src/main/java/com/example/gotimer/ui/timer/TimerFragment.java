@@ -235,7 +235,9 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
         public void onSwitchChange(List<Profile> updatedProfileList, int positionOfChanged) {
             Profile switchedProfile = updatedProfileList.get(positionOfChanged);
             switchedProfile.setAlarmActive(!switchedProfile.isAlarmActive());
-            switchedProfile.setBlockActive(!switchedProfile.isBlockActive());
+            if (switchedProfile.isBlockActive()) {
+                switchedProfile.setBlockActive(false);
+            }
             timerViewModel.updateProfile(switchedProfile);
             mServiceOn = !mServiceOn;
         }
@@ -375,7 +377,6 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
     BroadcastReceiver startAlarmReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-//            Toast.makeText(context, "Alarm Started", Toast.LENGTH_SHORT).show();
             int profileId = intent.getIntExtra("profileId", 0);
             deactivateAllProfiles();
             for (Profile profile : mProfileList) {
