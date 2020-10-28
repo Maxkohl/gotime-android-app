@@ -154,6 +154,30 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             adapter.setProfiles(profiles);
         });
 
+        //Gets all profiles with isBlockActive boolean TRUE
+        timerViewModel.getActiveProfiles(true).observe(getViewLifecycleOwner(),
+                new Observer<List<Profile>>() {
+                    @Override
+                    public void onChanged(List<Profile> profileList) {
+                        boolean isOverlayServiceRunning = isMyServiceRunning(OverlayService.class);
+                        if (profileList != null && profileList.size() == 1) {
+                            if (!isOverlayServiceRunning) {
+                                activeProfile = profileList.get(0);
+                                toggleAppMonitoringService(true);
+                            }
+                        } else {
+                            if (isOverlayServiceRunning) {
+                                isQuickBlockActive = false;
+                                deactivateAllProfiles();
+                                toggleAppMonitoringService(false);
+                                getActivity().stopService(serviceIntent);
+                            } else {
+                                isQuickBlockActive = false;
+                            }
+                        }
+                    }
+                });
+
 
         timerViewModel.getActiveAlarmProfiles(true).observe(getViewLifecycleOwner(), profiles -> {
             for (int i = 0; i < profiles.size(); i++) {
@@ -200,28 +224,6 @@ public class TimerFragment extends Fragment implements OnSwitchChange, OnDeleteC
             }
         });
 
-        timerViewModel.getActiveProfiles(true).observe(getViewLifecycleOwner(),
-                new Observer<List<Profile>>() {
-                    @Override
-                    public void onChanged(List<Profile> profileList) {
-                        boolean isOverlayServiceRunning = isMyServiceRunning(OverlayService.class);
-                        if (profileList != null && profileList.size() == 1) {
-                            if (!isOverlayServiceRunning) {
-                                activeProfile = profileList.get(0);
-                                toggleAppMonitoringService(true);
-                            }
-                        } else {
-                            if (isOverlayServiceRunning) {
-                                isQuickBlockActive = false;
-                                deactivateAllProfiles();
-                                toggleAppMonitoringService(false);
-                                getActivity().stopService(serviceIntent);
-                            } else {
-                                isQuickBlockActive = false;
-                            }
-                        }
-                    }
-                });
 
         //Calling this outside of recyclerview thread because if it's in recycler view error occurs
         adapter.notifyDataSetChanged();

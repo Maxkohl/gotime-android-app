@@ -31,7 +31,6 @@ public class Profile {
     @NonNull
     private long endTime;
 
-    //TODO Uncomment. How to store in SQLite?
     private String daysActive;
 
     private String blockedApps;
@@ -47,9 +46,6 @@ public class Profile {
     private int alarmId;
 
     private String locationAddress;
-
-    //TODO Add location variable to be saved into SQLite database. What's the best way to store?
-
 
     public Profile(@NonNull String profileName, @NonNull long startTime,
                    @NonNull long endTime) {

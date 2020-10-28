@@ -79,7 +79,6 @@ public class OverlayService extends Service {
 
         isServiceRunning = intent.getBooleanExtra("serviceOn", false);
         if (isServiceRunning) {
-//            Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
             Toast.makeText(this, "GoTimer Enabled", Toast.LENGTH_SHORT).show();
             alreadyDisplayed = false;
             handler = new Handler(Looper.getMainLooper());
