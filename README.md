@@ -14,3 +14,4 @@ GoTimer is a productivty boosting application that lets users block specified di
 
 
 ## Screenshots
+<img src="screenshots/Screenshot_20200806-205640.png" width="200">
